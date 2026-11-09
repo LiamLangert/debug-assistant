@@ -1,0 +1,7 @@
+[project]
+name = "debug-assistant"
+version = "0.1.0"
+description = "CS6170 Capstone Project - Locates and provides hints for Python bugs"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []

@@ -1,0 +1,14 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Data (re-create with: uv run scripts/download_bugsinpy.py)
+data/*
+!data/.gitkeep
