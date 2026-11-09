@@ -4,4 +4,7 @@ version = "0.1.0"
 description = "CS6170 Capstone Project - Locates and provides hints for Python bugs"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "datasets<2.21",
+    "rank-bm25>=0.2.2",
+]
