@@ -32,28 +32,31 @@ def parse_bug_info(path: Path) -> dict:
 
 
 def parse_patch(path: Path) -> list[dict]:
-    """Parse a git diff. Return a list of {file, lines} the fix changed."""
+    """Parse a git diff. Lines are numbers in the buggy file, which is what we search."""
     changes = []
-    current_file = None
-    new_line_no = None
+    current = None
+    old_no = None
 
     for line in path.read_text(errors="replace").splitlines():
         if line.startswith("+++ b/"):
-            current_file = line[len("+++ b/"):].strip()
-            changes.append({"file": current_file, "lines": []})
+            current = {"file": line[len("+++ b/"):].strip(), "lines": []}
+            changes.append(current)
+            old_no = None
         elif line.startswith("@@"):
-            m = re.search(r"\+(\d+)", line)
-            if m:
-                new_line_no = int(m.group(1))
-        elif current_file is not None and new_line_no is not None:
-            if line.startswith("+") and not line.startswith("+++"):
-                changes[-1]["lines"].append(new_line_no)
-                new_line_no += 1
-            elif line.startswith("-") and not line.startswith("---"):
-                if new_line_no not in changes[-1]["lines"]:
-                    changes[-1]["lines"].append(new_line_no)
-            else:
-                new_line_no += 1
+            m = re.search(r"-(\d+)", line)
+            old_no = int(m.group(1)) if m else None
+        elif current is None or old_no is None:
+            continue
+        elif line.startswith("+") and not line.startswith("+++"):
+            # Pure insert: the buggy file has no new line, so mark the line it landed next to.
+            anchor = old_no - 1 if old_no > 1 else old_no
+            if anchor not in current["lines"]:
+                current["lines"].append(anchor)
+        elif line.startswith("-") and not line.startswith("---"):
+            current["lines"].append(old_no)
+            old_no += 1
+        else:
+            old_no += 1
 
     cleaned = []
     for c in changes:

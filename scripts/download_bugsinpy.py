@@ -15,6 +15,8 @@ import subprocess
 from pathlib import Path
 
 REPO_URL = "https://github.com/soarsmu/BugsInPy.git"
+# Pinned so a fresh clone does not follow master if it moves.
+PINNED_COMMIT = "11c5f1eea954a42132cfd06bf257766a7963e0fd"
 ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw" / "BugsInPy"
 
@@ -26,14 +28,21 @@ def git(*args: str, cwd: Path | None = None) -> str:
 
 
 def main() -> None:
-    if (RAW_DIR / ".git").exists():
-        print(f"Updating {RAW_DIR} ...")
-        git("fetch", "--depth", "1", "origin", "HEAD", cwd=RAW_DIR)
-        git("checkout", "--detach", "FETCH_HEAD", cwd=RAW_DIR)
-    else:
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    if not (RAW_DIR / ".git").exists():
         print(f"Cloning {REPO_URL} -> {RAW_DIR} ...")
-        RAW_DIR.parent.mkdir(parents=True, exist_ok=True)
-        git("clone", "--depth", "1", REPO_URL, str(RAW_DIR))
+        git("init", cwd=RAW_DIR)
+        git("remote", "add", "origin", REPO_URL, cwd=RAW_DIR)
+    try:
+        head = git("rev-parse", "HEAD", cwd=RAW_DIR)
+    except subprocess.CalledProcessError:
+        head = ""
+    if head == PINNED_COMMIT:
+        print(f"BugsInPy already at {PINNED_COMMIT}")
+        return
+    print(f"Fetching BugsInPy {PINNED_COMMIT} ...")
+    git("fetch", "--depth", "1", "origin", PINNED_COMMIT, cwd=RAW_DIR)
+    git("checkout", "--detach", "FETCH_HEAD", cwd=RAW_DIR)
     print(f"BugsInPy at commit {git('rev-parse', 'HEAD', cwd=RAW_DIR)}")
 
 

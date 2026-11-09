@@ -20,6 +20,10 @@ from datasets import load_dataset
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_FILE = ROOT / "data" / "processed" / "corpus.jsonl"
+DATASET = "koutch/staqc"
+CONFIG = "sca_python"
+# Pinned dataset revision. Do not follow the moving "main" branch.
+REVISION = "5851ae43677d73ad00af3f2ab117b8bf3bb51cca"
 
 
 def main():
@@ -28,8 +32,15 @@ def main():
                     help="number of posts to sample for the smoke-test corpus")
     args = ap.parse_args()
 
-    # single-code answer posts, Python
-    ds = load_dataset("koutch/staqc", "sca_python", split="train")
+    # single-code answer posts, Python. Streaming so we do not pull the whole set.
+    ds = load_dataset(
+        DATASET,
+        CONFIG,
+        split="train",
+        revision=REVISION,
+        streaming=True,
+        trust_remote_code=True,
+    )
 
     corpus = []
     for i, row in enumerate(ds):

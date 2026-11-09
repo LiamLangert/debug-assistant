@@ -1,0 +1,13 @@
+{
+  "unit": "project",
+  "note": "A whole BugsInPy project sits in one split. Counts are bugs in the pinned BugsInPy commit. About 60/20/20.",
+  "counts": {
+    "train": 309,
+    "validation": 97,
+    "test": 95,
+    "total": 501
+  },
+  "train": ["pandas", "keras", "luigi", "thefuck", "matplotlib"],
+  "validation": ["scrapy", "black", "ansible", "tornado"],
+  "test": ["youtube-dl", "fastapi", "spacy", "tqdm", "sanic", "httpie", "cookiecutter", "PySnooper"]
+}
