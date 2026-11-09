@@ -1,0 +1,27 @@
+{
+  "retrieved": "2026-11-09",
+  "bugsinpy": {
+    "source": "https://github.com/soarsmu/BugsInPy.git",
+    "commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+  },
+  "corpus": {
+    "source": "koutch/staqc",
+    "config": "sca_python",
+    "revision": "5851ae43677d73ad00af3f2ab117b8bf3bb51cca",
+    "n": 500
+  },
+  "files": {
+    "bugs.jsonl": {
+      "sha256": "cce32aa2163ee159a6b85b68d7f5733fb2318e35ed6afc265e60b3744652bdf8"
+    },
+    "corpus.jsonl": {
+      "sha256": "21499e11b8118d44fe2aa814640a426d1476f8b7c3063e8397eb0a6e5a7c2a26"
+    }
+  },
+  "baseline": {
+    "library": "rank-bm25",
+    "version": "0.2.2",
+    "k1": 1.5,
+    "b": 0.75
+  }
+}

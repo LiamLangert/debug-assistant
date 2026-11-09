@@ -13,6 +13,7 @@ A bug is a hit when any fix line is in those lines.
 import hashlib
 import json
 import platform
+from datetime import date
 import random
 import re
 import subprocess
@@ -121,6 +122,7 @@ def write_manifest(bugsinpy_commit: str) -> dict:
     from build_corpus import REVISION
 
     manifest = {
+        "retrieved": date.today().isoformat(),
         "bugsinpy": {
             "source": "https://github.com/soarsmu/BugsInPy.git",
             "commit": bugsinpy_commit,

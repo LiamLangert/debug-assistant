@@ -1,0 +1,44 @@
+{
+  "metric": "Recall@5",
+  "value": 0.5,
+  "hits": 1,
+  "n": 2,
+  "commit": "7e81ef52458a092365a984cb4ccee9788a63632f",
+  "config": {
+    "baseline": "okapi-bm25",
+    "k1": 1.5,
+    "b": 0.75,
+    "posts": 5,
+    "lines_per_post": 5,
+    "seed": 0,
+    "query": "failing test file",
+    "project": "PySnooper",
+    "corpus_n": 500
+  },
+  "data": {
+    "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "corpus_revision": "5851ae43677d73ad00af3f2ab117b8bf3bb51cca",
+    "bugs_sha256": "cce32aa2163ee159a6b85b68d7f5733fb2318e35ed6afc265e60b3744652bdf8",
+    "corpus_sha256": "21499e11b8118d44fe2aa814640a426d1476f8b7c3063e8397eb0a6e5a7c2a26"
+  },
+  "python": "3.12.8",
+  "platform": "macOS-15.3.1-arm64-arm-64bit",
+  "rank_bm25": "0.2.2",
+  "bugs": [
+    {
+      "bug_id": "1",
+      "hit": null,
+      "skipped": "test file missing"
+    },
+    {
+      "bug_id": "2",
+      "hit": false,
+      "n_lines": 24
+    },
+    {
+      "bug_id": "3",
+      "hit": true,
+      "n_lines": 16
+    }
+  ]
+}
