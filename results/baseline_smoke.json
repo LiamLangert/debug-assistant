@@ -1,9 +1,9 @@
 {
   "metric": "Recall@5",
-  "value": 0.5,
-  "hits": 1,
-  "n": 2,
-  "commit": "7e81ef52458a092365a984cb4ccee9788a63632f",
+  "value": 0.6667,
+  "hits": 2,
+  "n": 3,
+  "commit": "6f6e458534308743acc995e9087105ceae61fa53",
   "config": {
     "baseline": "okapi-bm25",
     "k1": 1.5,
@@ -18,17 +18,17 @@
   "data": {
     "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
     "corpus_revision": "5851ae43677d73ad00af3f2ab117b8bf3bb51cca",
-    "bugs_sha256": "cce32aa2163ee159a6b85b68d7f5733fb2318e35ed6afc265e60b3744652bdf8",
+    "bugs_sha256": "f6ab7806bdd6dd54505bfd6a9f5e95b5620a99a44fb71b073303f342b6da59c7",
     "corpus_sha256": "21499e11b8118d44fe2aa814640a426d1476f8b7c3063e8397eb0a6e5a7c2a26"
   },
-  "python": "3.12.8",
-  "platform": "macOS-15.3.1-arm64-arm-64bit",
+  "python": "3.12.3",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "rank_bm25": "0.2.2",
   "bugs": [
     {
       "bug_id": "1",
-      "hit": null,
-      "skipped": "test file missing"
+      "hit": true,
+      "n_lines": 19
     },
     {
       "bug_id": "2",

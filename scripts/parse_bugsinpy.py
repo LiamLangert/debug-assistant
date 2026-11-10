@@ -1,9 +1,12 @@
 """Parse BugsInPy bug folders into structured records.
 
 For each bug under data/raw/BugsInPy/projects/<project>/bugs/<id>/ we read:
-  bug.info       -> buggy/fixed commit ids, the failing test file
+  bug.info       -> buggy/fixed commit ids, the failing test file(s)
   bug_patch.txt  -> the fix diff; we extract the changed file(s) and the
-                    line numbers the fix touched (our ground-truth label)
+                    line numbers the fix touched
+
+"changes" is the ground-truth label: source files only. Edits the fix made to
+test files go in "test_changes" so they are kept but never scored.
 
 Output: data/processed/bugs.jsonl  (one JSON record per bug)
 
@@ -29,6 +32,14 @@ def parse_bug_info(path: Path) -> dict:
             key, _, val = line.partition("=")
             info[key.strip()] = val.strip().strip('"')
     return info
+
+
+def is_test_path(path: str) -> bool:
+    """Test code: under a test/ or tests/ dir, or a test_*.py, *_test.py, conftest.py file."""
+    *dirs, name = path.split("/")
+    if any(d in ("test", "tests") for d in dirs):
+        return True
+    return re.fullmatch(r"(test_.*|.*_test|conftest)\.py", name) is not None
 
 
 def parse_patch(path: Path) -> list[dict]:
@@ -80,13 +91,16 @@ def main() -> None:
                 continue
             info = parse_bug_info(info_path)
             changes = parse_patch(patch_path)
+            # bug.info joins several failing test files with ";"
+            test_files = [t.strip() for t in info.get("test_file", "").split(";") if t.strip()]
             records.append({
                 "project": project_dir.name,
                 "bug_id": bug_dir.name,
                 "buggy_commit": info.get("buggy_commit_id"),
                 "fixed_commit": info.get("fixed_commit_id"),
-                "test_file": info.get("test_file"),
-                "changes": changes,
+                "test_files": test_files,
+                "changes": [c for c in changes if not is_test_path(c["file"])],
+                "test_changes": [c for c in changes if is_test_path(c["file"])],
             })
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)

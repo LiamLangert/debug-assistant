@@ -1,16 +1,24 @@
 """Check out source files for a small smoke-test subset of BugsInPy bugs.
 
 BugsInPy ships only metadata; the real project code appears only when you
-check out a bug's buggy commit. For the walkthrough we do NOT need all 501
-bugs -- just a handful from one small project. This script shallow-clones a
-project once, then for each selected bug checks out its buggy commit and
-copies the files we actually need:
-  - the failing test file  (used to build the query)
-  - each buggy file the fix touched (used by the second BM25 stage)
+check out a bug's commits. For the walkthrough we do NOT need all 501
+bugs -- just a handful from one small project. This script clones a
+project once, then for each selected bug copies the files we actually need:
+  - the failing test files, from the FIXED commit (used to build the query)
+  - each buggy source file the fix touched, from the BUGGY commit
+    (used by the second BM25 stage)
+
+The tests come from the fixed commit because that is where the failing test
+usually lives: the fix often adds it, or adds a file for it. BugsInPy's own
+bugsinpy-checkout does the same, copying the fixed version's test files into
+the buggy checkout.
 
 Output: data/processed/checkouts/<project>/<bug_id>/
-            test__<testfile>        the failing test's source
-            buggy__<path>           each buggy file the fix touched
+            tests/<repo path>       each failing test file, from the fixed commit
+            buggy/<repo path>       each buggy source file the fix touched
+
+Files keep their repo paths under tests/ and buggy/, so a file's path relative
+to that folder is its path in the repo, e.g. buggy/tqdm/contrib/__init__.py.
 
 Usage:
     uv run scripts/checkout_bugs.py --project PySnooper --n 5
@@ -56,9 +64,27 @@ def load_bugs(project: str, n: int) -> list[dict]:
     return bugs
 
 
-def safe_name(path: str) -> str:
-    """Flatten a path into a single filename."""
-    return path.replace("/", "__")
+def copy_into(clone_dir: Path, rel: str, dest_root: Path) -> bool:
+    """Copy repo file `rel` to dest_root/rel, keeping its directories."""
+    src = clone_dir / rel
+    if not src.exists():
+        return False
+    dest = dest_root / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(src, dest)
+    return True
+
+
+def checkout(clone_dir: Path, bug: dict, which: str) -> bool:
+    """Check out the bug's buggy or fixed commit. Return False if it fails."""
+    commit = bug[f"{which}_commit"]
+    print(f"  bug {bug['bug_id']}: checkout {which} {commit[:10]}")
+    try:
+        git("checkout", "--detach", commit, cwd=clone_dir)
+        return True
+    except subprocess.CalledProcessError:
+        print(f"    (could not checkout {commit}, skipping)")
+        return False
 
 
 def main():
@@ -81,34 +107,26 @@ def main():
 
         for bug in bugs:
             bug_id = bug["bug_id"]
-            commit = bug["buggy_commit"]
-            print(f"  bug {bug_id}: checkout {commit[:10]}")
-            try:
-                git("checkout", "--detach", commit, cwd=clone_dir)
-            except subprocess.CalledProcessError:
-                print(f"    (could not checkout {commit}, skipping)")
-                continue
-
             out = OUT_DIR / args.project / bug_id
-            out.mkdir(parents=True, exist_ok=True)
+            # Start clean so files from an older layout do not linger.
+            if out.exists():
+                shutil.rmtree(out)
+            (out / "tests").mkdir(parents=True)
+            (out / "buggy").mkdir()
 
-            # The failing test file -> the query source
-            test_file = bug.get("test_file")
-            if test_file:
-                src = clone_dir / test_file
-                if src.exists():
-                    shutil.copy(src, out / f"test__{safe_name(test_file)}")
-                else:
-                    print(f"    test file missing at this commit: {test_file}")
+            # The failing test files, from the fixed commit -> the query source
+            if not checkout(clone_dir, bug, "fixed"):
+                continue
+            for test_file in bug.get("test_files", []):
+                if not copy_into(clone_dir, test_file, out / "tests"):
+                    print(f"    test file missing at the fixed commit: {test_file}")
 
-            # Each buggy file the fix touched -> second BM25 stage
+            # Each buggy source file the fix touched -> second BM25 stage
+            if not checkout(clone_dir, bug, "buggy"):
+                continue
             for change in bug.get("changes", []):
-                fpath = change["file"]
-                src = clone_dir / fpath
-                if src.exists():
-                    shutil.copy(src, out / f"buggy__{safe_name(fpath)}")
-                else:
-                    print(f"    buggy file missing at this commit: {fpath}")
+                if not copy_into(clone_dir, change["file"], out / "buggy"):
+                    print(f"    buggy file missing at the buggy commit: {change['file']}")
 
     print(f"\nDone. Checkouts saved under {OUT_DIR / args.project}")
 

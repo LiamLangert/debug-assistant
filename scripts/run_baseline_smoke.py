@@ -4,8 +4,9 @@ From a fresh clone:
 
     uv sync && uv run scripts/run_baseline_smoke.py
 
-The query is the failing test file. A real traceback would mean installing
-and running each old project. Posts come from the pinned StaQC sample.
+The query is the failing test file, taken from the fixed commit as BugsInPy
+does (the fix usually adds the failing test). A real traceback would mean
+installing and running each old project. Posts come from the pinned StaQC sample.
 For each of the top 5 posts, BM25 ranks lines in the buggy files.
 A bug is a hit when any fix line is in those lines.
 """
@@ -79,11 +80,15 @@ def load_corpus() -> list[dict]:
     return posts
 
 
+def repo_files(root: Path) -> list[tuple[str, Path]]:
+    """(repo path, file on disk) for each file under a checkout's tests/ or buggy/."""
+    return [(p.relative_to(root).as_posix(), p) for p in sorted(root.rglob("*")) if p.is_file()]
+
+
 def file_lines(bug_dir: Path) -> list[tuple[str, int, str]]:
-    """(original path, 1-based line number, line text) for each buggy file."""
+    """(repo path, 1-based line number, line text) for each buggy file."""
     rows = []
-    for path in sorted(bug_dir.glob("buggy__*")):
-        rel = path.name[len("buggy__"):].replace("__", "/")
+    for rel, path in repo_files(bug_dir / "buggy"):
         for i, line in enumerate(path.read_text(errors="replace").splitlines(), start=1):
             rows.append((rel, i, line))
     return rows
@@ -184,12 +189,19 @@ def main() -> None:
     per_bug = []
     for bug in bugs:
         bug_dir = CHECKOUT_DIR / PROJECT / bug["bug_id"]
-        test_files = list(bug_dir.glob("test__*"))
-        if not test_files:
-            print(f"bug {bug['bug_id']}: no test file at the buggy commit, skipping")
+        if not (bug_dir / "buggy").is_dir():
+            raise SystemExit(f"{bug_dir} uses an old layout. Re-run scripts/checkout_bugs.py.")
+        tests = repo_files(bug_dir / "tests")
+        if not tests:
+            print(f"bug {bug['bug_id']}: no test file, skipping")
             per_bug.append({"bug_id": bug["bug_id"], "hit": None, "skipped": "test file missing"})
             continue
-        query = test_files[0].read_text(errors="replace")
+        if not repo_files(bug_dir / "buggy"):
+            print(f"bug {bug['bug_id']}: no source files, skipping")
+            per_bug.append({"bug_id": bug["bug_id"], "hit": None, "skipped": "source files missing"})
+            continue
+        # Some bugs have several failing test files. Query with all of them.
+        query = "\n".join(path.read_text(errors="replace") for _, path in tests)
         lines = file_lines(bug_dir)
         picked = set()
         for post in top_posts(query, post_bm25, posts):
