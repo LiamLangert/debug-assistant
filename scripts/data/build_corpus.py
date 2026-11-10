@@ -9,7 +9,7 @@ Each corpus doc = one SO post: the question title + its code snippet.
 Output: data/processed/corpus.jsonl  (one JSON post per line)
 
 Usage:
-    uv run scripts/build_corpus.py --n 2000
+    uv run scripts/data/build_corpus.py --n 2000
 """
 
 import argparse
@@ -18,7 +18,7 @@ from pathlib import Path
 
 from datasets import load_dataset
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 OUT_FILE = ROOT / "data" / "processed" / "corpus.jsonl"
 DATASET = "koutch/staqc"
 CONFIG = "sca_python"

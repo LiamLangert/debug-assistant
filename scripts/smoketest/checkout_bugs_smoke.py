@@ -21,7 +21,7 @@ Files keep their repo paths under tests/ and buggy/, so a file's path relative
 to that folder is its path in the repo, e.g. buggy/tqdm/contrib/__init__.py.
 
 Usage:
-    uv run scripts/checkout_bugs.py --project PySnooper --n 5
+    uv run scripts/smoketest/checkout_bugs_smoke.py --project PySnooper --n 5
 """
 
 import argparse
@@ -31,7 +31,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 BUGS_FILE = ROOT / "data" / "processed" / "bugs.jsonl"
 PROJECTS_DIR = ROOT / "data" / "raw" / "BugsInPy" / "projects"
 OUT_DIR = ROOT / "data" / "processed" / "checkouts"

@@ -11,14 +11,14 @@ test files go in "test_changes" so they are kept but never scored.
 Output: data/processed/bugs.jsonl  (one JSON record per bug)
 
 Usage:
-    uv run scripts/parse_bugsinpy.py
+    uv run scripts/data/parse_bugsinpy.py
 """
 
 import json
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 PROJECTS_DIR = ROOT / "data" / "raw" / "BugsInPy" / "projects"
 OUT_FILE = ROOT / "data" / "processed" / "bugs.jsonl"
 

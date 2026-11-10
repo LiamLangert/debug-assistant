@@ -8,7 +8,7 @@ Each bug lives at projects/<project>/bugs/<id>/ with:
   requirements.txt  pinned deps for the buggy version
 
 Usage:
-    uv run scripts/download_bugsinpy.py   # clone, or update if already present
+    uv run scripts/data/download_bugsinpy.py   # clone, or update if already present
 """
 
 import subprocess
@@ -17,7 +17,7 @@ from pathlib import Path
 REPO_URL = "https://github.com/soarsmu/BugsInPy.git"
 # Pinned so a fresh clone does not follow master if it moves.
 PINNED_COMMIT = "11c5f1eea954a42132cfd06bf257766a7963e0fd"
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "raw" / "BugsInPy"
 
 

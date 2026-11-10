@@ -3,7 +3,7 @@
   "value": 0.6667,
   "hits": 2,
   "n": 3,
-  "commit": "6f6e458534308743acc995e9087105ceae61fa53",
+  "commit": "1e49b58abb0a12d596282ef75fa90937ba568369",
   "config": {
     "baseline": "okapi-bm25",
     "k1": 1.5,

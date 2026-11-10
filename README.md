@@ -8,7 +8,7 @@ One command. No GPU and no API key. It downloads the pinned BugsInPy commit and 
 small Stack Overflow sample, then prints Recall@5.
 
 ```bash
-uv sync && uv run scripts/run_baseline_smoke.py
+uv sync && uv run scripts/smoketest/run_baseline_smoke.py
 ```
 
 `data/` is not in git. That command rebuilds it. Same commit and same corpus

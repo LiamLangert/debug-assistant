@@ -2,7 +2,7 @@
 
 From a fresh clone:
 
-    uv sync && uv run scripts/run_baseline_smoke.py
+    uv sync && uv run scripts/smoketest/run_baseline_smoke.py
 
 The query is the failing test file, taken from the fixed commit as BugsInPy
 does (the fix usually adds the failing test). A real traceback would mean
@@ -24,7 +24,7 @@ from pathlib import Path
 
 from rank_bm25 import BM25Okapi
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 SPLIT_FILE = ROOT / "splits" / "projects.json"
 BUGS_FILE = ROOT / "data" / "processed" / "bugs.jsonl"
 CORPUS_FILE = ROOT / "data" / "processed" / "corpus.jsonl"
@@ -123,7 +123,7 @@ def is_hit(bug: dict, picked: set[tuple[str, int]]) -> bool:
 
 
 def write_manifest(bugsinpy_commit: str) -> dict:
-    sys.path.insert(0, str(ROOT / "scripts"))
+    sys.path.insert(0, str(ROOT / "scripts" / "data"))
     from build_corpus import REVISION
 
     manifest = {
@@ -176,10 +176,10 @@ def main() -> None:
     if PROJECT not in split["test"]:
         raise SystemExit(f"{PROJECT} is not in the test split")
 
-    step("download_bugsinpy.py")
-    step("parse_bugsinpy.py")
-    step("build_corpus.py", "--n", str(CORPUS_N))
-    step("checkout_bugs.py", "--project", PROJECT, "--n", "3")
+    step("data/download_bugsinpy.py")
+    step("data/parse_bugsinpy.py")
+    step("data/build_corpus.py", "--n", str(CORPUS_N))
+    step("smoketest/checkout_bugs_smoke.py", "--project", PROJECT, "--n", "3")
 
     bugs = load_bugs(PROJECT)
     posts = load_corpus()
@@ -190,7 +190,7 @@ def main() -> None:
     for bug in bugs:
         bug_dir = CHECKOUT_DIR / PROJECT / bug["bug_id"]
         if not (bug_dir / "buggy").is_dir():
-            raise SystemExit(f"{bug_dir} uses an old layout. Re-run scripts/checkout_bugs.py.")
+            raise SystemExit(f"{bug_dir} uses an old layout. Re-run scripts/smoketest/checkout_bugs_smoke.py.")
         tests = repo_files(bug_dir / "tests")
         if not tests:
             print(f"bug {bug['bug_id']}: no test file, skipping")
