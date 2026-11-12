@@ -1,0 +1,51 @@
+{
+  "project": "ansible",
+  "bug_id": "1",
+  "image": "python:3.6.9",
+  "constraints": 11,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/galaxy/test_collection.py::test_verify_collections_no_version",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "TypeError: 'GalaxyAPI' object is not iterable",
+          "traceback": "=================================== FAILURES ===================================\n______________________ test_verify_collections_no_version ______________________\n\nmock_isdir = <MagicMock name='isdir' id='137439481413416'>\nmock_collection = <function mock_collection.<locals>.create_mock_collection at 0x7d001f38d598>\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d001f77ba58>\n\n    @patch.object(os.path, 'isdir', return_value=True)\n    def test_verify_collections_no_version(mock_isdir, mock_collection, monkeypatch):\n        namespace = 'ansible_namespace'\n        name = 'collection'\n        version = '*'  # Occurs if MANIFEST.json does not exist\n    \n        local_collection = mock_collection(namespace=namespace, name=name, version=version)\n        monkeypatch.setattr(collection.CollectionRequirement, 'from_path', MagicMock(return_value=local_collection))\n    \n        collections = [('%s.%s' % (namespace, name), version, None)]\n    \n        with pytest.raises(AnsibleError) as err:\n>           collection.verify_collections(collections, './', local_collection.api, False, False)\n\ntest/units/galaxy/test_collection.py:1169: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nbuild/lib/ansible/galaxy/collection.py:679: in verify_collections\n    allow_pre_release=allow_pre_release)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ncollection = 'ansible_namespace.collection'\napis = <ansible.galaxy.api.GalaxyAPI object at 0x7d001f77b710>\nrequirement = '*', force = False, parent = None, allow_pre_release = False\n\n    @staticmethod\n    def from_name(collection, apis, requirement, force, parent=None, allow_pre_release=False):\n        namespace, name = collection.split('.', 1)\n        galaxy_meta = None\n    \n>       for api in apis:\nE       TypeError: 'GalaxyAPI' object is not iterable\n\nbuild/lib/ansible/galaxy/collection.py:442: TypeError",
+          "log_tail": "\ncollection = 'ansible_namespace.collection'\napis = <ansible.galaxy.api.GalaxyAPI object at 0x7d001f77b710>\nrequirement = '*', force = False, parent = None, allow_pre_release = False\n\n    @staticmethod\n    def from_name(collection, apis, requirement, force, parent=None, allow_pre_release=False):\n        namespace, name = collection.split('.', 1)\n        galaxy_meta = None\n    \n>       for api in apis:\nE       TypeError: 'GalaxyAPI' object is not iterable\n\nbuild/lib/ansible/galaxy/collection.py:442: TypeError\n=========================== 1 failed in 0.46 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/galaxy/test_collection.py::test_verify_collections_no_version",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/galaxy/test_collection.py .                                   [100%]\n\n=========================== 1 passed in 0.37 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 38,
+  "ran": "2026-11-11T23:08:54+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

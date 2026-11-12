@@ -1,0 +1,49 @@
+{
+  "project": "pandas",
+  "bug_id": "1",
+  "image": "python:3.8.3",
+  "constraints": 20,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; dropped it, setup.sh builds this tree"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest pandas/tests/dtypes/test_dtypes.py::TestCategoricalDtype::test_not_string",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert not True",
+          "traceback": "=================================== FAILURES ===================================\n_____________________ TestCategoricalDtype.test_not_string _____________________\n\nself = <pandas.tests.dtypes.test_dtypes.TestCategoricalDtype object at 0x75aa2a923c70>\n\n    def test_not_string(self):\n        # though CategoricalDtype has object kind, it cannot be string\n>       assert not is_string_dtype(CategoricalDtype())\nE       assert not True\nE        +  where True = is_string_dtype(CategoricalDtype(categories=None, ordered=False))\nE        +    where CategoricalDtype(categories=None, ordered=False) = CategoricalDtype()\n\npandas/tests/dtypes/test_dtypes.py:196: AssertionError",
+          "log_tail": "_____________________ TestCategoricalDtype.test_not_string _____________________\n\nself = <pandas.tests.dtypes.test_dtypes.TestCategoricalDtype object at 0x75aa2a923c70>\n\n    def test_not_string(self):\n        # though CategoricalDtype has object kind, it cannot be string\n>       assert not is_string_dtype(CategoricalDtype())\nE       assert not True\nE        +  where True = is_string_dtype(CategoricalDtype(categories=None, ordered=False))\nE        +    where CategoricalDtype(categories=None, ordered=False) = CategoricalDtype()\n\npandas/tests/dtypes/test_dtypes.py:196: AssertionError\n=========================== short test summary info ============================\nFAILED pandas/tests/dtypes/test_dtypes.py::TestCategoricalDtype::test_not_string\n============================== 1 failed in 0.23s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; dropped it, setup.sh builds this tree"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest pandas/tests/dtypes/test_dtypes.py::TestCategoricalDtype::test_not_string",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.3, pytest-5.4.2, py-1.8.1, pluggy-0.13.1\nrootdir: /bug/fixed/pandas, inifile: setup.cfg\nplugins: hypothesis-5.15.1\ncollected 1 item\n\npandas/tests/dtypes/test_dtypes.py .                                     [100%]\n\n============================== 1 passed in 0.13s ==============================="
+        }
+      ]
+    }
+  }
+}

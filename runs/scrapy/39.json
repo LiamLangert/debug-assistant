@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "39",
+  "image": "python:3.8.3",
+  "constraints": 89,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_spider.DeprecationTest.test_make_requests_from_url_deprecated",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "twisted.trial.unittest.FailTest: 1 != 0",
+          "traceback": "FAIL: test_make_requests_from_url_deprecated (tests.test_spider.DeprecationTest)\ntest_make_requests_from_url_deprecated\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 419, in test_make_requests_from_url_deprecated\n    self.assertEqual(len(w), 0)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_synctest.py\", line 434, in assertEqual\n    super(_Assertions, self).assertEqual(first, second, msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 912, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 905, in _baseAssertEqual\n    raise self.failureException(msg)\ntwisted.trial.unittest.FailTest: 1 != 0",
+          "log_tail": "    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 419, in test_make_requests_from_url_deprecated\n    self.assertEqual(len(w), 0)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_synctest.py\", line 434, in assertEqual\n    super(_Assertions, self).assertEqual(first, second, msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 912, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 905, in _baseAssertEqual\n    raise self.failureException(msg)\ntwisted.trial.unittest.FailTest: 1 != 0\n\n----------------------------------------------------------------------\nRan 1 test in 0.068s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_spider.DeprecationTest.test_make_requests_from_url_deprecated",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.067s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 287,
+  "ran": "2026-11-12T03:46:43+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

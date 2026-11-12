@@ -1,0 +1,88 @@
+{
+  "project": "scrapy",
+  "bug_id": "34",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_with_fields_attribute",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "KeyError: 'TestItem does not support field: new'",
+          "traceback": "ERROR: test_metaclass_with_fields_attribute (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 127, in test_metaclass_with_fields_attribute\n    item = TestItem(new=u'New')\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 52, in __init__\n    self[k] = v\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 61, in __setitem__\n    raise KeyError(\"%s does not support field: %s\" %\nKeyError: 'TestItem does not support field: new'",
+          "log_tail": "ERROR: test_metaclass_with_fields_attribute (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 127, in test_metaclass_with_fields_attribute\n    item = TestItem(new=u'New')\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 52, in __init__\n    self[k] = v\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 61, in __setitem__\n    raise KeyError(\"%s does not support field: %s\" %\nKeyError: 'TestItem does not support field: new'\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_multiple_inheritance_simple",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "KeyError: 'D does not support field: load'",
+          "traceback": "ERROR: test_metaclass_multiple_inheritance_simple (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 158, in test_metaclass_multiple_inheritance_simple\n    item = D(save='X', load='Y')\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 52, in __init__\n    self[k] = v\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 61, in __setitem__\n    raise KeyError(\"%s does not support field: %s\" %\nKeyError: 'D does not support field: load'",
+          "log_tail": "ERROR: test_metaclass_multiple_inheritance_simple (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 158, in test_metaclass_multiple_inheritance_simple\n    item = D(save='X', load='Y')\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 52, in __init__\n    self[k] = v\n  File \"/bug/buggy/scrapy/scrapy/item.py\", line 61, in __setitem__\n    raise KeyError(\"%s does not support field: %s\" %\nKeyError: 'D does not support field: load'\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_multiple_inheritance_diamond",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: {'load': {'default': 'D'}, 'save': {'default': 'C'}} != {'save': {'default': 'C'}, 'load': {'default': 'D'}, 'update': {'default': 'D'}}",
+          "traceback": "FAIL: test_metaclass_multiple_inheritance_diamond (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 190, in test_metaclass_multiple_inheritance_diamond\n    self.assertEqual(D.fields, {'save': {'default': 'C'},\nAssertionError: {'load': {'default': 'D'}, 'save': {'default': 'C'}} != {'save': {'default': 'C'}, 'load': {'default': 'D'}, 'update': {'default': 'D'}}\n- {'load': {'default': 'D'}, 'save': {'default': 'C'}}\n+ {'load': {'default': 'D'}, 'save': {'default': 'C'}, 'update': {'default': 'D'}}\n?                                                    +++++++++++++++++++++++++++ +",
+          "log_tail": "FAIL: test_metaclass_multiple_inheritance_diamond (tests.test_item.ItemTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_item.py\", line 190, in test_metaclass_multiple_inheritance_diamond\n    self.assertEqual(D.fields, {'save': {'default': 'C'},\nAssertionError: {'load': {'default': 'D'}, 'save': {'default': 'C'}} != {'save': {'default': 'C'}, 'load': {'default': 'D'}, 'update': {'default': 'D'}}\n- {'load': {'default': 'D'}, 'save': {'default': 'C'}}\n+ {'load': {'default': 'D'}, 'save': {'default': 'C'}, 'update': {'default': 'D'}}\n?                                                    +++++++++++++++++++++++++++ +\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_with_fields_attribute",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_multiple_inheritance_simple",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_item.ItemTest.test_metaclass_multiple_inheritance_diamond",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 255,
+  "ran": "2026-11-12T03:24:25+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

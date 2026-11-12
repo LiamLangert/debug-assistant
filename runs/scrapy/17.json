@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "17",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_response.ResponseUtilsTest.test_response_status_message",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: to_unicode must receive a bytes, str or unicode object, got NoneType",
+          "traceback": "ERROR: test_response_status_message (tests.test_utils_response.ResponseUtilsTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_response.py\", line 85, in test_response_status_message\n    self.assertEqual(response_status_message(573), \"573 Unknown Status\")\n  File \"/bug/buggy/scrapy/scrapy/utils/response.py\", line 57, in response_status_message\n    return '%s %s' % (status, to_native_str(http.RESPONSES.get(int(status))))\n  File \"/bug/buggy/scrapy/scrapy/utils/python.py\", line 129, in to_native_str\n    return to_unicode(text, encoding, errors)\n  File \"/bug/buggy/scrapy/scrapy/utils/python.py\", line 103, in to_unicode\n    raise TypeError('to_unicode must receive a bytes, str or unicode '\nTypeError: to_unicode must receive a bytes, str or unicode object, got NoneType",
+          "log_tail": "Traceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_response.py\", line 85, in test_response_status_message\n    self.assertEqual(response_status_message(573), \"573 Unknown Status\")\n  File \"/bug/buggy/scrapy/scrapy/utils/response.py\", line 57, in response_status_message\n    return '%s %s' % (status, to_native_str(http.RESPONSES.get(int(status))))\n  File \"/bug/buggy/scrapy/scrapy/utils/python.py\", line 129, in to_native_str\n    return to_unicode(text, encoding, errors)\n  File \"/bug/buggy/scrapy/scrapy/utils/python.py\", line 103, in to_unicode\n    raise TypeError('to_unicode must receive a bytes, str or unicode '\nTypeError: to_unicode must receive a bytes, str or unicode object, got NoneType\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_response.ResponseUtilsTest.test_response_status_message",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 256,
+  "ran": "2026-11-12T02:14:30+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

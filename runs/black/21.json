@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "21",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_expression_ff",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.115s\n\nOK"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_expression_ff",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.117s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 191,
+  "ran": "2026-11-12T01:13:58+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

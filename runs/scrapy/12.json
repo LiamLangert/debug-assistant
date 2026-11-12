@@ -1,0 +1,60 @@
+{
+  "project": "scrapy",
+  "bug_id": "12",
+  "image": "python:3.8.3",
+  "constraints": 56,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_selector.SelectorTestCase.test_selector_bad_args",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "twisted.trial.unittest.FailTest: ValueError not raised",
+          "traceback": "FAIL: test_selector_bad_args (tests.test_selector.SelectorTestCase)\ntest_selector_bad_args\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_selector.py\", line 128, in test_selector_bad_args\n    Selector(TextResponse(url='http://example.com', body=b''), text=u'')\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 227, in __exit__\n    self._raiseFailure(\"{} not raised\".format(exc_name))\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 164, in _raiseFailure\n    raise self.test_case.failureException(msg)\ntwisted.trial.unittest.FailTest: ValueError not raised",
+          "log_tail": "    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_selector.py\", line 128, in test_selector_bad_args\n    Selector(TextResponse(url='http://example.com', body=b''), text=u'')\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 227, in __exit__\n    self._raiseFailure(\"{} not raised\".format(exc_name))\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 164, in _raiseFailure\n    raise self.test_case.failureException(msg)\ntwisted.trial.unittest.FailTest: ValueError not raised\n\n----------------------------------------------------------------------\nRan 1 test in 0.072s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_selector.SelectorTestCase.test_selector_bad_args",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/scrapy/tests/test_selector.py:127: DeprecationWarning: Please use assertRaisesRegex instead.\n  with self.assertRaisesRegexp(ValueError, 'received both response and text'):\n----------------------------------------------------------------------\nRan 1 test in 0.066s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 196,
+  "ran": "2026-11-12T01:54:30+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

@@ -1,0 +1,56 @@
+{
+  "project": "ansible",
+  "bug_id": "13",
+  "image": "python:3.6.9",
+  "constraints": 12,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))",
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/cli/test_galaxy.py::test_collection_install_with_url",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert [('https', '/...ar.gz', None)] == [('https://foo...', '*', None)]",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ test_collection_install_with_url _______________________\n\ncollection_install = (<MagicMock id='132695948977992'>, <MagicMock id='132695950399304'>, '/tmp/pytest-of-unknown/pytest-0/test-\u00c5\u00d1\u015a\u00cc\u03b2\u0141\u00c8 Output0')\n\n    def test_collection_install_with_url(collection_install):\n        mock_install, dummy, output_dir = collection_install\n    \n        galaxy_args = ['ansible-galaxy', 'collection', 'install', 'https://foo/bar/foo-bar-v1.0.0.tar.gz',\n                       '--collections-path', output_dir]\n        GalaxyCLI(args=galaxy_args).run()\n    \n        collection_path = os.path.join(output_dir, 'ansible_collections')\n        assert os.path.isdir(collection_path)\n    \n        assert mock_install.call_count == 1\n>       assert mock_install.call_args[0][0] == [('https://foo/bar/foo-bar-v1.0.0.tar.gz', '*', None)]\nE       AssertionError: assert [('https', '/...ar.gz', None)] == [('https://foo...', '*', None)]\nE         At index 0 diff: ('https', '//foo/bar/foo-bar-v1.0.0.tar.gz', None) != ('https://foo/bar/foo-bar-v1.0.0.tar.gz', '*', None)\nE         Use -v to get the full diff\n\ntest/units/cli/test_galaxy.py:904: AssertionError",
+          "log_tail": "        galaxy_args = ['ansible-galaxy', 'collection', 'install', 'https://foo/bar/foo-bar-v1.0.0.tar.gz',\n                       '--collections-path', output_dir]\n        GalaxyCLI(args=galaxy_args).run()\n    \n        collection_path = os.path.join(output_dir, 'ansible_collections')\n        assert os.path.isdir(collection_path)\n    \n        assert mock_install.call_count == 1\n>       assert mock_install.call_args[0][0] == [('https://foo/bar/foo-bar-v1.0.0.tar.gz', '*', None)]\nE       AssertionError: assert [('https', '/...ar.gz', None)] == [('https://foo...', '*', None)]\nE         At index 0 diff: ('https', '//foo/bar/foo-bar-v1.0.0.tar.gz', None) != ('https://foo/bar/foo-bar-v1.0.0.tar.gz', '*', None)\nE         Use -v to get the full diff\n\ntest/units/cli/test_galaxy.py:904: AssertionError\n=========================== 1 failed in 0.40 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/cli/test_galaxy.py::test_collection_install_with_url",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/cli/test_galaxy.py .                                          [100%]\n\n=========================== 1 passed in 0.37 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 66,
+  "ran": "2026-11-11T23:19:57+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "15",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.web_test.StaticFileTest.test_path_traversal_protection",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "Exception: did not get expected log message",
+          "traceback": "ERROR: test_path_traversal_protection (tornado.test.web_test.StaticFileTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 120, in __call__\n    result = self.orig_method(*args, **kwargs)\n  File \"/bug/buggy/tornado/tornado/test/web_test.py\", line 1186, in test_path_traversal_protection\n    response = self.get_and_head('/static/../static_foo.txt')\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 613, in __exit__\n    raise Exception(\"did not get expected log message\")\nException: did not get expected log message",
+          "log_tail": "ERROR: test_path_traversal_protection (tornado.test.web_test.StaticFileTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 120, in __call__\n    result = self.orig_method(*args, **kwargs)\n  File \"/bug/buggy/tornado/tornado/test/web_test.py\", line 1186, in test_path_traversal_protection\n    response = self.get_and_head('/static/../static_foo.txt')\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 613, in __exit__\n    raise Exception(\"did not get expected log message\")\nException: did not get expected log message\n\n----------------------------------------------------------------------\nRan 1 test in 0.036s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.web_test.StaticFileTest.test_path_traversal_protection",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "WARNING:tornado.access:403 HEAD /static/../static_foo.txt (127.0.0.1) 0.42ms\nWARNING:tornado.access:403 GET /static/../static_foo.txt (127.0.0.1) 0.29ms\n----------------------------------------------------------------------\nRan 1 test in 0.037s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 10,
+  "ran": "2026-11-12T03:53:16+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

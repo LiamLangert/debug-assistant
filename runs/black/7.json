@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "7",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_tuple_assign",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: '(\\n    sdfjklsdfsjldkflkjsf,\\n    sdfjsdf[81 chars]3)\\n' != 'sdfjklsdfsjldkflkjsf, sdfjsdfjlksdljkfsdl[74 chars]n)\\n'",
+          "traceback": "FAIL: test_tuple_assign (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 549, in test_tuple_assign\n    self.assertFormatEqual(expected, actual)\n  File \"/bug/buggy/black/tests/test_black.py\", line 159, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: '(\\n    sdfjklsdfsjldkflkjsf,\\n    sdfjsdf[81 chars]3)\\n' != 'sdfjklsdfsjldkflkjsf, sdfjsdfjlksdljkfsdl[74 chars]n)\\n'\n+ sdfjklsdfsjldkflkjsf, sdfjsdfjlksdljkfsdlkf, sdfsdjfklsdfjlksdljkf, sdsfsdfjskdflsfsdf = (\n+     1,\n+     2,\n+     3,\n+ )\n- (\n-     sdfjklsdfsjldkflkjsf,\n-     sdfjsdfjlksdljkfsdlkf,\n-     sdfsdjfklsdfjlksdljkf,\n-     sdsfsdfjskdflsfsdf,\n- ) = (1, 2, 3)",
+          "log_tail": "+     2,\n+     3,\n+ )\n- (\n-     sdfjklsdfsjldkflkjsf,\n-     sdfjsdfjlksdljkfsdlkf,\n-     sdfsdjfklsdfjlksdljkf,\n-     sdsfsdfjskdflsfsdf,\n- ) = (1, 2, 3)\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_tuple_assign",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.006s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 184,
+  "ran": "2026-11-12T00:30:37+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

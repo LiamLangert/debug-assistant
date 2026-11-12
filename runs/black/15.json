@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "15",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff2",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: \"impo[277 chars]s\\n\\ndef check_fader(test):\\n    pass\\n\\ndef t[177 chars]on\\n\" != \"impo[277 chars]s\\n\\n\\ndef check_fader(test):\\n    pass\\n\\n\\nd[172 chars]on\\n\"",
+          "traceback": "FAIL: test_fmtonoff2 (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 407, in test_fmtonoff2\n    self.assertFormatEqual(expected, actual)\n  File \"/bug/buggy/black/tests/test_black.py\", line 122, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: \"impo[277 chars]s\\n\\ndef check_fader(test):\\n    pass\\n\\ndef t[177 chars]on\\n\" != \"impo[277 chars]s\\n\\n\\ndef check_fader(test):\\n    pass\\n\\n\\nd[172 chars]on\\n\"\n  import pytest\n  \n  TmSt = 1\n  TmEx = 2\n  \n  # fmt: off\n  \n  # Test data:\n  #   Position, Volume, State, TmSt/TmEx/None, [call, [arg1...]]\n  \n  @pytest.mark.parametrize('test', [\n  \n      # Test don't manage the volume\n      [\n          ('stuff', 'in')\n      ],\n  ])\n  def test_fader(test):\n      pass\n  \n+ \n  def check_fader(test):\n      pass\n+ \n  \n  def test_calculate_fades():\n      calcs = [\n          # one is zero/none\n-         (0, 4, 0, 0, 10,        0, 0, 6, 10),\n?                          -------\n+         (0, 4, 0, 0, 10, 0, 0, 6, 10),\n-         (None, 4, 0, 0, 10,     0, 0, 6, 10),\n?                             ----\n+         (None, 4, 0, 0, 10, 0, 0, 6, 10),\n      ]\n  \n+ \n  # fmt: on",
+          "log_tail": "?                          -------\n+         (0, 4, 0, 0, 10, 0, 0, 6, 10),\n-         (None, 4, 0, 0, 10,     0, 0, 6, 10),\n?                             ----\n+         (None, 4, 0, 0, 10, 0, 0, 6, 10),\n      ]\n  \n+ \n  # fmt: on\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.012s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff2",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.006s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 192,
+  "ran": "2026-11-12T00:55:29+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

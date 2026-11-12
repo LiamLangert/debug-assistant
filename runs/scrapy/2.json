@@ -1,0 +1,62 @@
+{
+  "project": "scrapy",
+  "bug_id": "2",
+  "image": "python:3.8.3",
+  "constraints": 46,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))",
+        "ERROR: Exception:",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_datatypes.LocalCacheTest.test_cache_without_limit",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: '>=' not supported between instances of 'int' and 'NoneType'",
+          "traceback": "ERROR: test_cache_without_limit (tests.test_utils_datatypes.LocalCacheTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_datatypes.py\", line 264, in test_cache_without_limit\n    cache[str(x)] = x\n  File \"/bug/buggy/scrapy/scrapy/utils/datatypes.py\", line 318, in __setitem__\n    while len(self) >= self.limit:\nTypeError: '>=' not supported between instances of 'int' and 'NoneType'",
+          "log_tail": "======================================================================\nERROR: test_cache_without_limit (tests.test_utils_datatypes.LocalCacheTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_datatypes.py\", line 264, in test_cache_without_limit\n    cache[str(x)] = x\n  File \"/bug/buggy/scrapy/scrapy/utils/datatypes.py\", line 318, in __setitem__\n    while len(self) >= self.limit:\nTypeError: '>=' not supported between instances of 'int' and 'NoneType'\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Exception:",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_datatypes.LocalCacheTest.test_cache_without_limit",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.014s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 192,
+  "ran": "2026-11-12T01:27:15+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

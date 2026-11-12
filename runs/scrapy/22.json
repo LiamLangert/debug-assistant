@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "22",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_exporters.XmlItemExporterTest.test_nonstring_types_item",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'bool' object has no attribute 'decode'",
+          "traceback": "ERROR: test_nonstring_types_item (tests.test_exporters.XmlItemExporterTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_exporters.py\", line 381, in test_nonstring_types_item\n    self.assertExportResult(item,\n  File \"/bug/buggy/scrapy/tests/test_exporters.py\", line 326, in assertExportResult\n    ie.export_item(item)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 132, in export_item\n    self._export_xml_field(name, value)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 148, in _export_xml_field\n    self._xg_characters(serialized_value)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 159, in _xg_characters\n    serialized_value = serialized_value.decode(self.encoding)\nAttributeError: 'bool' object has no attribute 'decode'",
+          "log_tail": "    self.assertExportResult(item,\n  File \"/bug/buggy/scrapy/tests/test_exporters.py\", line 326, in assertExportResult\n    ie.export_item(item)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 132, in export_item\n    self._export_xml_field(name, value)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 148, in _export_xml_field\n    self._xg_characters(serialized_value)\n  File \"/bug/buggy/scrapy/scrapy/exporters.py\", line 159, in _xg_characters\n    serialized_value = serialized_value.decode(self.encoding)\nAttributeError: 'bool' object has no attribute 'decode'\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_exporters.XmlItemExporterTest.test_nonstring_types_item",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 255,
+  "ran": "2026-11-12T02:35:14+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

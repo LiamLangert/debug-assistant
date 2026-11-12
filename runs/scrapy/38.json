@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "38",
+  "image": "python:3.8.3",
+  "constraints": 89,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_request.FormRequestTest.test_from_response_clickdata_does_not_ignore_image",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: {b'i1': [b'i1v']} != {b'i1': [b'i1v'], b'i2': [b'i2v']}",
+          "traceback": "FAIL: test_from_response_clickdata_does_not_ignore_image (tests.test_http_request.FormRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_request.py\", line 556, in test_from_response_clickdata_does_not_ignore_image\n    self.assertEqual(fs, {b'i1': [b'i1v'], b'i2': [b'i2v']})\nAssertionError: {b'i1': [b'i1v']} != {b'i1': [b'i1v'], b'i2': [b'i2v']}\n- {b'i1': [b'i1v']}\n+ {b'i1': [b'i1v'], b'i2': [b'i2v']}",
+          "log_tail": "======================================================================\nFAIL: test_from_response_clickdata_does_not_ignore_image (tests.test_http_request.FormRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_request.py\", line 556, in test_from_response_clickdata_does_not_ignore_image\n    self.assertEqual(fs, {b'i1': [b'i1v'], b'i2': [b'i2v']})\nAssertionError: {b'i1': [b'i1v']} != {b'i1': [b'i1v'], b'i2': [b'i2v']}\n- {b'i1': [b'i1v']}\n+ {b'i1': [b'i1v'], b'i2': [b'i2v']}\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 66)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 66))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_request.FormRequestTest.test_from_response_clickdata_does_not_ignore_image",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 284,
+  "ran": "2026-11-12T03:42:05+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

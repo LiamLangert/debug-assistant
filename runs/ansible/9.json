@@ -1,0 +1,56 @@
+{
+  "project": "ansible",
+  "bug_id": "9",
+  "image": "python:3.6.9",
+  "constraints": 12,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))",
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/packaging/os/test_redhat_subscription.py::test_redhat_subscribtion",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert [(['/testbin/...k_rc': True})] == [(['/testbin/s...k_rc': True})]",
+          "traceback": "=================================== FAILURES ===================================\n___ test_redhat_subscribtion[test_registeration_username_password_pool_ids] ____\n\nmocker = <pytest_mock.MockFixture object at 0x7f04c2682e10>\ncapfd = <_pytest.capture.CaptureFixture object at 0x7f04c23549e8>\npatch_redhat_subscription = None\ntestcase = {'changed': True, 'id': 'test_registeration_username_password_pool_ids', 'msg': \"System successfully registered to 'No...tbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99747107e9'], {'check_rc': True}, (0, '', ''))]}\n\n    @pytest.mark.parametrize('patch_ansible_module, testcase', TEST_CASES, ids=TEST_CASES_IDS, indirect=['patch_ansible_module'])\n    @pytest.mark.usefixtures('patch_ansible_module')\n    def test_redhat_subscribtion(mocker, capfd, patch_redhat_subscription, testcase):\n        \"\"\"\n        Run unit tests for test cases listen in TEST_CASES\n        \"\"\"\n    \n        # Mock function used for running commands first\n        call_results = [item[2] for item in testcase['run_command.calls']]\n        mock_run_command = mocker.patch.object(\n            basic.AnsibleModule,\n            'run_command',\n            side_effect=call_results)\n    \n        # Try to run test case\n        with pytest.raises(SystemExit):\n            redhat_subscription.main()\n    \n        out, err = capfd.readouterr()\n        results = json.loads(out)\n    \n        assert 'changed' in results\n        assert results['changed'] == testcase['changed']\n        if 'msg' in results:\n            assert results['msg'] == testcase['msg']\n    \n        assert basic.AnsibleModule.run_command.call_count == len(testcase['run_command.calls'])\n        if basic.AnsibleModule.run_command.call_count:\n            call_args_list = [(item[0][0], item[1]) for item in basic.AnsibleModule.run_command.call_args_list]\n            expected_call_args_list = [(item[0], item[1]) for item in testcase['run_command.calls']]\n>           assert call_args_list == expected_call_args_list\nE           AssertionError: assert [(['/testbin/...k_rc': True})] == [(['/testbin/s...k_rc': True})]\nE             At index 3 diff: (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6', '--quantity', '1'], {'check_rc': True}) != (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6'], {'check_rc': True})\nE             Use -v to get the full diff\n\ntest/units/modules/packaging/os/test_redhat_subscription.py:848: AssertionError\n__ test_redhat_subscribtion[test_registeration_username_password_one_pool_id] __\n\nmocker = <pytest_mock.MockFixture object at 0x7f04c27def60>\ncapfd = <_pytest.capture.CaptureFixture object at 0x7f04c27deef0>\npatch_redhat_subscription = None\ntestcase = {'changed': True, 'id': 'test_registeration_username_password_one_pool_id', 'msg': \"System successfully registered to ...tbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6'], {'check_rc': True}, (0, '', ''))]}\n\n    @pytest.mark.parametrize('patch_ansible_module, testcase', TEST_CASES, ids=TEST_CASES_IDS, indirect=['patch_ansible_module'])\n    @pytest.mark.usefixtures('patch_ansible_module')\n    def test_redhat_subscribtion(mocker, capfd, patch_redhat_subscription, testcase):\n        \"\"\"\n        Run unit tests for test cases listen in TEST_CASES\n        \"\"\"\n    \n        # Mock function used for running commands first\n        call_results = [item[2] for item in testcase['run_command.calls']]\n        mock_run_command = mocker.patch.object(\n            basic.AnsibleModule,\n            'run_command',\n            side_effect=call_results)\n    \n        # Try to run test case\n        with pytest.raises(SystemExit):\n            redhat_subscription.main()\n    \n        out, err = capfd.readouterr()\n        results = json.loads(out)\n    \n        assert 'changed' in results\n        assert results['changed'] == testcase['changed']\n        if 'msg' in results:\n            assert results['msg'] == testcase['msg']\n    \n        assert basic.AnsibleModule.run_command.call_count == len(testcase['run_command.calls'])\n        if basic.AnsibleModule.run_command.call_count:\n            call_args_list = [(item[0][0], item[1]) for item in basic.AnsibleModule.run_command.call_args_list]\n            expected_call_args_list = [(item[0], item[1]) for item in testcase['run_command.calls']]\n>           assert call_args_list == expected_call_args_list\nE           AssertionError: assert [(['/testbin/...k_rc': True})] == [(['/testbin/s...k_rc': True})]\nE             At index 3 diff: (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6', '--quantity', '1'], {'check_rc': True}) != (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6'], {'check_rc': True})\nE             Use -v to get the full diff\n\ntest/units/modules/packaging/os/test_redhat_subscription.py:848: AssertionError",
+          "log_tail": "        assert results['changed'] == testcase['changed']\n        if 'msg' in results:\n            assert results['msg'] == testcase['msg']\n    \n        assert basic.AnsibleModule.run_command.call_count == len(testcase['run_command.calls'])\n        if basic.AnsibleModule.run_command.call_count:\n            call_args_list = [(item[0][0], item[1]) for item in basic.AnsibleModule.run_command.call_args_list]\n            expected_call_args_list = [(item[0], item[1]) for item in testcase['run_command.calls']]\n>           assert call_args_list == expected_call_args_list\nE           AssertionError: assert [(['/testbin/...k_rc': True})] == [(['/testbin/s...k_rc': True})]\nE             At index 3 diff: (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6', '--quantity', '1'], {'check_rc': True}) != (['/testbin/subscription-manager', 'attach', '--pool', 'ff8080816b8e967f016b8e99632804a6'], {'check_rc': True})\nE             Use -v to get the full diff\n\ntest/units/modules/packaging/os/test_redhat_subscription.py:848: AssertionError\n===================== 2 failed, 11 passed in 0.13 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/packaging/os/test_redhat_subscription.py::test_redhat_subscribtion",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\nplugins: mock-1.2\ncollected 13 items\n\ntest/units/modules/packaging/os/test_redhat_subscription.py ............ [ 92%]\n.                                                                        [100%]\n\n========================== 13 passed in 0.11 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 69,
+  "ran": "2026-11-11T23:15:26+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

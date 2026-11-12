@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "21",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloadermiddleware_robotstxt.RobotsTxtMiddlewareTest.test_robotstxt_immediate_error",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "KeyError: 'site.local'",
+          "traceback": "ERROR: test_robotstxt_immediate_error (tests.test_downloadermiddleware_robotstxt.RobotsTxtMiddlewareTest)\ntest_robotstxt_immediate_error\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/scrapy/downloadermiddlewares/robotstxt.py\", line 65, in robot_parser\n    if isinstance(self._parsers[netloc], Deferred):\nKeyError: 'site.local'",
+          "log_tail": "======================================================================\nERROR: test_robotstxt_immediate_error (tests.test_downloadermiddleware_robotstxt.RobotsTxtMiddlewareTest)\ntest_robotstxt_immediate_error\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/scrapy/downloadermiddlewares/robotstxt.py\", line 65, in robot_parser\n    if isinstance(self._parsers[netloc], Deferred):\nKeyError: 'site.local'\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloadermiddleware_robotstxt.RobotsTxtMiddlewareTest.test_robotstxt_immediate_error",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "Error downloading <GET http://site.local/robots.txt>: DNS lookup failed: Robotstxt address not found.\ntwisted.internet.error.DNSLookupError: DNS lookup failed: Robotstxt address not found.\n----------------------------------------------------------------------\nRan 1 test in 0.006s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 257,
+  "ran": "2026-11-12T02:31:06+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

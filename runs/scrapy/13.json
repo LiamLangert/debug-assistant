@@ -1,0 +1,60 @@
+{
+  "project": "scrapy",
+  "bug_id": "13",
+  "image": "python:3.8.3",
+  "constraints": 56,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_pipeline_images.ImagesPipelineTestCaseCustomSettings",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "twisted.trial.unittest.FailTest: 0 != 90",
+          "traceback": "FAIL: test_different_settings_for_different_instances (tests.test_pipeline_images.ImagesPipelineTestCaseCustomSettings)\nIf there are two instances of ImagesPipeline class with different settings, they should\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_pipeline_images.py\", line 294, in test_different_settings_for_different_instances\n    self.assertEqual(getattr(default_sts_pipe, pipe_attr.lower()), expected_default_value)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_synctest.py\", line 434, in assertEqual\n    super(_Assertions, self).assertEqual(first, second, msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 912, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 905, in _baseAssertEqual\n    raise self.failureException(msg)\ntwisted.trial.unittest.FailTest: 0 != 90\n\nFAIL: test_no_custom_settings_for_subclasses (tests.test_pipeline_images.ImagesPipelineTestCaseCustomSettings)\nIf there are no settings for subclass and no subclass attributes, pipeline should use\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_pipeline_images.py\", line 336, in test_no_custom_settings_for_subclasses\n    self.assertEqual(getattr(user_pipeline, pipe_attr.lower()), custom_value)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_synctest.py\", line 434, in assertEqual\n    super(_Assertions, self).assertEqual(first, second, msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 912, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 905, in _baseAssertEqual\n    raise self.failureException(msg)\ntwisted.trial.unittest.FailTest: 0 != 90",
+          "log_tail": "    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_pipeline_images.py\", line 336, in test_no_custom_settings_for_subclasses\n    self.assertEqual(getattr(user_pipeline, pipe_attr.lower()), custom_value)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_synctest.py\", line 434, in assertEqual\n    super(_Assertions, self).assertEqual(first, second, msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 912, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/usr/local/lib/python3.8/unittest/case.py\", line 905, in _baseAssertEqual\n    raise self.failureException(msg)\ntwisted.trial.unittest.FailTest: 0 != 90\n\n----------------------------------------------------------------------\nRan 7 tests in 0.010s\n\nFAILED (failures=2)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_pipeline_images.ImagesPipelineTestCaseCustomSettings",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 7 tests in 0.008s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 194,
+  "ran": "2026-11-12T01:57:38+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

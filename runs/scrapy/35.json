@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "35",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_crawler.CrawlerRunnerTestCase.test_spidermanager_deprecation",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: <scrapy.spiderloader.SpiderLoader object at 0x745c9bd97280> is not an instance of <class 'tests.test_crawler.CustomSpiderLoader'>",
+          "traceback": "FAIL: test_spidermanager_deprecation (tests.test_crawler.CrawlerRunnerTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_crawler.py\", line 101, in test_spidermanager_deprecation\n    self.assertIsInstance(runner.spider_loader, CustomSpiderLoader)\nAssertionError: <scrapy.spiderloader.SpiderLoader object at 0x745c9bd97280> is not an instance of <class 'tests.test_crawler.CustomSpiderLoader'>",
+          "log_tail": "======================================================================\nFAIL: test_spidermanager_deprecation (tests.test_crawler.CrawlerRunnerTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_crawler.py\", line 101, in test_spidermanager_deprecation\n    self.assertIsInstance(runner.spider_loader, CustomSpiderLoader)\nAssertionError: <scrapy.spiderloader.SpiderLoader object at 0x745c9bd97280> is not an instance of <class 'tests.test_crawler.CustomSpiderLoader'>\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_crawler.CrawlerRunnerTestCase.test_spidermanager_deprecation",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 253,
+  "ran": "2026-11-12T03:28:29+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

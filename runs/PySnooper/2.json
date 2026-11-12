@@ -1,0 +1,57 @@
+{
+  "project": "PySnooper",
+  "bug_id": "2",
+  "image": "python:3.8.1",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [
+      "PySnooper==0.0.38"
+    ],
+    "only_fixed": [
+      "PySnooper==0.2.3"
+    ]
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "installed six==1.13.0 (extra_requirements.json)",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest -q -s tests/test_pysnooper.py::test_custom_repr_single",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "TypeError: __init__() got an unexpected keyword argument 'custom_repr'",
+          "traceback": "=================================== FAILURES ===================================\n___________________________ test_custom_repr_single ____________________________\n\n    def test_custom_repr_single():\n        string_io = io.StringIO()\n    \n>       @pysnooper.snoop(string_io, custom_repr=(list, lambda l: 'foofoo!'))\nE       TypeError: __init__() got an unexpected keyword argument 'custom_repr'\n\ntests/test_pysnooper.py:1180: TypeError",
+          "log_tail": "    \n>       @pysnooper.snoop(string_io, custom_repr=(list, lambda l: 'foofoo!'))\nE       TypeError: __init__() got an unexpected keyword argument 'custom_repr'\n\ntests/test_pysnooper.py:1180: TypeError\n=============================== warnings summary ===============================\npysnooper/variables.py:3\npysnooper/variables.py:3\n  /bug/buggy/PySnooper/pysnooper/variables.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    from collections import Mapping, Sequence\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_pysnooper.py::test_custom_repr_single - TypeError: __init__...\n1 failed, 2 warnings in 0.08s"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "installed six==1.13.0 (extra_requirements.json)"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest -q -s tests/test_pysnooper.py::test_custom_repr_single",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": ".\n1 passed in 0.03s"
+        }
+      ]
+    }
+  },
+  "seconds": 17,
+  "ran": "2026-11-12T04:47:10+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

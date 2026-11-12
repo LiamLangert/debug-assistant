@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "11",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comments6",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'from[32 chars]ef f(\\n    a,  # type: int\\n):\\n    pass\\n\\n\\n[1362 chars]nt\\n' != 'from[32 chars]ef f(a,):  # type: int\\n    pass\\n\\n\\n# test t[1330 chars]nt\\n'",
+          "traceback": "FAIL: test_comments6 (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 369, in test_comments6\n    self.assertFormatEqual(expected, actual)\n  File \"/bug/buggy/black/tests/test_black.py\", line 156, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: 'from[32 chars]ef f(\\n    a,  # type: int\\n):\\n    pass\\n\\n\\n[1362 chars]nt\\n' != 'from[32 chars]ef f(a,):  # type: int\\n    pass\\n\\n\\n# test t[1330 chars]nt\\n'\n  from typing import Any, Tuple\n  \n  \n+ def f(a,):  # type: int\n- def f(\n-     a,  # type: int\n- ):\n      pass\n  \n  \n  # test type comments\n  def f(a, b, c, d, e, f, g, h, i):\n      # type: (int, int, int, int, int, int, int, int, int) -> None\n      pass\n  \n  \n  def f(\n      a,  # type: int\n      b,  # type: int\n      c,  # type: int\n      d,  # type: int\n      e,  # type: int\n      f,  # type: int\n      g,  # type: int\n      h,  # type: int\n      i,  # type: int\n  ):\n      # type: (...) -> None\n      pass\n  \n  \n  def f(\n      arg,  # type: int\n      *args,  # type: *Any\n      default=False,  # type: bool\n      **kwargs,  # type: **Any\n  ):\n      # type: (...) -> None\n      pass\n  \n  \n+ def f(a, b, c, d):  # type: int  # type: int  # type: int  # type: int\n- def f(\n-     a,  # type: int\n-     b,  # type: int\n-     c,  # type: int\n-     d,  # type: int\n- ):\n      # type: (...) -> None\n  \n      element = 0  # type: int\n      another_element = 1  # type: float\n      another_element_with_long_name = 2  # type: int\n      another_really_really_long_element_with_a_unnecessarily_long_name_to_describe_what_it_does_enterprise_style = (\n          3\n      )  # type: int\n  \n      tup = (\n          another_element,  # type: int\n          another_really_really_long_element_with_a_unnecessarily_long_name_to_describe_what_it_does_enterprise_style,  # type: int\n      )  # type: Tuple[int, int]\n  \n      a = (\n          element\n          + another_element\n          + another_element_with_long_name\n          + element\n          + another_element\n          + another_element_with_long_name\n      )  # type: int",
+          "log_tail": "  \n      a = (\n          element\n          + another_element\n          + another_element_with_long_name\n          + element\n          + another_element\n          + another_element_with_long_name\n      )  # type: int\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.020s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comments6",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.015s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 185,
+  "ran": "2026-11-12T00:43:01+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

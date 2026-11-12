@@ -1,8 +1,8 @@
 """Check out one BugsInPy bug with BugsInPy's own bugsinpy-checkout.
 
 The bug gets two checkouts, which later steps compile and test:
-  buggy  the buggy commit, with the failing test files from the fixed commit
-  fixed  the same, plus the files the fix commit changed
+  buggy  the buggy source, with every test file as it is at the fixed commit
+  fixed  the same, plus the source files the fix changed
 
 Output: data/work/<project>/<bug_id>/<version>/
             <project>/       the checkout: full source tree plus bugsinpy_* files
@@ -12,7 +12,13 @@ Output: data/work/<project>/<bug_id>/<version>/
 bugsinpy-checkout exits 0 even when it fails, so every checkout is checked
 against git instead: HEAD, the test files, and (for fixed) the fixed sources.
 
-Two BugsInPy gaps are repaired after it runs, and listed under "repairs":
+Three BugsInPy gaps are repaired after it runs, and listed under "repairs":
+  - bugsinpy-checkout gives the buggy version only the test files named in
+    bug.info. When the fix also adds or changes helpers or data those tests
+    use (tests/mini_toolbox/ for PySnooper 2, tests/data/*.py for black), the
+    buggy run fails on an import or a missing file, not on the bug. So the
+    buggy version gets every test file the fix touched, from the fixed commit.
+    Test files are what parse_bugsinpy.is_test_path says; the source stays buggy.
   - For the fixed version it copies in the files `git show --name-only <fix>`
     lists. For a merge commit (10 scrapy bugs) git lists only files that differ
     from both parents, so the fix's files are often left out. We copy every
@@ -42,9 +48,13 @@ import argparse
 import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts" / "data"))
+from parse_bugsinpy import is_test_path
+
 BUGS_FILE = ROOT / "data" / "processed" / "bugs.jsonl"
 PINNED = ROOT / "data" / "raw" / "BugsInPy"
 SCRATCH = ROOT / "data" / "cache" / "bugsinpy"
@@ -109,26 +119,52 @@ def file_at(repo: Path, commit: str, path: str) -> bytes | None:
     return r.stdout if r.returncode == 0 else None
 
 
+def changed_paths(bug: dict, checkout: Path) -> list[str]:
+    """Every file that differs between the buggy and fixed commits."""
+    diff = git("diff", "--name-only", "--no-renames", bug["buggy_commit"], bug["fixed_commit"],
+               cwd=checkout)
+    return diff.stdout.splitlines()
+
+
+def matches_fixed(checkout: Path, fixed: str, path: str) -> bool:
+    """The file is as the fixed commit has it (absent if the fixed commit deleted it)."""
+    want, local = file_at(checkout, fixed, path), checkout / path
+    if want is None:
+        return not local.exists()
+    return local.exists() and local.read_bytes() == want
+
+
+def take_from_fixed(checkout: Path, fixed: str, paths: list[str], kind: str) -> list[str]:
+    """Make each path match the fixed commit. Returns what was changed."""
+    repairs = []
+    for path in paths:
+        if matches_fixed(checkout, fixed, path):
+            continue
+        want, local = file_at(checkout, fixed, path), checkout / path
+        if want is None:
+            local.unlink()
+            repairs.append(f"deleted {kind}{path}, as the fixed commit does")
+        else:
+            local.parent.mkdir(parents=True, exist_ok=True)
+            local.write_bytes(want)
+            repairs.append(f"took {kind}{path} from the fixed commit")
+    return repairs
+
+
 def repair(bug: dict, version: str, checkout: Path) -> list[str]:
     """Fill the BugsInPy gaps described above. Returns what was changed."""
+    if not (checkout / ".git").exists():
+        return []
     repairs = []
-    if (checkout / ".git").exists() and not (checkout / "bugsinpy_requirements.txt").exists():
+    if not (checkout / "bugsinpy_requirements.txt").exists():
         (checkout / "bugsinpy_requirements.txt").write_text("")
         repairs.append("wrote an empty bugsinpy_requirements.txt (BugsInPy has none)")
-    if version == "fixed" and (checkout / ".git").exists():
-        buggy, fixed = bug["buggy_commit"], bug["fixed_commit"]
-        diff = git("diff", "--name-only", "--no-renames", buggy, fixed, cwd=checkout)
-        for path in diff.stdout.splitlines():
-            want = file_at(checkout, fixed, path)
-            local = checkout / path
-            if want is None:
-                if local.exists():
-                    local.unlink()
-                    repairs.append(f"deleted {path}, as the fixed commit does")
-            elif not local.exists() or local.read_bytes() != want:
-                local.parent.mkdir(parents=True, exist_ok=True)
-                local.write_bytes(want)
-                repairs.append(f"took {path} from the fixed commit")
+    changed = changed_paths(bug, checkout)
+    if version == "fixed":
+        repairs += take_from_fixed(checkout, bug["fixed_commit"], changed, "")
+    else:
+        tests = [p for p in changed if is_test_path(p)]
+        repairs += take_from_fixed(checkout, bug["fixed_commit"], tests, "test file ")
     return repairs
 
 
@@ -162,14 +198,17 @@ def verify(bug: dict, version: str, checkout: Path) -> list[str]:
             if not local.exists() or local.read_bytes() != file_at(checkout, fixed, path):
                 problems.append(f"source not at the fixed commit: {path}")
     else:
-        # The buggy tree may differ from the buggy commit only in the test files.
+        # Every test file the fix touched is as the fixed commit has it ...
+        for path in changed_paths(bug, checkout):
+            if is_test_path(path) and not matches_fixed(checkout, fixed, path):
+                problems.append(f"test file not at the fixed commit: {path}")
+        # ... and nothing else differs from the buggy commit.
         status = git("status", "--porcelain", "--untracked-files=all", cwd=checkout).stdout
-        allowed = set(bug["test_files"]) | set(BUGSINPY_FILES) | {"bugsinpy_setup.sh",
-                                                                   "bugsinpy_patchfile.info"}
+        bugsinpy = set(BUGSINPY_FILES) | {"bugsinpy_setup.sh", "bugsinpy_patchfile.info"}
         for line in status.splitlines():
             path = line[3:].strip('"')
-            if path not in allowed:
-                problems.append(f"unexpected change in buggy tree: {path}")
+            if path not in bugsinpy and not is_test_path(path):
+                problems.append(f"non-test file changed in buggy tree: {path}")
     return problems
 
 
@@ -179,7 +218,9 @@ def checkout_version(bug: dict, version: str, repo: Path, force: bool) -> dict:
     checkout = out / project
     status_file = out / "status.json"
 
-    if not force and status_file.exists() and json.loads(status_file.read_text())["ok"]:
+    # The tree may be gone: run_bugs.py deletes it once the bug has run.
+    if (not force and checkout.is_dir() and status_file.exists()
+            and json.loads(status_file.read_text())["ok"]):
         return {"ok": True, "problems": [], "skipped": True}
 
     if out.exists():

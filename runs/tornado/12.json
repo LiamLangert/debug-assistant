@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "12",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.auth_test.AuthTest.test_facebook_login",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: Async operation timed out after 5 seconds",
+          "traceback": "FAIL: test_facebook_login (tornado.test.auth_test.AuthTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 125, in __call__\n    result = self.orig_method(*args, **kwargs)\n  File \"/bug/buggy/tornado/tornado/test/auth_test.py\", line 403, in test_facebook_login\n    response = self.fetch('/facebook/client/login?code=1234', follow_redirects=False)\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 395, in fetch\n    return self.wait()\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 325, in wait\n    self.__rethrow()\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 261, in __rethrow\n    raise_exc_info(failure)\n  File \"<string>\", line 3, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 309, in timeout_func\n    timeout)\nAssertionError: Async operation timed out after 5 seconds",
+          "log_tail": "  File \"/bug/buggy/tornado/tornado/testing.py\", line 395, in fetch\n    return self.wait()\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 325, in wait\n    self.__rethrow()\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 261, in __rethrow\n    raise_exc_info(failure)\n  File \"<string>\", line 3, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 309, in timeout_func\n    timeout)\nAssertionError: Async operation timed out after 5 seconds\n\n----------------------------------------------------------------------\nRan 1 test in 5.044s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.auth_test.AuthTest.test_facebook_login",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.056s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 14,
+  "ran": "2026-11-12T03:52:48+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

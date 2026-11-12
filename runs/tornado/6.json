@@ -1,0 +1,70 @@
+{
+  "project": "tornado",
+  "bug_id": "6",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_ioloop_close_leak",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 10 != 0",
+          "traceback": "FAIL: test_ioloop_close_leak (tornado.test.asyncio_test.LeakTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/asyncio_test.py\", line 146, in test_ioloop_close_leak\n    self.assertEqual(new_count, 0)\nAssertionError: 10 != 0",
+          "log_tail": "======================================================================\nFAIL: test_ioloop_close_leak (tornado.test.asyncio_test.LeakTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/asyncio_test.py\", line 146, in test_ioloop_close_leak\n    self.assertEqual(new_count, 0)\nAssertionError: 10 != 0\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_asyncio_close_leak",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 10 != 1",
+          "traceback": "FAIL: test_asyncio_close_leak (tornado.test.asyncio_test.LeakTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/asyncio_test.py\", line 160, in test_asyncio_close_leak\n    self.assertEqual(new_count, 1)\nAssertionError: 10 != 1",
+          "log_tail": "======================================================================\nFAIL: test_asyncio_close_leak (tornado.test.asyncio_test.LeakTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/asyncio_test.py\", line 160, in test_asyncio_close_leak\n    self.assertEqual(new_count, 1)\nAssertionError: 10 != 1\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_ioloop_close_leak",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_asyncio_close_leak",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 11,
+  "ran": "2026-11-12T03:51:54+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

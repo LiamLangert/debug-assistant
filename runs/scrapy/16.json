@@ -1,0 +1,136 @@
+{
+  "project": "scrapy",
+  "bug_id": "16",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_url_unicode_query_string",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%C3%A9sum%C3%A9' != 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%E9sum%E9'",
+          "traceback": "FAIL: test_canonicalize_url_unicode_query_string (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 138, in test_canonicalize_url_unicode_query_string\n    self.assertEqual(canonicalize_url(u\"http://www.example.com/r\u00e9sum\u00e9?q=r\u00e9sum\u00e9\", encoding='latin1'),\nAssertionError: 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%C3%A9sum%C3%A9' != 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%E9sum%E9'\n- http://www.example.com/r%C3%A9sum%C3%A9?q=r%C3%A9sum%C3%A9\n?                                             ^^^^     ^^^^\n+ http://www.example.com/r%C3%A9sum%C3%A9?q=r%E9sum%E9\n?                                             ^     ^",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 138, in test_canonicalize_url_unicode_query_string\n    self.assertEqual(canonicalize_url(u\"http://www.example.com/r\u00e9sum\u00e9?q=r\u00e9sum\u00e9\", encoding='latin1'),\nAssertionError: 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%C3%A9sum%C3%A9' != 'http://www.example.com/r%C3%A9sum%C3%A9?q=r%E9sum%E9'\n- http://www.example.com/r%C3%A9sum%C3%A9?q=r%C3%A9sum%C3%A9\n?                                             ^^^^     ^^^^\n+ http://www.example.com/r%C3%A9sum%C3%A9?q=r%E9sum%E9\n?                                             ^     ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_normalize_percent_encoding_in_paths",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.example.com/a%EF%BF%BDdo' != 'http://www.example.com/a%A3do'",
+          "traceback": "FAIL: test_normalize_percent_encoding_in_paths (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 159, in test_normalize_percent_encoding_in_paths\n    self.assertEqual(canonicalize_url(\"http://www.example.com/a%a3do\"),\nAssertionError: 'http://www.example.com/a%EF%BF%BDdo' != 'http://www.example.com/a%A3do'\n- http://www.example.com/a%EF%BF%BDdo\n?                          ^^^^^^^^\n+ http://www.example.com/a%A3do\n?                          ^^",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 159, in test_normalize_percent_encoding_in_paths\n    self.assertEqual(canonicalize_url(\"http://www.example.com/a%a3do\"),\nAssertionError: 'http://www.example.com/a%EF%BF%BDdo' != 'http://www.example.com/a%A3do'\n- http://www.example.com/a%EF%BF%BDdo\n?                          ^^^^^^^^\n+ http://www.example.com/a%A3do\n?                          ^^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_normalize_percent_encoding_in_query_arguments",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.example.com/do?k=b%EF%BF%BD' != 'http://www.example.com/do?k=b%A3'",
+          "traceback": "FAIL: test_normalize_percent_encoding_in_query_arguments (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 171, in test_normalize_percent_encoding_in_query_arguments\n    self.assertEqual(canonicalize_url(\"http://www.example.com/do?k=b%a3\"),\nAssertionError: 'http://www.example.com/do?k=b%EF%BF%BD' != 'http://www.example.com/do?k=b%A3'\n- http://www.example.com/do?k=b%EF%BF%BD\n?                               ^^^^^^^^\n+ http://www.example.com/do?k=b%A3\n?                               ^^",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 171, in test_normalize_percent_encoding_in_query_arguments\n    self.assertEqual(canonicalize_url(\"http://www.example.com/do?k=b%a3\"),\nAssertionError: 'http://www.example.com/do?k=b%EF%BF%BD' != 'http://www.example.com/do?k=b%A3'\n- http://www.example.com/do?k=b%EF%BF%BD\n?                               ^^^^^^^^\n+ http://www.example.com/do?k=b%A3\n?                               ^^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_idns",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.b\u00fccher.de/?q=b%C3%BCcher' != 'http://www.xn--bcher-kva.de/?q=b%C3%BCcher'",
+          "traceback": "FAIL: test_canonicalize_idns (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 225, in test_canonicalize_idns\n    self.assertEqual(canonicalize_url(u'http://www.b\u00fccher.de?q=b\u00fccher'),\nAssertionError: 'http://www.b\u00fccher.de/?q=b%C3%BCcher' != 'http://www.xn--bcher-kva.de/?q=b%C3%BCcher'\n- http://www.b\u00fccher.de/?q=b%C3%BCcher\n?             -\n+ http://www.xn--bcher-kva.de/?q=b%C3%BCcher\n?            ++++     ++++",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 225, in test_canonicalize_idns\n    self.assertEqual(canonicalize_url(u'http://www.b\u00fccher.de?q=b\u00fccher'),\nAssertionError: 'http://www.b\u00fccher.de/?q=b%C3%BCcher' != 'http://www.xn--bcher-kva.de/?q=b%C3%BCcher'\n- http://www.b\u00fccher.de/?q=b%C3%BCcher\n?             -\n+ http://www.xn--bcher-kva.de/?q=b%C3%BCcher\n?            ++++     ++++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_urlparsed",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'",
+          "traceback": "FAIL: test_canonicalize_urlparsed (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 241, in test_canonicalize_urlparsed\n    self.assertEqual(canonicalize_url(urlparse('http://www.example.com/caf%e9-con-leche.htm')),\nAssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'\n- http://www.example.com/caf%EF%BF%BD-con-leche.htm\n?                             ^^^^^^^\n+ http://www.example.com/caf%E9-con-leche.htm\n?                             ^",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 241, in test_canonicalize_urlparsed\n    self.assertEqual(canonicalize_url(urlparse('http://www.example.com/caf%e9-con-leche.htm')),\nAssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'\n- http://www.example.com/caf%EF%BF%BD-con-leche.htm\n?                             ^^^^^^^\n+ http://www.example.com/caf%E9-con-leche.htm\n?                             ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_parse_url",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'",
+          "traceback": "FAIL: test_canonicalize_parse_url (tests.test_utils_url.CanonicalizeUrlTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 250, in test_canonicalize_parse_url\n    self.assertEqual(canonicalize_url(parse_url('http://www.example.com/caf%e9-con-leche.htm')),\nAssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'\n- http://www.example.com/caf%EF%BF%BD-con-leche.htm\n?                             ^^^^^^^\n+ http://www.example.com/caf%E9-con-leche.htm\n?                             ^",
+          "log_tail": "----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_utils_url.py\", line 250, in test_canonicalize_parse_url\n    self.assertEqual(canonicalize_url(parse_url('http://www.example.com/caf%e9-con-leche.htm')),\nAssertionError: 'http://www.example.com/caf%EF%BF%BD-con-leche.htm' != 'http://www.example.com/caf%E9-con-leche.htm'\n- http://www.example.com/caf%EF%BF%BD-con-leche.htm\n?                             ^^^^^^^\n+ http://www.example.com/caf%E9-con-leche.htm\n?                             ^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_url_unicode_query_string",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_normalize_percent_encoding_in_paths",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_normalize_percent_encoding_in_query_arguments",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_idns",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_urlparsed",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_utils_url.CanonicalizeUrlTest.test_canonicalize_parse_url",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 262,
+  "ran": "2026-11-12T02:10:21+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

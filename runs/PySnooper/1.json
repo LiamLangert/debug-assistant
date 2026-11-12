@@ -1,0 +1,49 @@
+{
+  "project": "PySnooper",
+  "bug_id": "1",
+  "image": "python:3.8.1",
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "passed",
+      "repairs": [
+        "installed python_toolbox==0.9.3 (extra_requirements.json)",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest -q -s tests/test_chinese.py::test_chinese",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "\nenv/lib/python3.8/site-packages/python_toolbox/nifty_collections/various_ordered_sets.py:112\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/various_ordered_sets.py:112: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    class OrderedSet(BaseOrderedSet, collections.MutableSet):\n\nenv/lib/python3.8/site-packages/python_toolbox/nifty_collections/weak_key_default_dict.py:16\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/weak_key_default_dict.py:16: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    class WeakKeyDefaultDict(collections.MutableMapping):\n\nenv/lib/python3.8/site-packages/python_toolbox/decorator_tools.py:32\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/decorator_tools.py:32: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()\n    first = inspect.getargspec(caller)[0][0] # first arg\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n1 passed, 7 warnings in 0.14s"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "installed python_toolbox==0.9.3 (extra_requirements.json)"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest -q -s tests/test_chinese.py::test_chinese",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "\n/bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/various_ordered_sets.py:112\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/various_ordered_sets.py:112: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    class OrderedSet(BaseOrderedSet, collections.MutableSet):\n\n/bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/weak_key_default_dict.py:16\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/nifty_collections/weak_key_default_dict.py:16: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    class WeakKeyDefaultDict(collections.MutableMapping):\n\n/bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/decorator_tools.py:32\n  /bug/buggy/PySnooper/env/lib/python3.8/site-packages/python_toolbox/decorator_tools.py:32: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()\n    first = inspect.getargspec(caller)[0][0] # first arg\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n1 passed, 7 warnings in 0.09s"
+        }
+      ]
+    }
+  }
+}

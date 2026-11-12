@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "7",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestIOLoopFutures.test_run_in_executor_native",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: object Future can't be used in 'await' expression",
+          "traceback": "ERROR: test_run_in_executor_native (tornado.test.ioloop_test.TestIOLoopFutures)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 118, in __call__\n    result = self.orig_method(*args, **kwargs)\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 516, in post_coroutine\n    timeout=timeout)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 501, in run_sync\n    return future_cell[0].result()\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 238, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 4, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 1057, in run\n    yielded = self.gen.throw(*exc_info)\n  File \"/usr/local/lib/python3.7/types.py\", line 210, in throw\n    return self.__wrapped.throw(tp, *rest)\n  File \"/bug/buggy/tornado/tornado/test/ioloop_test.py\", line 646, in test_run_in_executor_native\n    namespace[\"async_wrapper\"](event2, event1)\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 1049, in run\n    value = future.result()\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 238, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 4, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 823, in callback\n    result_list.append(f.result())\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 238, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 4, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 303, in wrapper\n    yielded = next(result)\n  File \"<string>\", line 6, in _wrap_awaitable\n  File \"<string>\", line 4, in async_wrapper\nTypeError: object Future can't be used in 'await' expression",
+          "log_tail": "  File \"/bug/buggy/tornado/tornado/gen.py\", line 823, in callback\n    result_list.append(f.result())\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 238, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 4, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 303, in wrapper\n    yielded = next(result)\n  File \"<string>\", line 6, in _wrap_awaitable\n  File \"<string>\", line 4, in async_wrapper\nTypeError: object Future can't be used in 'await' expression\n\n----------------------------------------------------------------------\nRan 1 test in 0.003s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestIOLoopFutures.test_run_in_executor_native",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 9,
+  "ran": "2026-11-12T03:52:03+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

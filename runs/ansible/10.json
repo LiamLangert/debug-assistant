@@ -1,0 +1,72 @@
+{
+  "project": "ansible",
+  "bug_id": "10",
+  "image": "python:3.6.9",
+  "constraints": 11,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))",
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/system/test_pamd.py::PamdServiceTestCase::test_remove_first_rule",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: 'PamdRule' object has no attribute 'prev'",
+          "traceback": "=================================== FAILURES ===================================\n__________________ PamdServiceTestCase.test_remove_first_rule __________________\n\nself = <units.modules.system.test_pamd.PamdServiceTestCase testMethod=test_remove_first_rule>\n\n    def test_remove_first_rule(self):\n        no_header_service = PamdService(self.no_header_system_auth_string)\n>       self.assertTrue(no_header_service.remove('auth', 'required', 'pam_env.so'))\n\ntest/units/modules/system/test_pamd.py:365: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <ansible.modules.system.pamd.PamdService object at 0x7809fa6ef0b8>\nrule_type = 'auth', rule_control = 'required', rule_path = 'pam_env.so'\n\n    def remove(self, rule_type, rule_control, rule_path):\n        current_line = self._head\n        changed = 0\n    \n        while current_line is not None:\n            if current_line.matches(rule_type, rule_control, rule_path):\n>               if current_line.prev is not None:\nE               AttributeError: 'PamdRule' object has no attribute 'prev'\n\nbuild/lib/ansible/modules/system/pamd.py:479: AttributeError",
+          "log_tail": "\nself = <ansible.modules.system.pamd.PamdService object at 0x7809fa6ef0b8>\nrule_type = 'auth', rule_control = 'required', rule_path = 'pam_env.so'\n\n    def remove(self, rule_type, rule_control, rule_path):\n        current_line = self._head\n        changed = 0\n    \n        while current_line is not None:\n            if current_line.matches(rule_type, rule_control, rule_path):\n>               if current_line.prev is not None:\nE               AttributeError: 'PamdRule' object has no attribute 'prev'\n\nbuild/lib/ansible/modules/system/pamd.py:479: AttributeError\n=========================== 1 failed in 0.07 seconds ==========================="
+        },
+        {
+          "cmd": "pytest test/units/modules/system/test_pamd.py::PamdServiceTestCase::test_remove_last_rule",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: 'NoneType' object has no attribute 'prev'",
+          "traceback": "=================================== FAILURES ===================================\n__________________ PamdServiceTestCase.test_remove_last_rule ___________________\n\nself = <units.modules.system.test_pamd.PamdServiceTestCase testMethod=test_remove_last_rule>\n\n    def test_remove_last_rule(self):\n>       self.assertTrue(self.pamd.remove('session', 'required', 'pam_unix.so'))\n\ntest/units/modules/system/test_pamd.py:370: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <ansible.modules.system.pamd.PamdService object at 0x7208e5a2c8d0>\nrule_type = 'session', rule_control = 'required', rule_path = 'pam_unix.so'\n\n    def remove(self, rule_type, rule_control, rule_path):\n        current_line = self._head\n        changed = 0\n    \n        while current_line is not None:\n            if current_line.matches(rule_type, rule_control, rule_path):\n                if current_line.prev is not None:\n                    current_line.prev.next = current_line.next\n>                   current_line.next.prev = current_line.prev\nE                   AttributeError: 'NoneType' object has no attribute 'prev'\n\nbuild/lib/ansible/modules/system/pamd.py:481: AttributeError",
+          "log_tail": "rule_type = 'session', rule_control = 'required', rule_path = 'pam_unix.so'\n\n    def remove(self, rule_type, rule_control, rule_path):\n        current_line = self._head\n        changed = 0\n    \n        while current_line is not None:\n            if current_line.matches(rule_type, rule_control, rule_path):\n                if current_line.prev is not None:\n                    current_line.prev.next = current_line.next\n>                   current_line.next.prev = current_line.prev\nE                   AttributeError: 'NoneType' object has no attribute 'prev'\n\nbuild/lib/ansible/modules/system/pamd.py:481: AttributeError\n=========================== 1 failed in 0.04 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/system/test_pamd.py::PamdServiceTestCase::test_remove_first_rule",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/modules/system/test_pamd.py .                                 [100%]\n\n=========================== 1 passed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest test/units/modules/system/test_pamd.py::PamdServiceTestCase::test_remove_last_rule",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/modules/system/test_pamd.py .                                 [100%]\n\n=========================== 1 passed in 0.02 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 66,
+  "ran": "2026-11-11T23:16:34+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

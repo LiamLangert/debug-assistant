@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "9",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.httputil_test.TestUrlConcat.test_url_concat_none_params",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: 'args' parameter should be dict, list or tuple. Not <class 'NoneType'>",
+          "traceback": "ERROR: test_url_concat_none_params (tornado.test.httputil_test.TestUrlConcat)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/httputil_test.py\", line 72, in test_url_concat_none_params\n    None,\n  File \"/bug/buggy/tornado/tornado/httputil.py\", line 616, in url_concat\n    raise TypeError(err)\nTypeError: 'args' parameter should be dict, list or tuple. Not <class 'NoneType'>",
+          "log_tail": "======================================================================\nERROR: test_url_concat_none_params (tornado.test.httputil_test.TestUrlConcat)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/httputil_test.py\", line 72, in test_url_concat_none_params\n    None,\n  File \"/bug/buggy/tornado/tornado/httputil.py\", line 616, in url_concat\n    raise TypeError(err)\nTypeError: 'args' parameter should be dict, list or tuple. Not <class 'NoneType'>\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.httputil_test.TestUrlConcat.test_url_concat_none_params",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 8,
+  "ran": "2026-11-12T03:52:19+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

@@ -1,0 +1,56 @@
+{
+  "project": "ansible",
+  "bug_id": "7",
+  "image": "python:3.6.9",
+  "constraints": 12,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))",
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: Lists differ: ['name tenreplaced', 'state suspend', 'vlan 10'] != ['name tenreplaced', 'no name', 'state suspend', 'vlan 10']",
+          "traceback": "=================================== FAILURES ===================================\n__________________ TestEosVlansModule.test_eos_vlan_replaced ___________________\n\nself = <units.modules.network.eos.test_eos_vlans.TestEosVlansModule testMethod=test_eos_vlan_replaced>\n\n    def test_eos_vlan_replaced(self):\n        self.execute_show_command.return_value = []\n        set_module_args(dict(\n            config=[dict(\n                vlan_id=10,\n                name=\"tenreplaced\",\n                state=\"suspend\"\n            )], state=\"replaced\"\n        ))\n        commands = ['vlan 10', 'name tenreplaced', 'state suspend']\n>       self.execute_module(changed=True, commands=commands)\n\ntest/units/modules/network/eos/test_eos_vlans.py:111: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntest/units/modules/network/eos/eos_module.py:79: in execute_module\n    self.assertEqual(sorted(commands), sorted(result['commands']), result['commands'])\nE   AssertionError: Lists differ: ['name tenreplaced', 'state suspend', 'vlan 10'] != ['name tenreplaced', 'no name', 'state suspend', 'vlan 10']\nE   \nE   First differing element 1:\nE   'state suspend'\nE   'no name'\nE   \nE   Second list contains 1 additional elements.\nE   First extra element 3:\nE   'vlan 10'\nE   \nE   - ['name tenreplaced', 'state suspend', 'vlan 10']\nE   + ['name tenreplaced', 'no name', 'state suspend', 'vlan 10']\nE   ?                      +++++++++++\nE    : ['vlan 10', 'name tenreplaced', 'state suspend', 'no name']",
+          "log_tail": "E   AssertionError: Lists differ: ['name tenreplaced', 'state suspend', 'vlan 10'] != ['name tenreplaced', 'no name', 'state suspend', 'vlan 10']\nE   \nE   First differing element 1:\nE   'state suspend'\nE   'no name'\nE   \nE   Second list contains 1 additional elements.\nE   First extra element 3:\nE   'vlan 10'\nE   \nE   - ['name tenreplaced', 'state suspend', 'vlan 10']\nE   + ['name tenreplaced', 'no name', 'state suspend', 'vlan 10']\nE   ?                      +++++++++++\nE    : ['vlan 10', 'name tenreplaced', 'state suspend', 'no name']\n=========================== 1 failed in 0.18 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/modules/network/eos/test_eos_vlans.py .                       [100%]\n\n=========================== 1 passed in 0.16 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 67,
+  "ran": "2026-11-11T23:13:07+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

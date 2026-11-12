@@ -1,0 +1,17 @@
+{
+  "_about": "Packages a bug needs that BugsInPy's requirements.txt and setup.sh never install. run_bug.py installs them after compile, in both versions, and lists them under repairs in run.json. Add an entry only when a run shows the package missing, and say why.",
+  "bugs": {
+    "PySnooper/1": {
+      "packages": ["python_toolbox==0.9.3"],
+      "why": "The failing test imports python_toolbox (caching, sys_tools), but only bug 2's setup.sh installs it. 0.9.3 (2016) was the current release when this bug was fixed (2019-05-20); 1.0 came out in July 2019."
+    },
+    "PySnooper/2": {
+      "packages": ["six==1.13.0"],
+      "why": "The fix vendors tests/mini_toolbox/, which imports six. PySnooper never declared six: it came in through pytest 4.x, and the pytest fallback (5.4.3) does not bring it."
+    },
+    "PySnooper/3": {
+      "packages": ["python_toolbox==0.9.3"],
+      "why": "The failing test imports python_toolbox (caching, sys_tools), but only bug 2's setup.sh installs it. 0.9.3 (2016) was the current release when this bug was fixed (2019-04-22); 1.0 came out in July 2019."
+    }
+  }
+}

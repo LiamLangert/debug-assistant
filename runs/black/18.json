@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "18",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_preserves_line_endings",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: b'\\r\\n' not found in b'def f():\\n    pass\\n'",
+          "traceback": "FAIL: test_preserves_line_endings (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/black/tests/test_black.py\", line 1121, in test_preserves_line_endings\n    self.assertIn(nl.encode(), updated_contents)  # type: ignore\nAssertionError: b'\\r\\n' not found in b'def f():\\n    pass\\n'",
+          "log_tail": "======================================================================\nFAIL: test_preserves_line_endings (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/black/tests/test_black.py\", line 1121, in test_preserves_line_endings\n    self.assertIn(nl.encode(), updated_contents)  # type: ignore\nAssertionError: b'\\r\\n' not found in b'def f():\\n    pass\\n'\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_preserves_line_endings",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 187,
+  "ran": "2026-11-12T01:04:45+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

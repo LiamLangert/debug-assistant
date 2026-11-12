@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "14",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestIOLoopCurrent.test_force_current",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "RuntimeError: current IOLoop already exists",
+          "traceback": "ERROR: test_force_current (tornado.test.ioloop_test.TestIOLoopCurrent)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/ioloop_test.py\", line 443, in test_force_current\n    self.io_loop = IOLoop(make_current=True)\n  File \"/bug/buggy/tornado/tornado/util.py\", line 221, in __new__\n    instance.initialize(*args, **init_kwargs)\n  File \"/bug/buggy/tornado/tornado/platform/epoll.py\", line 26, in initialize\n    super(EPollIOLoop, self).initialize(impl=select.epoll(), **kwargs)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 664, in initialize\n    super(PollIOLoop, self).initialize(**kwargs)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 253, in initialize\n    raise RuntimeError(\"current IOLoop already exists\")\nRuntimeError: current IOLoop already exists",
+          "log_tail": "    self.io_loop = IOLoop(make_current=True)\n  File \"/bug/buggy/tornado/tornado/util.py\", line 221, in __new__\n    instance.initialize(*args, **init_kwargs)\n  File \"/bug/buggy/tornado/tornado/platform/epoll.py\", line 26, in initialize\n    super(EPollIOLoop, self).initialize(impl=select.epoll(), **kwargs)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 664, in initialize\n    super(PollIOLoop, self).initialize(**kwargs)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 253, in initialize\n    raise RuntimeError(\"current IOLoop already exists\")\nRuntimeError: current IOLoop already exists\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestIOLoopCurrent.test_force_current",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 10,
+  "ran": "2026-11-12T03:53:06+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

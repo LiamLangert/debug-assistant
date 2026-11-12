@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "32",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_crawler.CrawlerProcessTest.test_crawler_process_accepts_dict",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "KeyError: 'BOT_NAME'",
+          "traceback": "ERROR: test_crawler_process_accepts_dict (tests.test_crawler.CrawlerProcessTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_crawler.py\", line 110, in test_crawler_process_accepts_dict\n    runner = CrawlerProcess({'foo': 'bar'})\n  File \"/bug/buggy/scrapy/scrapy/crawler.py\", line 213, in __init__\n    log_scrapy_info(settings)\n  File \"/bug/buggy/scrapy/scrapy/utils/log.py\", line 108, in log_scrapy_info\n    {'version': scrapy.__version__, 'bot': settings['BOT_NAME']})\nKeyError: 'BOT_NAME'",
+          "log_tail": "ERROR: test_crawler_process_accepts_dict (tests.test_crawler.CrawlerProcessTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_crawler.py\", line 110, in test_crawler_process_accepts_dict\n    runner = CrawlerProcess({'foo': 'bar'})\n  File \"/bug/buggy/scrapy/scrapy/crawler.py\", line 213, in __init__\n    log_scrapy_info(settings)\n  File \"/bug/buggy/scrapy/scrapy/utils/log.py\", line 108, in log_scrapy_info\n    {'version': scrapy.__version__, 'bot': settings['BOT_NAME']})\nKeyError: 'BOT_NAME'\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_crawler.CrawlerProcessTest.test_crawler_process_accepts_dict",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "2026-11-12 03:16:08+0000 [scrapy] INFO: Scrapy 1.1.0dev1 started (bot: scrapybot)\n2026-11-12 03:16:08+0000 [scrapy] INFO: Optional features available: http11, ssl\n2026-11-12 03:16:08+0000 [scrapy] INFO: Overridden settings: {}\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 246,
+  "ran": "2026-11-12T03:16:08+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

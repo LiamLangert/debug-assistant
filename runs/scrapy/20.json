@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "20",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_spider.SitemapSpiderTest.test_get_sitemap_urls_from_robotstxt",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: startswith first arg must be bytes or a tuple of bytes, not str",
+          "traceback": "ERROR: test_get_sitemap_urls_from_robotstxt (tests.test_spider.SitemapSpiderTest)\ntest_get_sitemap_urls_from_robotstxt\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 339, in test_get_sitemap_urls_from_robotstxt\n    self.assertEqual([req.url for req in spider._parse_sitemap(r)],\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 339, in <listcomp>\n    self.assertEqual([req.url for req in spider._parse_sitemap(r)],\n  File \"/bug/buggy/scrapy/scrapy/spiders/sitemap.py\", line 35, in _parse_sitemap\n    for url in sitemap_urls_from_robots(response.body):\n  File \"/bug/buggy/scrapy/scrapy/utils/sitemap.py\", line 42, in sitemap_urls_from_robots\n    if line.lstrip().startswith('Sitemap:'):\nTypeError: startswith first arg must be bytes or a tuple of bytes, not str",
+          "log_tail": "    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 339, in test_get_sitemap_urls_from_robotstxt\n    self.assertEqual([req.url for req in spider._parse_sitemap(r)],\n  File \"/bug/buggy/scrapy/tests/test_spider.py\", line 339, in <listcomp>\n    self.assertEqual([req.url for req in spider._parse_sitemap(r)],\n  File \"/bug/buggy/scrapy/scrapy/spiders/sitemap.py\", line 35, in _parse_sitemap\n    for url in sitemap_urls_from_robots(response.body):\n  File \"/bug/buggy/scrapy/scrapy/utils/sitemap.py\", line 42, in sitemap_urls_from_robots\n    if line.lstrip().startswith('Sitemap:'):\nTypeError: startswith first arg must be bytes or a tuple of bytes, not str\n\n----------------------------------------------------------------------\nRan 1 test in 0.068s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_spider.SitemapSpiderTest.test_get_sitemap_urls_from_robotstxt",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.072s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 255,
+  "ran": "2026-11-12T02:26:57+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

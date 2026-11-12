@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "22",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comments3",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: \"def [645 chars]tion(\\n                        exc,\\n         [802 chars] )\\n\" != \"def [645 chars]tion(exc, limit=limit, lookup_lines=lookup_lin[645 chars] )\\n\"",
+          "traceback": "FAIL: test_comments3 (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 157, in test_comments3\n    self.assertFormatEqual(expected, actual)\n  File \"/bug/buggy/black/tests/test_black.py\", line 69, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: \"def [645 chars]tion(\\n                        exc,\\n         [802 chars] )\\n\" != \"def [645 chars]tion(exc, limit=limit, lookup_lines=lookup_lin[645 chars] )\\n\"\n  def func():\n      lcomp3 = [\n          # This one is actually too long to fit in a single line.\n          element.split('\\n', 1)[0]\n          # yup\n          for element in collection.select_elements()\n          # right\n          if element is not None\n      ]\n      # Capture each of the exceptions in the MultiError along with each of their causes and contexts\n      if isinstance(exc_value, MultiError):\n          embedded = []\n          for exc in exc_value.exceptions:\n              if exc not in _seen:\n                  embedded.append(\n                      # This should be left alone (before)\n+                     traceback.TracebackException.from_exception(exc, limit=limit, lookup_lines=lookup_lines, capture_locals=capture_locals, _seen=set(_seen))\n-                     traceback.TracebackException.from_exception(\n-                         exc,\n-                         limit=limit,\n-                         lookup_lines=lookup_lines,\n-                         capture_locals=capture_locals,\n-                         # copy the set of _seen exceptions so that duplicates\n? ----\n+                     # copy the set of _seen exceptions so that duplicates\n-                         # shared between sub-exceptions are not omitted\n? ----\n+                     # shared between sub-exceptions are not omitted\n-                         _seen=set(_seen),\n-                     )\n                      # This should be left alone (after)\n                  )\n  \n      # everything is fine if the expression isn't nested\n      traceback.TracebackException.from_exception(\n          exc,\n          limit=limit,\n          lookup_lines=lookup_lines,\n          capture_locals=capture_locals,\n          # copy the set of _seen exceptions so that duplicates\n          # shared between sub-exceptions are not omitted\n          _seen=set(_seen),\n      )",
+          "log_tail": "      traceback.TracebackException.from_exception(\n          exc,\n          limit=limit,\n          lookup_lines=lookup_lines,\n          capture_locals=capture_locals,\n          # copy the set of _seen exceptions so that duplicates\n          # shared between sub-exceptions are not omitted\n          _seen=set(_seen),\n      )\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comments3",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.013s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 221,
+  "ran": "2026-11-12T01:17:33+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

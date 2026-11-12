@@ -1,0 +1,51 @@
+{
+  "project": "ansible",
+  "bug_id": "3",
+  "image": "python:3.6.9",
+  "constraints": 11,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/module_utils/test_distribution_version.py::test_distribution_version",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: Comparing value of distribution on Kali 2020.2, should: Kali, is: Kali GNU/Linux",
+          "traceback": "=================================== FAILURES ===================================\n________________ test_distribution_version[stdin29-Kali 2020.2] ________________\n\nam = <ansible.module_utils.basic.AnsibleModule object at 0x7dd0ae8c2748>\nmocker = <pytest_mock.MockFixture object at 0x7dd0ae9ae358>\ntestcase = {'distro': {'codename': 'kali-rolling', 'id': 'kali', 'lsb_release_info': {}, 'name': 'Kali GNU/Linux Rolling', ...}, ....org/\"\\nBUG_REPORT_URL=\"https://bugs.kali.org/\"'}, 'name': 'Kali 2020.2', 'platform.dist': ['kali', '2020.2', ''], ...}\n\n    @pytest.mark.parametrize(\"stdin, testcase\", product([{}], TESTSETS), ids=lambda x: x.get('name'), indirect=['stdin'])\n    def test_distribution_version(am, mocker, testcase):\n        \"\"\"tests the distribution parsing code of the Facts class\n    \n        testsets have\n        * a name (for output/debugging only)\n        * input files that are faked\n          * those should be complete and also include \"irrelevant\" files that might be mistaken as coming from other distributions\n          * all files that are not listed here are assumed to not exist at all\n        * the output of ansible.module_utils.distro.linux_distribution() [called platform.dist() for historical reasons]\n        * results for the ansible variables distribution* and os_family\n    \n        \"\"\"\n    \n        # prepare some mock functions to get the testdata in\n        def mock_get_file_content(fname, default=None, strip=True):\n            \"\"\"give fake content if it exists, otherwise pretend the file is empty\"\"\"\n            data = default\n            if fname in testcase['input']:\n                # for debugging\n                print('faked %s for %s' % (fname, testcase['name']))\n                data = testcase['input'][fname].strip()\n            if strip and data is not None:\n                data = data.strip()\n            return data\n    \n        def mock_get_uname(am, flags):\n            if '-v' in flags:\n                return testcase.get('uname_v', None)\n            elif '-r' in flags:\n                return testcase.get('uname_r', None)\n            else:\n                return None\n    \n        def mock_file_exists(fname, allow_empty=False):\n            if fname not in testcase['input']:\n                return False\n    \n            if allow_empty:\n                return True\n            return bool(len(testcase['input'][fname]))\n    \n        def mock_platform_system():\n            return testcase.get('platform.system', 'Linux')\n    \n        def mock_platform_release():\n            return testcase.get('platform.release', '')\n    \n        def mock_platform_version():\n            return testcase.get('platform.version', '')\n    \n        def mock_distro_name():\n            return testcase['distro']['name']\n    \n        def mock_distro_id():\n            return testcase['distro']['id']\n    \n        def mock_distro_version(best=False):\n            if best:\n                return testcase['distro']['version_best']\n            return testcase['distro']['version']\n    \n        def mock_distro_codename():\n            return testcase['distro']['codename']\n    \n        def mock_distro_os_release_info():\n            return testcase['distro']['os_release_info']\n    \n        def mock_distro_lsb_release_info():\n            return testcase['distro']['lsb_release_info']\n    \n        def mock_open(filename, mode='r'):\n            if filename in testcase['input']:\n                file_object = mocker.mock_open(read_data=testcase['input'][filename]).return_value\n                file_object.__iter__.return_value = testcase['input'][filename].splitlines(True)\n            else:\n                file_object = real_open(filename, mode)\n            return file_object\n    \n        def mock_os_path_is_file(filename):\n            if filename in testcase['input']:\n                return True\n            return False\n    \n        mocker.patch('ansible.module_utils.facts.system.distribution.get_file_content', mock_get_file_content)\n        mocker.patch('ansible.module_utils.facts.system.distribution.get_uname', mock_get_uname)\n        mocker.patch('ansible.module_utils.facts.system.distribution._file_exists', mock_file_exists)\n        mocker.patch('ansible.module_utils.distro.name', mock_distro_name)\n        mocker.patch('ansible.module_utils.distro.id', mock_distro_id)\n        mocker.patch('ansible.module_utils.distro.version', mock_distro_version)\n        mocker.patch('ansible.module_utils.distro.codename', mock_distro_codename)\n        mocker.patch(\n            'ansible.module_utils.common.sys_info.distro.os_release_info',\n            mock_distro_os_release_info)\n        mocker.patch(\n            'ansible.module_utils.common.sys_info.distro.lsb_release_info',\n            mock_distro_lsb_release_info)\n        mocker.patch('os.path.isfile', mock_os_path_is_file)\n        mocker.patch('platform.system', mock_platform_system)\n        mocker.patch('platform.release', mock_platform_release)\n        mocker.patch('platform.version', mock_platform_version)\n    \n        real_open = builtins.open\n        mocker.patch.object(builtins, 'open', new=mock_open)\n    \n        # run Facts()\n        distro_collector = DistributionFactCollector()\n        generated_facts = distro_collector.collect(am)\n    \n        # compare with the expected output\n    \n        # testcase['result'] has a list of variables and values it expects Facts() to set\n        for key, val in testcase['result'].items():\n            assert key in generated_facts\n            msg = 'Comparing value of %s on %s, should: %s, is: %s' %\\\n                (key, testcase['name'], val, generated_facts[key])\n>           assert generated_facts[key] == val, msg\nE           AssertionError: Comparing value of distribution on Kali 2020.2, should: Kali, is: Kali GNU/Linux\nE           assert 'Kali GNU/Linux' == 'Kali'\nE             - Kali GNU/Linux\nE             + Kali\n\ntest/units/module_utils/test_distribution_version.py:1965: AssertionError\n----------------------------- Captured stdout call -----------------------------\nfaked /etc/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2\nfaked /usr/lib/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2",
+          "log_tail": "                (key, testcase['name'], val, generated_facts[key])\n>           assert generated_facts[key] == val, msg\nE           AssertionError: Comparing value of distribution on Kali 2020.2, should: Kali, is: Kali GNU/Linux\nE           assert 'Kali GNU/Linux' == 'Kali'\nE             - Kali GNU/Linux\nE             + Kali\n\ntest/units/module_utils/test_distribution_version.py:1965: AssertionError\n----------------------------- Captured stdout call -----------------------------\nfaked /etc/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2\nfaked /usr/lib/os-release for Kali 2020.2\nfaked /etc/os-release for Kali 2020.2\n===================== 1 failed, 53 passed in 0.10 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/module_utils/test_distribution_version.py::test_distribution_version",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\nplugins: mock-1.2\ncollected 54 items\n\ntest/units/module_utils/test_distribution_version.py ................... [ 35%]\n...................................                                      [100%]\n\n========================== 54 passed in 0.17 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 37,
+  "ran": "2026-11-11T23:09:32+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

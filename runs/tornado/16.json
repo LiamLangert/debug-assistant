@@ -1,0 +1,51 @@
+{
+  "project": "tornado",
+  "bug_id": "16",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.gen_test.WaitIteratorTest.test_no_ref",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "tornado.gen.TimeoutError: Timeout",
+          "traceback": "ERROR: test_no_ref (tornado.test.gen_test.WaitIteratorTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 120, in __call__\n    result = self.orig_method(*args, **kwargs)\n  File \"/bug/buggy/tornado/tornado/testing.py\", line 501, in post_coroutine\n    timeout=timeout)\n  File \"/bug/buggy/tornado/tornado/ioloop.py\", line 445, in run_sync\n    return future_cell[0].result()\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 211, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 3, in raise_exc_info\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 881, in run\n    yielded = self.gen.throw(*exc_info)\n  File \"/bug/buggy/tornado/tornado/test/gen_test.py\", line 1259, in test_no_ref\n    gen.WaitIterator(gen.sleep(0)).next())\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 875, in run\n    value = future.result()\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 211, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 3, in raise_exc_info\ntornado.gen.TimeoutError: Timeout",
+          "log_tail": "  File \"/bug/buggy/tornado/tornado/gen.py\", line 881, in run\n    yielded = self.gen.throw(*exc_info)\n  File \"/bug/buggy/tornado/tornado/test/gen_test.py\", line 1259, in test_no_ref\n    gen.WaitIterator(gen.sleep(0)).next())\n  File \"/bug/buggy/tornado/tornado/gen.py\", line 875, in run\n    value = future.result()\n  File \"/bug/buggy/tornado/tornado/concurrent.py\", line 211, in result\n    raise_exc_info(self._exc_info)\n  File \"<string>\", line 3, in raise_exc_info\ntornado.gen.TimeoutError: Timeout\n\n----------------------------------------------------------------------\nRan 1 test in 0.108s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.gen_test.WaitIteratorTest.test_no_ref",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    }
+  }
+}

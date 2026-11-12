@@ -1,0 +1,57 @@
+{
+  "project": "scrapy",
+  "bug_id": "11",
+  "image": "python:3.8.3",
+  "constraints": 56,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_gz.GunzipTest.test_gunzip_illegal_eof",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 42)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 42))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_utils_gz.GunzipTest.test_gunzip_illegal_eof",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK"
+        }
+      ]
+    }
+  }
+}

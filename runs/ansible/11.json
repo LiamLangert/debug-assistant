@@ -1,0 +1,72 @@
+{
+  "project": "ansible",
+  "bug_id": "11",
+  "image": "python:3.6.9",
+  "constraints": 12,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))",
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/network/ios/test_ios_banner.py::TestIosBannerModule::test_ios_banner_nochange",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'",
+          "traceback": "=================================== FAILURES ===================================\n_________________ TestIosBannerModule.test_ios_banner_nochange _________________\n\nself = <units.modules.network.ios.test_ios_banner.TestIosBannerModule testMethod=test_ios_banner_nochange>\n\n    def setUp(self):\n        super(TestIosBannerModule, self).setUp()\n    \n        self.mock_get_config = patch('ansible.modules.network.ios.ios_banner.get_config')\n>       self.get_config = self.mock_get_config.start()\n\ntest/units/modules/network/ios/test_ios_banner.py:34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/local/lib/python3.6/unittest/mock.py:1378: in start\n    result = self.__enter__()\n/usr/local/lib/python3.6/unittest/mock.py:1247: in __enter__\n    original, local = self.get_original()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <unittest.mock._patch object at 0x703b436d5b00>\n\n    def get_original(self):\n        target = self.getter()\n        name = self.attribute\n    \n        original = DEFAULT\n        local = False\n    \n        try:\n            original = target.__dict__[name]\n        except (AttributeError, KeyError):\n            original = getattr(target, name, DEFAULT)\n        else:\n            local = True\n    \n        if name in _builtins and isinstance(target, ModuleType):\n            self.create = True\n    \n        if not self.create and original is DEFAULT:\n            raise AttributeError(\n>               \"%s does not have the attribute %r\" % (target, name)\n            )\nE           AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'\n\n/usr/local/lib/python3.6/unittest/mock.py:1221: AttributeError",
+          "log_tail": "            original = getattr(target, name, DEFAULT)\n        else:\n            local = True\n    \n        if name in _builtins and isinstance(target, ModuleType):\n            self.create = True\n    \n        if not self.create and original is DEFAULT:\n            raise AttributeError(\n>               \"%s does not have the attribute %r\" % (target, name)\n            )\nE           AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'\n\n/usr/local/lib/python3.6/unittest/mock.py:1221: AttributeError\n=========================== 1 failed in 0.13 seconds ==========================="
+        },
+        {
+          "cmd": "pytest test/units/modules/network/ios/test_ios_banner.py::TestIosBannerIos12Module::test_ios_banner_nochange",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'",
+          "traceback": "=================================== FAILURES ===================================\n______________ TestIosBannerIos12Module.test_ios_banner_nochange _______________\n\nself = <units.modules.network.ios.test_ios_banner.TestIosBannerIos12Module testMethod=test_ios_banner_nochange>\n\n    def setUp(self):\n        super(TestIosBannerModule, self).setUp()\n    \n        self.mock_get_config = patch('ansible.modules.network.ios.ios_banner.get_config')\n>       self.get_config = self.mock_get_config.start()\n\ntest/units/modules/network/ios/test_ios_banner.py:34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/local/lib/python3.6/unittest/mock.py:1378: in start\n    result = self.__enter__()\n/usr/local/lib/python3.6/unittest/mock.py:1247: in __enter__\n    original, local = self.get_original()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <unittest.mock._patch object at 0x72665dc6a208>\n\n    def get_original(self):\n        target = self.getter()\n        name = self.attribute\n    \n        original = DEFAULT\n        local = False\n    \n        try:\n            original = target.__dict__[name]\n        except (AttributeError, KeyError):\n            original = getattr(target, name, DEFAULT)\n        else:\n            local = True\n    \n        if name in _builtins and isinstance(target, ModuleType):\n            self.create = True\n    \n        if not self.create and original is DEFAULT:\n            raise AttributeError(\n>               \"%s does not have the attribute %r\" % (target, name)\n            )\nE           AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'\n\n/usr/local/lib/python3.6/unittest/mock.py:1221: AttributeError",
+          "log_tail": "            original = getattr(target, name, DEFAULT)\n        else:\n            local = True\n    \n        if name in _builtins and isinstance(target, ModuleType):\n            self.create = True\n    \n        if not self.create and original is DEFAULT:\n            raise AttributeError(\n>               \"%s does not have the attribute %r\" % (target, name)\n            )\nE           AttributeError: <module 'ansible.modules.network.ios.ios_banner' from '/bug/buggy/ansible/build/lib/ansible/modules/network/ios/ios_banner.py'> does not have the attribute 'get_config'\n\n/usr/local/lib/python3.6/unittest/mock.py:1221: AttributeError\n=========================== 1 failed in 0.11 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/modules/network/ios/test_ios_banner.py::TestIosBannerModule::test_ios_banner_nochange",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/modules/network/ios/test_ios_banner.py .                      [100%]\n\n=========================== 1 passed in 0.07 seconds ==========================="
+        },
+        {
+          "cmd": "pytest test/units/modules/network/ios/test_ios_banner.py::TestIosBannerIos12Module::test_ios_banner_nochange",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/modules/network/ios/test_ios_banner.py .                      [100%]\n\n=========================== 1 passed in 0.05 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 68,
+  "ran": "2026-11-11T23:17:43+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

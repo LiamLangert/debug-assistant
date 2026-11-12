@@ -1,0 +1,68 @@
+{
+  "project": "black",
+  "bug_id": "6",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_async_as_identifier",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "FileNotFoundError: [Errno 2] No such file or directory: '/bug/buggy/black/tests/data/async_as_identifier.py'",
+          "traceback": "ERROR: test_async_as_identifier (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 508, in test_async_as_identifier\n    source, expected = read_data(\"async_as_identifier\")\n  File \"/bug/buggy/black/tests/test_black.py\", line 64, in read_data\n    with open(base_dir / name, \"r\", encoding=\"utf8\") as test:\nFileNotFoundError: [Errno 2] No such file or directory: '/bug/buggy/black/tests/data/async_as_identifier.py'",
+          "log_tail": "ERROR: test_async_as_identifier (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 508, in test_async_as_identifier\n    source, expected = read_data(\"async_as_identifier\")\n  File \"/bug/buggy/black/tests/test_black.py\", line 64, in read_data\n    with open(base_dir / name, \"r\", encoding=\"utf8\") as test:\nFileNotFoundError: [Errno 2] No such file or directory: '/bug/buggy/black/tests/data/async_as_identifier.py'\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_python37",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 0 != 123 : All done! \u2728 \ud83c\udf70 \u2728",
+          "traceback": "FAIL: test_python37 (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 533, in test_python37\n    self.invokeBlack([str(source_path), \"--target-version\", \"py36\"], exit_code=123)\n  File \"/bug/buggy/black/tests/test_black.py\", line 168, in invokeBlack\n    self.assertEqual(result.exit_code, exit_code, msg=runner.stderr_bytes.decode())\nAssertionError: 0 != 123 : All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.",
+          "log_tail": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 533, in test_python37\n    self.invokeBlack([str(source_path), \"--target-version\", \"py36\"], exit_code=123)\n  File \"/bug/buggy/black/tests/test_black.py\", line 168, in invokeBlack\n    self.assertEqual(result.exit_code, exit_code, msg=runner.stderr_bytes.decode())\nAssertionError: 0 != 123 : All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.029s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_async_as_identifier",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.013s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_python37",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.033s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 184,
+  "ran": "2026-11-11T23:40:45+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

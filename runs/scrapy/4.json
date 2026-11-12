@@ -1,0 +1,62 @@
+{
+  "project": "scrapy",
+  "bug_id": "4",
+  "image": "python:3.8.3",
+  "constraints": 46,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))",
+        "ERROR: Exception:",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_contracts.ContractsManagerTest.test_errback",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'getset_descriptor' object has no attribute '__traceback__'",
+          "traceback": "ERROR: test_errback (tests.test_contracts.ContractsManagerTest)\ntest_errback\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 151, in maybeDeferred\n    result = f(*args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 221, in runWithWarningsSuppressed\n    reraise(exc_info[1], exc_info[2])\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/compat.py\", line 464, in reraise\n    raise exception.with_traceback(traceback)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/utils.py\", line 217, in runWithWarningsSuppressed\n    result = f(*a, **kw)\n  File \"/bug/buggy/scrapy/tests/test_contracts.py\", line 201, in test_errback\n    request.errback(failure_mock)\n  File \"/bug/buggy/scrapy/scrapy/contracts/__init__.py\", line 88, in eb_wrapper\n    results.addError(case, exc_info)\n  File \"/usr/local/lib/python3.8/unittest/runner.py\", line 67, in addError\n    super(TextTestResult, self).addError(test, err)\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 17, in inner\n    return method(self, *args, **kw)\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 115, in addError\n    self.errors.append((test, self._exc_info_to_string(err, test)))\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 185, in _exc_info_to_string\n    tb_e = traceback.TracebackException(\n  File \"/usr/local/lib/python3.8/traceback.py\", line 484, in __init__\n    exc_value.__cause__.__traceback__,\nAttributeError: 'getset_descriptor' object has no attribute '__traceback__'",
+          "log_tail": "    super(TextTestResult, self).addError(test, err)\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 17, in inner\n    return method(self, *args, **kw)\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 115, in addError\n    self.errors.append((test, self._exc_info_to_string(err, test)))\n  File \"/usr/local/lib/python3.8/unittest/result.py\", line 185, in _exc_info_to_string\n    tb_e = traceback.TracebackException(\n  File \"/usr/local/lib/python3.8/traceback.py\", line 484, in __init__\n    exc_value.__cause__.__traceback__,\nAttributeError: 'getset_descriptor' object has no attribute '__traceback__'\n\n----------------------------------------------------------------------\nRan 1 test in 0.081s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Exception:",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 36)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 36))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_contracts.ContractsManagerTest.test_errback",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.101s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 205,
+  "ran": "2026-11-12T01:33:39+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

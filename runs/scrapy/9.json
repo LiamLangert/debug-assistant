@@ -1,0 +1,60 @@
+{
+  "project": "scrapy",
+  "bug_id": "9",
+  "image": "python:3.8.3",
+  "constraints": 47,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_mail.MailSenderTest.test_send_single_values_to_and_cc",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'str' object has no attribute 'extend'",
+          "traceback": "ERROR: test_send_single_values_to_and_cc (tests.test_mail.MailSenderTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_mail.py\", line 30, in test_send_single_values_to_and_cc\n    mailsender.send(to='test@scrapy.org', subject='subject', body='body',\n  File \"/bug/buggy/scrapy/scrapy/mail.py\", line 57, in send\n    rcpts.extend(cc)\nAttributeError: 'str' object has no attribute 'extend'",
+          "log_tail": "======================================================================\nERROR: test_send_single_values_to_and_cc (tests.test_mail.MailSenderTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_mail.py\", line 30, in test_send_single_values_to_and_cc\n    mailsender.send(to='test@scrapy.org', subject='subject', body='body',\n  File \"/bug/buggy/scrapy/scrapy/mail.py\", line 57, in send\n    rcpts.extend(cc)\nAttributeError: 'str' object has no attribute 'extend'\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_mail.MailSenderTest.test_send_single_values_to_and_cc",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 169,
+  "ran": "2026-11-12T01:48:29+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

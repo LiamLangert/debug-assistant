@@ -1,0 +1,60 @@
+{
+  "project": "scrapy",
+  "bug_id": "7",
+  "image": "python:3.8.3",
+  "constraints": 47,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))",
+        "ERROR: mitmproxy 8.0.0 has requirement cryptography<37,>=36, but you'll have cryptography 2.9.2 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement h2<5,>=4.1, but you'll have h2 3.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement hyperframe<7,>=6.0, but you'll have hyperframe 5.2.0 which is incompatible.",
+        "ERROR: mitmproxy 8.0.0 has requirement pyOpenSSL<22.1,>=21.0, but you'll have pyopenssl 19.1.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_request.FormRequestTest.test_spaces_in_action",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'http://example.com/%20path' != 'http://example.com/path'",
+          "traceback": "FAIL: test_spaces_in_action (tests.test_http_request.FormRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_request.py\", line 1007, in test_spaces_in_action\n    self.assertEqual(req.url, 'http://example.com/path')\nAssertionError: 'http://example.com/%20path' != 'http://example.com/path'\n- http://example.com/%20path\n?                    ---\n+ http://example.com/path",
+          "log_tail": "FAIL: test_spaces_in_action (tests.test_http_request.FormRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_request.py\", line 1007, in test_spaces_in_action\n    self.assertEqual(req.url, 'http://example.com/path')\nAssertionError: 'http://example.com/%20path' != 'http://example.com/path'\n- http://example.com/%20path\n?                    ---\n+ http://example.com/path\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 37)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 37))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_request.FormRequestTest.test_spaces_in_action",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 190,
+  "ran": "2026-11-12T01:42:54+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

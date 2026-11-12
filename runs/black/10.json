@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "10",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comment_indentation",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'if 1:\\n    if 2:\\n        pass\\n        # comment\\n    pass\\n' != 'if 1:\\n    if 2:\\n        pass\\n    # comment\\n    pass\\n'",
+          "traceback": "FAIL: test_comment_indentation (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/black/tests/test_black.py\", line 517, in test_comment_indentation\n    self.assertFormatEqual(fs(contents_tab), contents_spc)\n  File \"/bug/buggy/black/tests/test_black.py\", line 156, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: 'if 1:\\n    if 2:\\n        pass\\n        # comment\\n    pass\\n' != 'if 1:\\n    if 2:\\n        pass\\n    # comment\\n    pass\\n'\n  if 1:\n      if 2:\n          pass\n-         # comment\n? ----\n+     # comment\n      pass",
+          "log_tail": "    self.assertEqual(expected, actual)\nAssertionError: 'if 1:\\n    if 2:\\n        pass\\n        # comment\\n    pass\\n' != 'if 1:\\n    if 2:\\n        pass\\n    # comment\\n    pass\\n'\n  if 1:\n      if 2:\n          pass\n-         # comment\n? ----\n+     # comment\n      pass\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_comment_indentation",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 190,
+  "ran": "2026-11-12T00:39:56+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "24",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloader_handlers.HttpProxyTestCase.test_download_with_proxy_https_timeout",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "twisted.trial.unittest.FailTest:",
+          "traceback": "ERROR: test_download_with_proxy_https_timeout (tests.test_downloader_handlers.HttpProxyTestCase)\ntest_download_with_proxy_https_timeout\n----------------------------------------------------------------------\ntwisted.trial.util.DirtyReactorAggregateError: Reactor was unclean.\nSelectables:\n<ProtocolWrapper #0 on 37021>\n<<class 'twisted.internet.tcp.Client'> to ('127.0.0.1', 37021) at 756626fb3340>\n\nFAIL: test_download_with_proxy_https_timeout (tests.test_downloader_handlers.HttpProxyTestCase)\ntest_download_with_proxy_https_timeout\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 1416, in _inlineCallbacks\n    result = result.throwExceptionIntoGenerator(g)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/python/failure.py\", line 512, in throwExceptionIntoGenerator\n    return g.throw(self.type, self.value, self.tb)\n  File \"/bug/buggy/scrapy/tests/test_downloader_handlers.py\", line 398, in test_download_with_proxy_https_timeout\n    timeout = yield self.assertFailure(d, error.TimeoutError)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py\", line 654, in _runCallbacks\n    current.result = callback(current.result, *args, **kw)\n  File \"/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/trial/_asynctest.py\", line 75, in _eb\n    raise self.failureException(output)\ntwisted.trial.unittest.FailTest: \nExpected: (<class 'twisted.internet.error.TimeoutError'>,)\nGot:\n[Failure instance: Traceback: <class 'TypeError'>: Data must not be unicode\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/protocol.py:514:makeConnection\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/endpoints.py:125:connectionMade\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:460:callback\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:568:_startRunCallbacks\n--- <exception caught here> ---\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:654:_runCallbacks\n/bug/buggy/scrapy/scrapy/core/downloader/handlers/http11.py:100:requestTunnel\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/_newtls.py:191:write\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/abstract.py:349:write\n]",
+          "log_tail": "/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/protocol.py:514:makeConnection\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/endpoints.py:125:connectionMade\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:460:callback\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:568:_startRunCallbacks\n--- <exception caught here> ---\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/defer.py:654:_runCallbacks\n/bug/buggy/scrapy/scrapy/core/downloader/handlers/http11.py:100:requestTunnel\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/_newtls.py:191:write\n/bug/buggy/scrapy/env/lib/python3.8/site-packages/twisted/internet/abstract.py:349:write\n]\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nFAILED (failures=1, errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloader_handlers.HttpProxyTestCase.test_download_with_proxy_https_timeout",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/scrapy/scrapy/core/downloader/handlers/http11.py:147: DeprecationWarning: <scrapy.core.downloader.contextfactory.ScrapyClientContextFactory object at 0x72afa0c70d00> was passed as the HTTPS policy for an Agent, but it does not provide IPolicyForHTTPS.  Since Twisted 14.0, you must pass a provider of IPolicyForHTTPS.\n  super(TunnelingAgent, self).__init__(reactor, contextFactory,\n----------------------------------------------------------------------\nRan 1 test in 0.213s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 255,
+  "ran": "2026-11-12T02:43:33+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

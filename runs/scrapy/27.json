@@ -1,0 +1,56 @@
+{
+  "project": "scrapy",
+  "bug_id": "27",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloadermiddleware_redirect.RedirectMiddlewareTest.test_request_meta_handling",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "TypeError: Cannot mix str and non-str arguments",
+          "traceback": "ERROR: test_request_meta_handling (tests.test_downloadermiddleware_redirect.RedirectMiddlewareTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_downloadermiddleware_redirect.py\", line 149, in test_request_meta_handling\n    _test_passthrough(Request(url, meta={'handle_httpstatus_list':\n  File \"/bug/buggy/scrapy/tests/test_downloadermiddleware_redirect.py\", line 147, in _test_passthrough\n    r = self.mw.process_response(req, rsp, self.spider)\n  File \"/bug/buggy/scrapy/scrapy/downloadermiddlewares/redirect.py\", line 75, in process_response\n    redirected_url = urljoin(request.url, response.headers['location'])\n  File \"/usr/local/lib/python3.8/urllib/parse.py\", line 512, in urljoin\n    base, url, _coerce_result = _coerce_args(base, url)\n  File \"/usr/local/lib/python3.8/urllib/parse.py\", line 121, in _coerce_args\n    raise TypeError(\"Cannot mix str and non-str arguments\")\nTypeError: Cannot mix str and non-str arguments",
+          "log_tail": "    _test_passthrough(Request(url, meta={'handle_httpstatus_list':\n  File \"/bug/buggy/scrapy/tests/test_downloadermiddleware_redirect.py\", line 147, in _test_passthrough\n    r = self.mw.process_response(req, rsp, self.spider)\n  File \"/bug/buggy/scrapy/scrapy/downloadermiddlewares/redirect.py\", line 75, in process_response\n    redirected_url = urljoin(request.url, response.headers['location'])\n  File \"/usr/local/lib/python3.8/urllib/parse.py\", line 512, in urljoin\n    base, url, _coerce_result = _coerce_args(base, url)\n  File \"/usr/local/lib/python3.8/urllib/parse.py\", line 121, in _coerce_args\n    raise TypeError(\"Cannot mix str and non-str arguments\")\nTypeError: Cannot mix str and non-str arguments\n\n----------------------------------------------------------------------\nRan 1 test in 0.178s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_downloadermiddleware_redirect.RedirectMiddlewareTest.test_request_meta_handling",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.178s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 247,
+  "ran": "2026-11-12T02:55:37+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

@@ -1,0 +1,54 @@
+{
+  "project": "tornado",
+  "bug_id": "5",
+  "image": "python:3.7.0",
+  "constraints": 0,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestPeriodicCallbackMath.test_clock_backwards",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: Lists differ: [1010.0, 1010.0, 1010.0, 1010.0, 1010.0] != [1010, 1020, 1030, 1040, 1050]",
+          "traceback": "FAIL: test_clock_backwards (tornado.test.ioloop_test.TestPeriodicCallbackMath)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/tornado/tornado/test/ioloop_test.py\", line 838, in test_clock_backwards\n    [1010, 1020, 1030, 1040, 1050])\nAssertionError: Lists differ: [1010.0, 1010.0, 1010.0, 1010.0, 1010.0] != [1010, 1020, 1030, 1040, 1050]\n\nFirst differing element 1:\n1010.0\n1020\n\n- [1010.0, 1010.0, 1010.0, 1010.0, 1010.0]\n+ [1010, 1020, 1030, 1040, 1050]",
+          "log_tail": "  File \"/bug/buggy/tornado/tornado/test/ioloop_test.py\", line 838, in test_clock_backwards\n    [1010, 1020, 1030, 1040, 1050])\nAssertionError: Lists differ: [1010.0, 1010.0, 1010.0, 1010.0, 1010.0] != [1010, 1020, 1030, 1040, 1050]\n\nFirst differing element 1:\n1010.0\n1020\n\n- [1010.0, 1010.0, 1010.0, 1010.0, 1010.0]\n+ [1010, 1020, 1030, 1040, 1050]\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement unittest (from versions: )",
+        "No matching distribution found for unittest"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tornado.test.ioloop_test.TestPeriodicCallbackMath.test_clock_backwards",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 10,
+  "ran": "2026-11-12T03:51:42+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

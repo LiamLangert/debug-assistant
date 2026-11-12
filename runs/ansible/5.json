@@ -1,0 +1,51 @@
+{
+  "project": "ansible",
+  "bug_id": "5",
+  "image": "python:3.6.9",
+  "constraints": 12,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [],
+      "compile_errors": [
+        "Could not find a version that satisfies the requirement ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1)) (from versions: 0.0.1a1, 0.0.1a2, 2.10.0b1, 2.10.0rc1, 2.10.0rc2, 2.10.0rc3, 2.10.0rc4, 2.10.0, 2.10.1rc1, 2.10.1rc2, 2.10.1rc3, 2.10.1, 2.10.2rc1, 2.10.2, 2.10.3rc1, 2.10.3, 2.10.4rc1, 2.10.4, 2.10.5rc1, 2.10.5, 2.10.6rc1, 2.10.6, 2.10.7rc1, 2.10.7, 2.10.8rc1, 2.10.8, 2.10.9rc1, 2.10.9, 2.10.10rc1, 2.10.10, 2.10.11rc1, 2.10.11, 2.10.12rc1, 2.10.12, 2.10.13rc1, 2.10.13, 2.10.14rc1, 2.10.14, 2.10.15rc1, 2.10.15, 2.10.16rc1, 2.10.16, 2.10.17rc1, 2.10.17)",
+        "No matching distribution found for ansible-base==2.10.0.dev0 (from -c /bug/constraints.txt (line 1))"
+      ],
+      "pythonpath": "/bug/buggy/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/module_utils/common/validation/test_check_required_arguments.py::test_check_required_arguments_missing_multiple",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'missing requ...nts: foo, bar' == 'missing requi...nts: bar, foo'",
+          "traceback": "=================================== FAILURES ===================================\n________________ test_check_required_arguments_missing_multiple ________________\n\narguments_terms_multiple = {'bar': {'required': True}, 'foo': {'required': True}, 'tomato': {'irrelevant': 72}}\n\n    def test_check_required_arguments_missing_multiple(arguments_terms_multiple):\n        params = {\n            'apples': 'woohoo',\n        }\n        expected = \"missing required arguments: bar, foo\"\n    \n        with pytest.raises(TypeError) as e:\n            check_required_arguments(arguments_terms_multiple, params)\n    \n>       assert to_native(e.value) == expected\nE       AssertionError: assert 'missing requ...nts: foo, bar' == 'missing requi...nts: bar, foo'\nE         - missing required arguments: foo, bar\nE         ?                                -----\nE         + missing required arguments: bar, foo\nE         ?                             +++++\n\ntest/units/module_utils/common/validation/test_check_required_arguments.py:73: AssertionError",
+          "log_tail": "        }\n        expected = \"missing required arguments: bar, foo\"\n    \n        with pytest.raises(TypeError) as e:\n            check_required_arguments(arguments_terms_multiple, params)\n    \n>       assert to_native(e.value) == expected\nE       AssertionError: assert 'missing requ...nts: foo, bar' == 'missing requi...nts: bar, foo'\nE         - missing required arguments: foo, bar\nE         ?                                -----\nE         + missing required arguments: bar, foo\nE         ?                             +++++\n\ntest/units/module_utils/common/validation/test_check_required_arguments.py:73: AssertionError\n=========================== 1 failed in 0.03 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [],
+      "pythonpath": "/bug/fixed/ansible/build/lib/",
+      "commands": [
+        {
+          "cmd": "pytest test/units/module_utils/common/validation/test_check_required_arguments.py::test_check_required_arguments_missing_multiple",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /bug/fixed/ansible, inifile:\ncollected 1 item\n\ntest/units/module_utils/common/validation/test_check_required_arguments.py . [100%]\n\n=========================== 1 passed in 0.01 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 39,
+  "ran": "2026-11-11T23:10:48+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

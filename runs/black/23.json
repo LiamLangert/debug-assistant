@@ -1,0 +1,52 @@
+{
+  "project": "black",
+  "bug_id": "23",
+  "image": "python:3.8.3",
+  "constraints": 71,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_python2",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: '#!/u[39 chars]nt >>sys.stderr, \"Warning:\",\\nprint >>sys.stde[214 chars]))\\n' != '#!/u[39 chars]nt >> sys.stderr, \"Warning:\",\\nprint >> sys.st[217 chars]))\\n'",
+          "traceback": "FAIL: test_python2 (tests.test_black.BlackTestCase)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.8/unittest/mock.py\", line 1325, in patched\n    return func(*newargs, **newkeywargs)\n  File \"/bug/buggy/black/tests/test_black.py\", line 187, in test_python2\n    self.assertFormatEqual(expected, actual)\n  File \"/bug/buggy/black/tests/test_black.py\", line 67, in assertFormatEqual\n    self.assertEqual(expected, actual)\nAssertionError: '#!/u[39 chars]nt >>sys.stderr, \"Warning:\",\\nprint >>sys.stde[214 chars]))\\n' != '#!/u[39 chars]nt >> sys.stderr, \"Warning:\",\\nprint >> sys.st[217 chars]))\\n'\n  #!/usr/bin/env python2\n  \n  import sys\n  \n- print >>sys.stderr, \"Warning:\",\n+ print >> sys.stderr, \"Warning:\",\n?         +\n- print >>sys.stderr, \"this is a blast from the past.\"\n+ print >> sys.stderr, \"this is a blast from the past.\"\n?         +\n- print >>sys.stderr, \"Look, a repr:\", ` sys `\n+ print >> sys.stderr, \"Look, a repr:\", ` sys `\n?         +\n  \n  \n  def function((_globals, _locals)):\n      exec \"print 'hi from exec!'\" in _globals, _locals\n  \n  \n  function((globals(), locals()))",
+          "log_tail": "+ print >> sys.stderr, \"Look, a repr:\", ` sys `\n?         +\n  \n  \n  def function((_globals, _locals)):\n      exec \"print 'hi from exec!'\" in _globals, _locals\n  \n  \n  function((globals(), locals()))\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.008s\n\nFAILED (failures=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_python2",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 214,
+  "ran": "2026-11-12T01:21:02+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}

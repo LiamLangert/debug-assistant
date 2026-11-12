@@ -1,0 +1,104 @@
+{
+  "project": "scrapy",
+  "bug_id": "19",
+  "image": "python:3.8.3",
+  "constraints": 80,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_full_url",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'WrappedRequest' object has no attribute 'full_url'",
+          "traceback": "ERROR: test_get_full_url (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 17, in test_get_full_url\n    self.assertEqual(self.wrapped.full_url, self.request.url)\nAttributeError: 'WrappedRequest' object has no attribute 'full_url'",
+          "log_tail": "======================================================================\nERROR: test_get_full_url (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 17, in test_get_full_url\n    self.assertEqual(self.wrapped.full_url, self.request.url)\nAttributeError: 'WrappedRequest' object has no attribute 'full_url'\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_host",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'WrappedRequest' object has no attribute 'host'",
+          "traceback": "ERROR: test_get_host (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 21, in test_get_host\n    self.assertEqual(self.wrapped.host, urlparse(self.request.url).netloc)\nAttributeError: 'WrappedRequest' object has no attribute 'host'",
+          "log_tail": "======================================================================\nERROR: test_get_host (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 21, in test_get_host\n    self.assertEqual(self.wrapped.host, urlparse(self.request.url).netloc)\nAttributeError: 'WrappedRequest' object has no attribute 'host'\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_type",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'WrappedRequest' object has no attribute 'type'",
+          "traceback": "ERROR: test_get_type (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 25, in test_get_type\n    self.assertEqual(self.wrapped.type, urlparse(self.request.url).scheme)\nAttributeError: 'WrappedRequest' object has no attribute 'type'",
+          "log_tail": "======================================================================\nERROR: test_get_type (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 25, in test_get_type\n    self.assertEqual(self.wrapped.type, urlparse(self.request.url).scheme)\nAttributeError: 'WrappedRequest' object has no attribute 'type'\n\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nFAILED (errors=1)"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_origin_req_host",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: 'WrappedRequest' object has no attribute 'origin_req_host'",
+          "traceback": "ERROR: test_get_origin_req_host (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 38, in test_get_origin_req_host\n    self.assertEqual(self.wrapped.origin_req_host, 'www.example.com')\nAttributeError: 'WrappedRequest' object has no attribute 'origin_req_host'",
+          "log_tail": "======================================================================\nERROR: test_get_origin_req_host (tests.test_http_cookies.WrappedRequestTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/bug/buggy/scrapy/tests/test_http_cookies.py\", line 38, in test_get_origin_req_host\n    self.assertEqual(self.wrapped.origin_req_host, 'www.example.com')\nAttributeError: 'WrappedRequest' object has no attribute 'origin_req_host'\n\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nFAILED (errors=1)"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [],
+      "compile_errors": [
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 58)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 58))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_full_url",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_host",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_type",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK"
+        },
+        {
+          "cmd": "python -m unittest -q tests.test_http_cookies.WrappedRequestTest.test_get_origin_req_host",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK"
+        }
+      ]
+    }
+  },
+  "seconds": 259,
+  "ran": "2026-11-12T02:22:49+00:00",
+  "code_commit": "cee77638e3600ee1d173d00adbff150cc059ecff-dirty"
+}
