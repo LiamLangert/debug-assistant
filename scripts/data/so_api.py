@@ -121,8 +121,10 @@ def similar_posts(text: str, todate: int | None = None, n: int = 5) -> list[dict
 
     Each post has post_id, question (the title), snippet (the answer's code, or
     its text if it has no code), text (question + snippet, like a StaQC corpus
-    row), and comments (the question's comments, highest score first, each
-    with comment_id, score, creation_date and text).
+    row), accepted (the accepted answer's whole text, prose and code, or None
+    when no answer from before todate is accepted), and comments (the
+    question's comments, highest score first, each with comment_id, score,
+    creation_date and text).
     """
     params = {"title": text[-MAX_TEXT:], "tagged": "python",
               "sort": "relevance", "order": "desc", "pagesize": n}
@@ -156,6 +158,7 @@ def similar_posts(text: str, todate: int | None = None, n: int = 5) -> list[dict
         snippet = code_of(best["body"]) or text_of(best["body"])
         posts.append({"post_id": q["question_id"], "question": q["title"],
                       "snippet": snippet, "text": f"{q['title']}\n{snippet}",
+                      "accepted": text_of(best["body"]) if best["is_accepted"] else None,
                       "comments": comments[q["question_id"]]})
     return posts
 

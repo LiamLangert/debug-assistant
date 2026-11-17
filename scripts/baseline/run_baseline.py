@@ -16,12 +16,15 @@ reproduced: true):
      answers and comments created after the buggy commit are left out.
   3. The hint for each post is the question's first line and the code block
      from its answer (api: the accepted answer, else the top-voted one).
-     With api, the hint also gets the question's top N_COMMENTS comments.
-     StaQC has no comments, so staqc hints never have them.
-  4. Every non-test .py line at the buggy commit is ranked three ways:
-     the five posts alone, the traceback alone, and the traceback with the
-     five posts added. The third one keeps the file names from the traceback.
-     With api there is a fourth: traceback, posts, and their comments.
+     With api, the hint also gets the accepted answer's whole text and the
+     question's top N_COMMENTS comments. StaQC has neither.
+  4. Every non-test .py line at the buggy commit is ranked.
+       staqc  three ways: the five posts alone, the traceback alone, and the
+              traceback with the five posts added. The third one keeps the
+              file names from the traceback.
+       api    one way: the traceback plus the whole text of each post's
+              accepted answer. Posts with no accepted answer add nothing, and
+              titles and comments are left out.
 
 Metrics, over the scored bugs:
   line Recall@5   a line the fix touched is in the top 5 lines
@@ -170,7 +173,7 @@ def post_parts(post: dict) -> tuple[str, str, str]:
 
 def hint_for(post: dict, comments: list[dict] | None = None) -> dict:
     """What we would show: the question's first line, the answer's code, and
-    (api only) the question's top comments."""
+    (api only) the accepted answer's text and the question's top comments."""
     question, snippet, _ = post_parts(post)
     hint = {
         "post_id": post.get("post_id"),
@@ -178,6 +181,7 @@ def hint_for(post: dict, comments: list[dict] | None = None) -> dict:
         "snippet": snippet,
     }
     if comments is not None:
+        hint["accepted"] = post.get("accepted")
         hint["comments"] = [c["text"] for c in comments[:N_COMMENTS]]
     return hint
 
@@ -192,7 +196,7 @@ def main() -> None:
                              " or _api.json with --source api)")
     parser.add_argument("--source", choices=["staqc", "api"], default="staqc",
                         help="where posts come from: BM25 over StaQC, or Stack Overflow search"
-                             " (api also adds each post's top comments)")
+                             " (api ranks with the traceback plus the accepted answers)")
     args = parser.parse_args()
     api = args.source == "api"
 
@@ -250,44 +254,43 @@ def main() -> None:
             chosen = similar_posts(query, todate=cutoff, n=N_POSTS)
             row["posts"] = [p["post_id"] for p in chosen]
             row["hints"] = [hint_for(p, p["comments"]) for p in chosen]
+            accepted = [p["accepted"] for p in chosen if p["accepted"]]
+            row["n_accepted"] = len(accepted)
+            # the traceback plus each accepted answer's whole text
+            query_text = "\n".join([query, *accepted])
+            row["with_accepted"] = evaluate(ranked(line_index.get_scores(tokens(query_text))), lines, truth)
+            counts["with_posts"] += bool(chosen)
+            counts["with_accepted"] += bool(accepted)
         else:
             top = ranked(post_index.get_scores(tokens(query)))[:N_POSTS]
             chosen = [posts[i] for i in top]
             row["posts"] = [p.get("post_id") for p in chosen]
             row["hints"] = [hint_for(p) for p in chosen]
-        post_query = "\n".join(post_parts(p)[2] for p in chosen)
-        # posts alone: the old line query, traceback dropped
-        row["via_posts"] = evaluate(ranked(line_index.get_scores(tokens(post_query))), lines, truth)
-        row["direct"] = evaluate(ranked(line_index.get_scores(tokens(query))), lines, truth)
-        # traceback stays, and the five posts are extra terms
-        both = f"{query}\n{post_query}"
-        row["with_posts"] = evaluate(ranked(line_index.get_scores(tokens(both))), lines, truth)
-        if api:
-            comment_query = "\n".join(c for h in row["hints"] for c in h["comments"])
-            row["n_comments"] = sum(len(h["comments"]) for h in row["hints"])
-            all_three = f"{both}\n{comment_query}"
-            row["with_comments"] = evaluate(ranked(line_index.get_scores(tokens(all_three))), lines, truth)
-            counts["with_posts"] += bool(chosen)
+            post_query = "\n".join(post_parts(p)[2] for p in chosen)
+            # posts alone: the old line query, traceback dropped
+            row["via_posts"] = evaluate(ranked(line_index.get_scores(tokens(post_query))), lines, truth)
+            row["direct"] = evaluate(ranked(line_index.get_scores(tokens(query))), lines, truth)
+            # traceback stays, and the five posts are extra terms
+            both = f"{query}\n{post_query}"
+            row["with_posts"] = evaluate(ranked(line_index.get_scores(tokens(both))), lines, truth)
         counts["scored"] += 1
 
         mark = lambda e: f"line {'hit ' if e['line_hit'] else 'miss'} file {'hit ' if e['file_hit'] else 'miss'}"
-        print(f"{name}: {len(lines)} lines, {len(chosen)} posts | posts: {mark(row['via_posts'])}"
-              f" | traceback: {mark(row['direct'])}"
-              f" | both: {mark(row['with_posts'])}"
-              + (f" | +{row['n_comments']} comments: {mark(row['with_comments'])}" if api else ""))
+        if api:
+            print(f"{name}: {len(lines)} lines, {len(chosen)} posts, {row['n_accepted']} accepted"
+                  f" | traceback + accepted: {mark(row['with_accepted'])}")
+        else:
+            print(f"{name}: {len(lines)} lines, {len(chosen)} posts | posts: {mark(row['via_posts'])}"
+                  f" | traceback: {mark(row['direct'])}"
+                  f" | both: {mark(row['with_posts'])}")
 
-    summary = {
-        "via_posts": summarize(rows, "via_posts"),
-        "direct": summarize(rows, "direct"),
-        "with_posts": summarize(rows, "with_posts"),
-    }
-    if api:
-        summary["with_comments"] = summarize(rows, "with_comments")
+    keys = ["with_accepted"] if api else ["via_posts", "direct", "with_posts"]
+    summary = {k: summarize(rows, k) for k in keys}
     log = {
         "split": args.split,
         "source": args.source,
         "filter": {"project": args.project, "bug": args.bug},
-        "coverage": {k: counts[k] for k in ("bugs", "run", "reproduced", "scored", "with_posts")},
+        "coverage": {k: counts[k] for k in ("bugs", "run", "reproduced", "scored", "with_posts", "with_accepted")},
         "summary": summary,
         "commit": git_head(ROOT),
         "config": {
@@ -296,13 +299,14 @@ def main() -> None:
             "corpus": ("Stack Overflow /similar on the whole traceback, tagged python;"
                        " nothing after the buggy commit" if api else
                        "StaQC: question + one answer snippet; no comments"),
-            "hint": "question first line + answer snippet" + (" + top comments" if api else ""),
-            "via_posts": "five posts joined, traceback dropped",
-            "direct": "traceback only",
-            "with_posts": "traceback plus the five posts",
+            "hint": "question first line + answer snippet" + (" + accepted answer + top comments" if api else ""),
+            "via_posts": None if api else "five posts joined, traceback dropped",
+            "direct": None if api else "traceback only",
+            "with_posts": None if api else "traceback plus the five posts",
             "comments": (f"top {N_COMMENTS} question comments per post from before the buggy commit,"
-                         " added after retrieval" if api else None),
-            "with_comments": "traceback plus the five posts plus their comments" if api else None,
+                         " in the hints only" if api else None),
+            "with_accepted": ("traceback plus the whole text of each post's accepted answer"
+                              " (no titles, no comments)" if api else None),
             "query": "buggy traceback",
             "search": "non-test .py lines at the buggy commit",
         },
