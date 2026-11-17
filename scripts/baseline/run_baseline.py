@@ -7,13 +7,21 @@ reproduced: true):
 
   1. The query is the buggy version's traceback, from every failing command,
      with the container's /bug/buggy/<project>/ prefix cut off the paths.
-  2. BM25 picks the top 5 Stack Overflow posts for that query.
+  2. Five Stack Overflow posts are picked for that query, from one of two
+     sources (--source):
+       staqc  BM25 over the StaQC corpus (data/processed/corpus.jsonl)
+       api    the questions Stack Overflow finds most similar to the whole
+              traceback (/similar, scripts/data/so_api.py), tagged python
+     The api source only sees what existed while the bug was live: questions,
+     answers and comments created after the buggy commit are left out.
   3. The hint for each post is the question's first line and the code block
-     from its answer. Comments are not in the corpus, so a hint cannot come
-     from a comment.
+     from its answer (api: the accepted answer, else the top-voted one).
+     With api, the hint also gets the question's top N_COMMENTS comments.
+     StaQC has no comments, so staqc hints never have them.
   4. Every non-test .py line at the buggy commit is ranked three ways:
      the five posts alone, the traceback alone, and the traceback with the
      five posts added. The third one keeps the file names from the traceback.
+     With api there is a fourth: traceback, posts, and their comments.
 
 Metrics, over the scored bugs:
   line Recall@5   a line the fix touched is in the top 5 lines
@@ -51,10 +59,12 @@ sys.path.insert(0, str(ROOT / "scripts" / "data"))
 sys.path.insert(0, str(ROOT / "scripts" / "baseline"))
 from checkout_bug import file_at  # noqa: E402
 from parse_bugsinpy import is_test_path  # noqa: E402
+from so_api import similar_posts  # noqa: E402
 
 K1 = 1.5
 B = 0.75
 N_POSTS = 5
+N_COMMENTS = 3  # per post, highest score first
 K = 5  # the @5 in Recall@5
 FAILED = ("failed", "error", "timeout")
 TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]+")
@@ -158,14 +168,18 @@ def post_parts(post: dict) -> tuple[str, str, str]:
     return question, snippet, text
 
 
-def hint_for(post: dict) -> dict:
-    """What we would show: the question's first line, and the answer's code."""
+def hint_for(post: dict, comments: list[dict] | None = None) -> dict:
+    """What we would show: the question's first line, the answer's code, and
+    (api only) the question's top comments."""
     question, snippet, _ = post_parts(post)
-    return {
+    hint = {
         "post_id": post.get("post_id"),
         "question": question.split("\n", 1)[0],
         "snippet": snippet,
     }
+    if comments is not None:
+        hint["comments"] = [c["text"] for c in comments[:N_COMMENTS]]
+    return hint
 
 
 def main() -> None:
@@ -174,8 +188,13 @@ def main() -> None:
     parser.add_argument("--project", help="only this project")
     parser.add_argument("--bug", help="only this bug id (with --project)")
     parser.add_argument("--out", type=Path,
-                        help="log file (default results/baseline_<split>_hints.json)")
+                        help="log file (default results/baseline_<split>_hints.json,"
+                             " or _api.json with --source api)")
+    parser.add_argument("--source", choices=["staqc", "api"], default="staqc",
+                        help="where posts come from: BM25 over StaQC, or Stack Overflow search"
+                             " (api also adds each post's top comments)")
     args = parser.parse_args()
+    api = args.source == "api"
 
     split = json.loads(SPLIT_FILE.read_text())
     projects = (split["train"] + split["validation"] + split["test"]) if args.split == "all" else split[args.split]
@@ -187,9 +206,13 @@ def main() -> None:
             if b["project"] in projects and (not args.bug or b["bug_id"] == args.bug)]
     bugs.sort(key=lambda b: (b["project"].lower(), int(b["bug_id"])))
 
-    posts = load_jsonl(CORPUS_FILE)
-    post_index = BM25Okapi([tokens(post_parts(p)[2]) or ["blank"] for p in posts], k1=K1, b=B)
-    print(f"{len(bugs)} bugs in {args.split}, {len(posts)} posts")
+    if api:
+        posts = []
+        print(f"{len(bugs)} bugs in {args.split}, posts from Stack Overflow search")
+    else:
+        posts = load_jsonl(CORPUS_FILE)
+        post_index = BM25Okapi([tokens(post_parts(p)[2]) or ["blank"] for p in posts], k1=K1, b=B)
+        print(f"{len(bugs)} bugs in {args.split}, {len(posts)} posts")
 
     rows = []
     counts = Counter(bugs=len(bugs))
@@ -220,10 +243,18 @@ def main() -> None:
         row["fix_files_in_search"] = sum(f in present for f in {f for f, _ in truth})
         line_index = BM25Okapi([tokens(text) for _, _, text in lines], k1=K1, b=B)
 
-        top = ranked(post_index.get_scores(tokens(query)))[:N_POSTS]
-        chosen = [posts[i] for i in top]
-        row["posts"] = [p.get("post_id") for p in chosen]
-        row["hints"] = [hint_for(p) for p in chosen]
+        if api:
+            cutoff = bug.get("buggy_commit_time")
+            if cutoff is None:
+                raise SystemExit(f"{name} has no buggy_commit_time. Run scripts/data/add_commit_times.py first.")
+            chosen = similar_posts(query, todate=cutoff, n=N_POSTS)
+            row["posts"] = [p["post_id"] for p in chosen]
+            row["hints"] = [hint_for(p, p["comments"]) for p in chosen]
+        else:
+            top = ranked(post_index.get_scores(tokens(query)))[:N_POSTS]
+            chosen = [posts[i] for i in top]
+            row["posts"] = [p.get("post_id") for p in chosen]
+            row["hints"] = [hint_for(p) for p in chosen]
         post_query = "\n".join(post_parts(p)[2] for p in chosen)
         # posts alone: the old line query, traceback dropped
         row["via_posts"] = evaluate(ranked(line_index.get_scores(tokens(post_query))), lines, truth)
@@ -231,53 +262,70 @@ def main() -> None:
         # traceback stays, and the five posts are extra terms
         both = f"{query}\n{post_query}"
         row["with_posts"] = evaluate(ranked(line_index.get_scores(tokens(both))), lines, truth)
+        if api:
+            comment_query = "\n".join(c for h in row["hints"] for c in h["comments"])
+            row["n_comments"] = sum(len(h["comments"]) for h in row["hints"])
+            all_three = f"{both}\n{comment_query}"
+            row["with_comments"] = evaluate(ranked(line_index.get_scores(tokens(all_three))), lines, truth)
+            counts["with_posts"] += bool(chosen)
         counts["scored"] += 1
 
         mark = lambda e: f"line {'hit ' if e['line_hit'] else 'miss'} file {'hit ' if e['file_hit'] else 'miss'}"
-        print(f"{name}: {len(lines)} lines | posts: {mark(row['via_posts'])}"
+        print(f"{name}: {len(lines)} lines, {len(chosen)} posts | posts: {mark(row['via_posts'])}"
               f" | traceback: {mark(row['direct'])}"
-              f" | both: {mark(row['with_posts'])}")
+              f" | both: {mark(row['with_posts'])}"
+              + (f" | +{row['n_comments']} comments: {mark(row['with_comments'])}" if api else ""))
 
     summary = {
         "via_posts": summarize(rows, "via_posts"),
         "direct": summarize(rows, "direct"),
         "with_posts": summarize(rows, "with_posts"),
     }
+    if api:
+        summary["with_comments"] = summarize(rows, "with_comments")
     log = {
         "split": args.split,
+        "source": args.source,
         "filter": {"project": args.project, "bug": args.bug},
-        "coverage": {k: counts[k] for k in ("bugs", "run", "reproduced", "scored")},
+        "coverage": {k: counts[k] for k in ("bugs", "run", "reproduced", "scored", "with_posts")},
         "summary": summary,
         "commit": git_head(ROOT),
         "config": {
             "baseline": "okapi-bm25", "k1": K1, "b": B,
             "posts": N_POSTS, "k": K,
-            "corpus": "question + one answer snippet; no comments",
-            "hint": "question first line + answer snippet",
+            "corpus": ("Stack Overflow /similar on the whole traceback, tagged python;"
+                       " nothing after the buggy commit" if api else
+                       "StaQC: question + one answer snippet; no comments"),
+            "hint": "question first line + answer snippet" + (" + top comments" if api else ""),
             "via_posts": "five posts joined, traceback dropped",
             "direct": "traceback only",
             "with_posts": "traceback plus the five posts",
+            "comments": (f"top {N_COMMENTS} question comments per post from before the buggy commit,"
+                         " added after retrieval" if api else None),
+            "with_comments": "traceback plus the five posts plus their comments" if api else None,
             "query": "buggy traceback",
             "search": "non-test .py lines at the buggy commit",
         },
         "data": {
             "bugsinpy_commit": git_head(ROOT / "data" / "raw" / "BugsInPy"),
-            "corpus_n": len(posts),
+            "corpus_n": None if api else len(posts),
         },
         "python": platform.python_version(),
         "rank_bm25": version("rank-bm25"),
         "bugs": rows,
     }
     # The meeting log stays at baseline_<split>.json. This run writes a new file.
-    out = args.out or RESULTS / f"baseline_{args.split}_hints.json"
+    out = args.out or RESULTS / f"baseline_{args.split}_{'api' if api else 'hints'}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(log, indent=2) + "\n")
 
     c = log["coverage"]
     print(f"\n{c['scored']} scored of {c['bugs']} bugs ({c['run']} run, {c['reproduced']} reproduced)")
+    if api:
+        print(f"  search found posts for {c['with_posts']} of {c['scored']}")
     for key, s in summary.items():
         if s["n"]:
-            print(f"  {key:9} line Recall@5 {s['line_hits']}/{s['n']}  file Recall@5 {s['file_hits']}/{s['n']}"
+            print(f"  {key:13} line Recall@5 {s['line_hits']}/{s['n']}  file Recall@5 {s['file_hits']}/{s['n']}"
                   f"  MRR {s['mrr']:.3f}")
     print(f"log -> {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
 
