@@ -4,7 +4,9 @@ Uses the StaQC dataset (Python Stack Overflow question-code pairs, CC-licensed,
 redistributed on Hugging Face). For the walkthrough smoke test we only need a
 small sample of posts to retrieve against, not the full Stack Exchange dump.
 
-Each corpus doc = one SO post: the question title + its code snippet.
+Each corpus doc is one Stack Overflow question plus one code block taken from an
+answer. StaQC does not include comments or the other answers on the thread, so
+those are not stored.
 
 Output: data/processed/corpus.jsonl  (one JSON post per line)
 
@@ -46,16 +48,19 @@ def main():
     for i, row in enumerate(ds):
         if i >= args.n:
             break
-        # a 'post' = the question title plus its code snippet
+        # question text, and the one code block StaQC pulled out of an answer
         snippet = row["snippet"]
-        if isinstance(snippet, dict):          
-            snippet = " ".join(snippet.get("text", []))
+        if isinstance(snippet, dict):
+            snippet = " ".join(snippet.get("text") or [])
         elif isinstance(snippet, list):
-            snippet = " ".join(snippet)
-        text = (row["question"] or "") + "\n" + (snippet or "")
+            snippet = " ".join(str(part) for part in snippet)
+        question = (row.get("question") or "").strip()
+        snippet = (snippet or "").strip()
         corpus.append({
             "post_id": str(row["question_id"]),
-            "text": text.strip(),
+            "question": question,
+            "snippet": snippet,
+            "text": (question + "\n" + snippet).strip(),
         })
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)

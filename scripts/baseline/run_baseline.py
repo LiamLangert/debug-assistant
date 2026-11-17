@@ -8,12 +8,12 @@ reproduced: true):
   1. The query is the buggy version's traceback, from every failing command,
      with the container's /bug/buggy/<project>/ prefix cut off the paths.
   2. BM25 picks the top 5 Stack Overflow posts for that query.
-  3. The 5 posts' text, joined into one query, ranks every line of the
-     project's source at the buggy commit: all tracked .py files except tests
-     (parse_bugsinpy.is_test_path).
-
-The same lines are also ranked by the traceback itself, with no posts
-("direct"). If the posts do not beat that, they are not adding anything.
+  3. The hint for each post is the question's first line and the code block
+     from its answer. Comments are not in the corpus, so a hint cannot come
+     from a comment.
+  4. Every non-test .py line at the buggy commit is ranked three ways:
+     the five posts alone, the traceback alone, and the traceback with the
+     five posts added. The third one keeps the file names from the traceback.
 
 Metrics, over the scored bugs:
   line Recall@5   a line the fix touched is in the top 5 lines
@@ -143,12 +143,38 @@ def load_jsonl(path: Path) -> list[dict]:
         return [json.loads(line) for line in f]
 
 
+def post_parts(post: dict) -> tuple[str, str, str]:
+    """Question, answer snippet, and the text BM25 searches.
+
+    Older corpus files only have "text", which was the question then the snippet.
+    """
+    if post.get("question") or post.get("snippet"):
+        question = (post.get("question") or "").strip()
+        snippet = (post.get("snippet") or "").strip()
+    else:
+        question, _, snippet = (post.get("text") or "").partition("\n")
+        question, snippet = question.strip(), snippet.strip()
+    text = (post.get("text") or f"{question}\n{snippet}").strip()
+    return question, snippet, text
+
+
+def hint_for(post: dict) -> dict:
+    """What we would show: the question's first line, and the answer's code."""
+    question, snippet, _ = post_parts(post)
+    return {
+        "post_id": post.get("post_id"),
+        "question": question.split("\n", 1)[0],
+        "snippet": snippet,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--split", choices=["train", "validation", "test", "all"], default="validation")
     parser.add_argument("--project", help="only this project")
     parser.add_argument("--bug", help="only this bug id (with --project)")
-    parser.add_argument("--out", type=Path, help="log file (default results/baseline_<split>.json)")
+    parser.add_argument("--out", type=Path,
+                        help="log file (default results/baseline_<split>_hints.json)")
     args = parser.parse_args()
 
     split = json.loads(SPLIT_FILE.read_text())
@@ -162,7 +188,7 @@ def main() -> None:
     bugs.sort(key=lambda b: (b["project"].lower(), int(b["bug_id"])))
 
     posts = load_jsonl(CORPUS_FILE)
-    post_index = BM25Okapi([tokens(p["text"]) for p in posts], k1=K1, b=B)
+    post_index = BM25Okapi([tokens(post_parts(p)[2]) or ["blank"] for p in posts], k1=K1, b=B)
     print(f"{len(bugs)} bugs in {args.split}, {len(posts)} posts")
 
     rows = []
@@ -195,17 +221,28 @@ def main() -> None:
         line_index = BM25Okapi([tokens(text) for _, _, text in lines], k1=K1, b=B)
 
         top = ranked(post_index.get_scores(tokens(query)))[:N_POSTS]
-        row["posts"] = [posts[i]["post_id"] for i in top]
-        post_query = "\n".join(posts[i]["text"] for i in top)
+        chosen = [posts[i] for i in top]
+        row["posts"] = [p.get("post_id") for p in chosen]
+        row["hints"] = [hint_for(p) for p in chosen]
+        post_query = "\n".join(post_parts(p)[2] for p in chosen)
+        # posts alone: the old line query, traceback dropped
         row["via_posts"] = evaluate(ranked(line_index.get_scores(tokens(post_query))), lines, truth)
         row["direct"] = evaluate(ranked(line_index.get_scores(tokens(query))), lines, truth)
+        # traceback stays, and the five posts are extra terms
+        both = f"{query}\n{post_query}"
+        row["with_posts"] = evaluate(ranked(line_index.get_scores(tokens(both))), lines, truth)
         counts["scored"] += 1
 
         mark = lambda e: f"line {'hit ' if e['line_hit'] else 'miss'} file {'hit ' if e['file_hit'] else 'miss'}"
-        print(f"{name}: {len(lines)} lines | via posts: {mark(row['via_posts'])}"
-              f" | direct: {mark(row['direct'])}, first fix line at {row['direct']['first_fix_line_rank']}")
+        print(f"{name}: {len(lines)} lines | posts: {mark(row['via_posts'])}"
+              f" | traceback: {mark(row['direct'])}"
+              f" | both: {mark(row['with_posts'])}")
 
-    summary = {"via_posts": summarize(rows, "via_posts"), "direct": summarize(rows, "direct")}
+    summary = {
+        "via_posts": summarize(rows, "via_posts"),
+        "direct": summarize(rows, "direct"),
+        "with_posts": summarize(rows, "with_posts"),
+    }
     log = {
         "split": args.split,
         "filter": {"project": args.project, "bug": args.bug},
@@ -214,8 +251,14 @@ def main() -> None:
         "commit": git_head(ROOT),
         "config": {
             "baseline": "okapi-bm25", "k1": K1, "b": B,
-            "posts": N_POSTS, "k": K, "post_query": "top posts joined",
-            "query": "buggy traceback", "search": "non-test .py lines at the buggy commit",
+            "posts": N_POSTS, "k": K,
+            "corpus": "question + one answer snippet; no comments",
+            "hint": "question first line + answer snippet",
+            "via_posts": "five posts joined, traceback dropped",
+            "direct": "traceback only",
+            "with_posts": "traceback plus the five posts",
+            "query": "buggy traceback",
+            "search": "non-test .py lines at the buggy commit",
         },
         "data": {
             "bugsinpy_commit": git_head(ROOT / "data" / "raw" / "BugsInPy"),
@@ -225,7 +268,8 @@ def main() -> None:
         "rank_bm25": version("rank-bm25"),
         "bugs": rows,
     }
-    out = args.out or RESULTS / f"baseline_{args.split}.json"
+    # The meeting log stays at baseline_<split>.json. This run writes a new file.
+    out = args.out or RESULTS / f"baseline_{args.split}_hints.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(log, indent=2) + "\n")
 

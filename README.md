@@ -44,5 +44,11 @@ the buggy version and passes on the fixed one (`"reproduced": true`). Build logs
 stay in `data/work/`.
 
 `run_baseline.py` ranks every non-test source line at the buggy commit. It
-reports line and file Recall@5 and MRR, once through the Stack Overflow posts and
-once with the traceback alone, to `results/baseline_<split>.json`.
+writes `results/baseline_<split>_hints.json` and leaves the older
+`results/baseline_<split>.json` alone.
+
+A retrieved post is the question plus one code block from an answer. Comments
+are not in the StaQC corpus, so a hint cannot be a comment. Each hint is the
+question's first line and that code block. Lines are ranked three ways: the
+five posts alone, the traceback alone, and the traceback with those posts
+added. The third keeps the file names that the traceback already has.
