@@ -52,3 +52,28 @@ are not in the StaQC corpus, so a hint cannot be a comment. Each hint is the
 question's first line and that code block. Lines are ranked three ways: the
 five posts alone, the traceback alone, and the traceback with those posts
 added. The third keeps the file names that the traceback already has.
+
+## Classical reranker
+
+Logistic regression reranks the BM25 top 50 posts. It is fit on train
+projects only. A post is a positive when that post's own text puts a fix
+line in the top 5. The features are the BM25 score, how much of the question
+shows up in the traceback, and how much of the snippet does. An accepted
+answer and comment overlap are included when the post has them, and stay 0
+on StaQC rows. The test split is not read. The baseline logs are not rewritten.
+
+```bash
+uv run scripts/classical/run_logistic.py
+```
+
+The fit needs reproduced train bugs and a cached repo for each of those
+projects. One train bug is not enough, and the script stops instead of
+writing a model. The number lands in `results/classical_validation.json`.
+
+## Deep row
+
+Same split file, same line Recall@5, same `evaluate` in `run_baseline.py`.
+Tune on train and validation only. Leave the test split unread. Write
+`results/deep_validation.json` with `line_recall@5`, `file_recall@5`, and
+`mrr`. It is ahead only if those beat the traceback-only BM25 number and
+`results/classical_validation.json` on the validation bugs.
