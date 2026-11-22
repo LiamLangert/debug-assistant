@@ -1,0 +1,47 @@
+{
+  "model": "logistic regression",
+  "features": [
+    "bm25",
+    "question_overlap",
+    "snippet_overlap",
+    "accepted",
+    "comment_overlap"
+  ],
+  "coef": [
+    -0.274,
+    0.344,
+    0.346,
+    0.0,
+    0.0
+  ],
+  "intercept": -0.1359,
+  "class_weight": "balanced",
+  "scaler_mean": [
+    96.4055,
+    0.1239,
+    0.1519,
+    0.0,
+    0.0
+  ],
+  "scaler_scale": [
+    121.5853,
+    0.125,
+    0.1218,
+    1.0,
+    1.0
+  ],
+  "seed": 0,
+  "top_n": 50,
+  "keep": 5,
+  "train": {
+    "bugs": 15,
+    "posts": 750,
+    "positives": 7
+  },
+  "validation": {
+    "n": 0
+  },
+  "commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674",
+  "corpus_n": 500,
+  "bugs": []
+}

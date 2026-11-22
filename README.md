@@ -72,8 +72,9 @@ writing a model. The number lands in `results/classical_validation.json`.
 
 ## Deep row
 
-Same split file, same line Recall@5, same `evaluate` in `run_baseline.py`.
-Tune on train and validation only. Leave the test split unread. Write
-`results/deep_validation.json` with `line_recall@5`, `file_recall@5`, and
-`mrr`. It is ahead only if those beat the traceback-only BM25 number and
-`results/classical_validation.json` on the validation bugs.
+The dense ranker lives in `scripts/baseline/run_deep.py` and
+`scripts/baseline/run_deep_func.py`. Its validation logs are
+`results/deep_validation.json`, `results/deep_validation_func.json`,
+`results/deep_validation_via_posts.json`, and
+`results/deep_validation_with_posts.json`. The classical script does not
+read or rewrite those files.

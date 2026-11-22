@@ -1,0 +1,76 @@
+{
+  "project": "thefuck",
+  "bug_id": "8",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-j2kbrqj0/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-zbqvlpw5/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-m8ihdpb9/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-8q38ou40/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_dnf_no_such_command.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 'dnf install vim' in []",
+          "traceback": "=================================== FAILURES ===================================\n_ test_get_new_command[dnf isntall vim-No such command: isntall. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(isntall)'\"\\n-dnf install vim] _\n\nset_help = <function set_help.<locals>._set_text at 0xffff8cacc8c8>\noutput = 'No such command: isntall. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install \\'dnf-command(isntall)\\'\"\\n'\nscript = 'dnf isntall vim', result = 'dnf install vim'\n\n    @pytest.mark.parametrize('script, output, result', [\n        ('dnf isntall vim', invalid_command('isntall'),\n         'dnf install vim'),\n        ('dnf saerch vim', invalid_command('saerch'),\n         'dnf search vim'),\n    ])\n    def test_get_new_command(set_help, output, script, result):\n        set_help(help_text)\n>       assert result in get_new_command(Command(script, output))\nE       assert 'dnf install vim' in []\nE        +  where [] = get_new_command(Command(script=dnf isntall vim, output=No such command: isntall. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(isntall)'\"\\n))\nE        +    where Command(script=dnf isntall vim, output=No such command: isntall. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(isntall)'\"\\n) = Command('dnf isntall vim', 'No such command: isntall. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install \\'dnf-command(isntall)\\'\"\\n')\n\ntests/rules/test_dnf_no_such_command.py:190: AssertionError\n_ test_get_new_command[dnf saerch vim-No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(saerch)'\"\\n-dnf search vim] _\n\nset_help = <function set_help.<locals>._set_text at 0xffff8cacc9d8>\noutput = 'No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install \\'dnf-command(saerch)\\'\"\\n'\nscript = 'dnf saerch vim', result = 'dnf search vim'\n\n    @pytest.mark.parametrize('script, output, result', [\n        ('dnf isntall vim', invalid_command('isntall'),\n         'dnf install vim'),\n        ('dnf saerch vim', invalid_command('saerch'),\n         'dnf search vim'),\n    ])\n    def test_get_new_command(set_help, output, script, result):\n        set_help(help_text)\n>       assert result in get_new_command(Command(script, output))\nE       assert 'dnf search vim' in []\nE        +  where [] = get_new_command(Command(script=dnf saerch vim, output=No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(saerch)'\"\\n))\nE        +    where Command(script=dnf saerch vim, output=No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(saerch)'\"\\n) = Command('dnf saerch vim', 'No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install \\'dnf-command(saerch)\\'\"\\n')\n\ntests/rules/test_dnf_no_such_command.py:190: AssertionError",
+          "log_tail": "    @pytest.mark.parametrize('script, output, result', [\n        ('dnf isntall vim', invalid_command('isntall'),\n         'dnf install vim'),\n        ('dnf saerch vim', invalid_command('saerch'),\n         'dnf search vim'),\n    ])\n    def test_get_new_command(set_help, output, script, result):\n        set_help(help_text)\n>       assert result in get_new_command(Command(script, output))\nE       assert 'dnf search vim' in []\nE        +  where [] = get_new_command(Command(script=dnf saerch vim, output=No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(saerch)'\"\\n))\nE        +    where Command(script=dnf saerch vim, output=No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install 'dnf-command(saerch)'\"\\n) = Command('dnf saerch vim', 'No such command: saerch. Please use /usr/bin/dnf --help\\nIt could be a DNF plugin command, try: \"dnf install \\'dnf-command(saerch)\\'\"\\n')\n\ntests/rules/test_dnf_no_such_command.py:190: AssertionError\n=========================== 2 failed in 0.05 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/rules/test_dnf_no_such_command.py::test_get_operations",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert [b'autoremove...ro-sync', ...] == ['autoremove',...ro-sync', ...]",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ test_get_operations ______________________________\n\nset_help = <function set_help.<locals>._set_text at 0xffffbd63eb70>\n\n    def test_get_operations(set_help):\n        set_help(help_text)\n>       assert _get_operations() == dnf_operations\nE       AssertionError: assert [b'autoremove...ro-sync', ...] == ['autoremove',...ro-sync', ...]\nE         At index 0 diff: b'autoremove' != 'autoremove'\nE         Use -v to get the full diff\n\ntests/rules/test_dnf_no_such_command.py:179: AssertionError",
+          "log_tail": "\n=================================== FAILURES ===================================\n_____________________________ test_get_operations ______________________________\n\nset_help = <function set_help.<locals>._set_text at 0xffffbd63eb70>\n\n    def test_get_operations(set_help):\n        set_help(help_text)\n>       assert _get_operations() == dnf_operations\nE       AssertionError: assert [b'autoremove...ro-sync', ...] == ['autoremove',...ro-sync', ...]\nE         At index 0 diff: b'autoremove' != 'autoremove'\nE         Use -v to get the full diff\n\ntests/rules/test_dnf_no_such_command.py:179: AssertionError\n=========================== 1 failed in 0.03 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-vcf3y5a6/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-muokjwqb/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_dnf_no_such_command.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/rules/test_dnf_no_such_command.py ..                               [100%]\n\n=========================== 2 passed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/rules/test_dnf_no_such_command.py::test_get_operations",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 1 item\n\ntests/rules/test_dnf_no_such_command.py .                                [100%]\n\n=========================== 1 passed in 0.03 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 75,
+  "ran": "2026-11-20T23:59:05+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

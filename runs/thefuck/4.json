@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "4",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-7cmkiryg/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-5iioffv4/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-m3dr23s0/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-yjv2d0m9/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_fish.py::TestFish::test_get_aliases",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ValueError: not enough values to unpack (expected 2, got 1)",
+          "traceback": "=================================== FAILURES ===================================\n__________________________ TestFish.test_get_aliases ___________________________\n\nself = <tests.shells.test_fish.TestFish object at 0xffffa1a2f390>\nshell = <thefuck.shells.fish.Fish object at 0xffffa1a55e10>\n\n    def test_get_aliases(self, shell):\n>       assert shell.get_aliases() == {'fish_config': 'fish_config',\n                                       'fuck': 'fuck',\n                                       'funced': 'funced',\n                                       'funcsave': 'funcsave',\n                                       'history': 'history',\n                                       'll': 'll',\n                                       'math': 'math',\n                                       'popd': 'popd',\n                                       'pushd': 'pushd',\n                                       'ruby': 'ruby',\n                                       'g': 'git',\n                                       'fish_key_reader': '/usr/bin/fish_key_reader',\n                                       'alias_with_equal_sign': 'echo'}\n\ntests/shells/test_fish.py:62: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nthefuck/shells/fish.py:60: in get_aliases\n    raw_aliases = _get_aliases(overridden)\nthefuck/utils.py:37: in wrapper\n    value = fn(*args, **kwargs)\nthefuck/utils.py:265: in wrapper\n    return fn(*args, **kwargs)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\noverridden = {'', 'cd', 'grep', 'ls', 'man', 'open'}\n\n    @cache('~/.config/fish/config.fish')\n    def _get_aliases(overridden):\n        aliases = {}\n        proc = Popen(['fish', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)\n        alias_out = proc.stdout.read().decode('utf-8').strip().split('\\n')\n        for alias in alias_out:\n>           name, value = alias.replace('alias ', '', 1).split(' ', 1)\nE           ValueError: not enough values to unpack (expected 2, got 1)\n\nthefuck/shells/fish.py:25: ValueError",
+          "log_tail": "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\noverridden = {'', 'cd', 'grep', 'ls', 'man', 'open'}\n\n    @cache('~/.config/fish/config.fish')\n    def _get_aliases(overridden):\n        aliases = {}\n        proc = Popen(['fish', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)\n        alias_out = proc.stdout.read().decode('utf-8').strip().split('\\n')\n        for alias in alias_out:\n>           name, value = alias.replace('alias ', '', 1).split(' ', 1)\nE           ValueError: not enough values to unpack (expected 2, got 1)\n\nthefuck/shells/fish.py:25: ValueError\n=========================== 1 failed in 0.04 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-odv8obx0/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-svu79maq/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_fish.py::TestFish::test_get_aliases",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 1 item\n\ntests/shells/test_fish.py .                                              [100%]\n\n=========================== 1 passed in 0.03 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 74,
+  "ran": "2026-11-20T23:54:07+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

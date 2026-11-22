@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "9",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-2xkubm1q/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-yklwj9t1/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-wkfzoaqw/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-x3qv593i/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_push.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "IndexError: pop index out of range",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ test_get_new_command _____________________________\n\nstderr = 'fatal: The current branch master has no upstream branch.\\nTo push the current branch and set the remote as upstream, use\\n\\n    git push --set-upstream origin master\\n\\n'\n\n    def test_get_new_command(stderr):\n        assert get_new_command(Command('git push', stderr=stderr))\\\n            == \"git push --set-upstream origin master\"\n>       assert get_new_command(Command('git push -u', stderr=stderr))\\\n            == \"git push --set-upstream origin master\"\n\ntests/rules/test_git_push.py:26: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n<decorator-gen-7>:2: in get_new_command\n    ???\nthefuck/specific/git.py:32: in git_support\n    return fn(command)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ncommand = Command(script=git push -u, stdout=, stderr=fatal: The current branch master has no upstream branch.\nTo push the current branch and set the remote as upstream, use\n\n    git push --set-upstream origin master\n\n)\n\n    @git_support\n    def get_new_command(command):\n        # If --set-upstream or -u are passed, remove it and its argument. This is\n        # because the remaining arguments are concatenated onto the command suggested\n        # by git, which includes --set-upstream and its argument\n        upstream_option_index = -1\n        try:\n            upstream_option_index = command.script_parts.index('--set-upstream')\n        except ValueError:\n            pass\n        try:\n            upstream_option_index = command.script_parts.index('-u')\n        except ValueError:\n            pass\n        if upstream_option_index is not -1:\n            command.script_parts.pop(upstream_option_index)\n>           command.script_parts.pop(upstream_option_index)\nE           IndexError: pop index out of range\n\nthefuck/rules/git_push.py:27: IndexError",
+          "log_tail": "        try:\n            upstream_option_index = command.script_parts.index('--set-upstream')\n        except ValueError:\n            pass\n        try:\n            upstream_option_index = command.script_parts.index('-u')\n        except ValueError:\n            pass\n        if upstream_option_index is not -1:\n            command.script_parts.pop(upstream_option_index)\n>           command.script_parts.pop(upstream_option_index)\nE           IndexError: pop index out of range\n\nthefuck/rules/git_push.py:27: IndexError\n=========================== 1 failed in 0.04 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-rcsf1vxf/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-jx9odyw7/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_push.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 1 item\n\ntests/rules/test_git_push.py .                                           [100%]\n\n=========================== 1 passed in 0.02 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 79,
+  "ran": "2026-11-21T00:00:24+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

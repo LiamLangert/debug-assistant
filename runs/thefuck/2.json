@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "2",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-1wpbhine/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-oxn14hg_/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-4na38kd1/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-smvpstmg/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_utils.py::test_get_all_executables_pathsep",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'Path' does not contain all of (call('C:\\\\\\\\foo'), call('C:\\\\\\\\bar'), call('C:\\\\\\\\baz'), call('C:\\\\\\\\foo\\\\\\\\bar')) in its call list, found [call('C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\bar;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\baz;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo\\\\\\\\bar'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__()] instead",
+          "traceback": "=================================== FAILURES ===================================\n_ test_get_all_executables_pathsep[C:\\\\\\\\foo;C:\\\\\\\\bar;C:\\\\\\\\baz;C:\\\\\\\\foo\\\\\\\\bar-;] _\n\npath = 'C:\\\\\\\\foo;C:\\\\\\\\bar;C:\\\\\\\\baz;C:\\\\\\\\foo\\\\\\\\bar', pathsep = ';'\n\n    @pytest.mark.usefixtures('no_memoize', 'os_environ_pathsep')\n    @pytest.mark.parametrize('path, pathsep', [\n        ('/foo:/bar:/baz:/foo/bar', ':'),\n        (r'C:\\\\foo;C:\\\\bar;C:\\\\baz;C:\\\\foo\\\\bar', ';')])\n    def test_get_all_executables_pathsep(path, pathsep):\n        with patch('thefuck.utils.Path') as Path_mock:\n            get_all_executables()\n>           Path_mock.assert_has_calls([call(p) for p in path.split(pathsep)], True)\n\ntests/test_utils.py:94: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <MagicMock name='Path' id='281473296673144'>\ncalls = [call('C:\\\\\\\\foo'), call('C:\\\\\\\\bar'), call('C:\\\\\\\\baz'), call('C:\\\\\\\\foo\\\\\\\\bar')]\nany_order = True\n\n    def assert_has_calls(self, calls, any_order=False):\n        \"\"\"assert the mock has been called with the specified calls.\n        The `mock_calls` list is checked for the calls.\n    \n        If `any_order` is False (the default) then the calls must be\n        sequential. There can be extra calls before or after the\n        specified calls.\n    \n        If `any_order` is True then the calls can be in any order, but\n        they must all appear in `mock_calls`.\"\"\"\n        expected = [self._call_matcher(c) for c in calls]\n        cause = next((e for e in expected if isinstance(e, Exception)), None)\n        all_calls = _CallList(self._call_matcher(c) for c in self.mock_calls)\n        if not any_order:\n            if expected not in all_calls:\n                if cause is None:\n                    problem = 'Calls not found.'\n                else:\n                    problem = ('Error processing expected calls.\\n'\n                               'Errors: {}').format(\n                                   [e if isinstance(e, Exception) else None\n                                    for e in expected])\n                raise AssertionError(\n                    f'{problem}\\n'\n                    f'Expected: {_CallList(calls)}'\n                    f'{self._calls_repr(prefix=\"Actual\").rstrip(\".\")}'\n                ) from cause\n            return\n    \n        all_calls = list(all_calls)\n    \n        not_found = []\n        for kall in expected:\n            try:\n                all_calls.remove(kall)\n            except ValueError:\n                not_found.append(kall)\n        if not_found:\n            raise AssertionError(\n                '%r does not contain all of %r in its call list, '\n                'found %r instead' % (self._mock_name or 'mock',\n                                      tuple(not_found), all_calls)\n>           ) from cause\nE           AssertionError: 'Path' does not contain all of (call('C:\\\\\\\\foo'), call('C:\\\\\\\\bar'), call('C:\\\\\\\\baz'), call('C:\\\\\\\\foo\\\\\\\\bar')) in its call list, found [call('C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\bar;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\baz;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo\\\\\\\\bar'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__()] instead\n\nenv/lib/python3.7/site-packages/mock/mock.py:971: AssertionError",
+          "log_tail": "                all_calls.remove(kall)\n            except ValueError:\n                not_found.append(kall)\n        if not_found:\n            raise AssertionError(\n                '%r does not contain all of %r in its call list, '\n                'found %r instead' % (self._mock_name or 'mock',\n                                      tuple(not_found), all_calls)\n>           ) from cause\nE           AssertionError: 'Path' does not contain all of (call('C:\\\\\\\\foo'), call('C:\\\\\\\\bar'), call('C:\\\\\\\\baz'), call('C:\\\\\\\\foo\\\\\\\\bar')) in its call list, found [call('C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\bar;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\baz;C'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__(), call('\\\\\\\\foo\\\\\\\\bar'), call().iterdir(), call().iterdir().__iter__(), call().iterdir().__len__()] instead\n\nenv/lib/python3.7/site-packages/mock/mock.py:971: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_utils.py::test_get_all_executables_pathsep[C:\\\\\\\\foo;C:\\\\\\\\bar;C:\\\\\\\\baz;C:\\\\\\\\foo\\\\\\\\bar-;]\n========================= 1 failed, 1 passed in 0.06s =========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-1mwm74q_/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-68ux6abm/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_utils.py::test_get_all_executables_pathsep",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-5.4.2, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/test_utils.py ..                                                   [100%]\n\n============================== 2 passed in 0.03s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 74,
+  "ran": "2026-11-20T23:51:36+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "15",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-izfkwq41/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-v9x2xl0o/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-lclwix_3/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-e26ldhji/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_add.py::test_match",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert False",
+          "traceback": "=================================== FAILURES ===================================\n_______________ test_match[git submodule update unknown-unknown] _______________\n\nstderr = \"error: pathspec 'unknown' did not match any file(s) known to git.\"\nscript = 'git submodule update unknown', target = 'unknown'\n\n    @pytest.mark.parametrize('script, target', [\n        ('git submodule update unknown', 'unknown'),\n        ('git commit unknown', 'unknown')])\n    def test_match(stderr, script, target):\n>       assert match(Command(script=script, stderr=stderr))\nE       assert False\nE        +  where False = match(Command(script=git submodule update unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.))\nE        +    where Command(script=git submodule update unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.) = Command(script='git submodule update unknown', stderr=\"error: pathspec 'unknown' did not match any file(s) known to git.\")\n\ntests/rules/test_git_add.py:16: AssertionError\n____________________ test_match[git commit unknown-unknown] ____________________\n\nstderr = \"error: pathspec 'unknown' did not match any file(s) known to git.\"\nscript = 'git commit unknown', target = 'unknown'\n\n    @pytest.mark.parametrize('script, target', [\n        ('git submodule update unknown', 'unknown'),\n        ('git commit unknown', 'unknown')])\n    def test_match(stderr, script, target):\n>       assert match(Command(script=script, stderr=stderr))\nE       assert False\nE        +  where False = match(Command(script=git commit unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.))\nE        +    where Command(script=git commit unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.) = Command(script='git commit unknown', stderr=\"error: pathspec 'unknown' did not match any file(s) known to git.\")\n\ntests/rules/test_git_add.py:16: AssertionError",
+          "log_tail": "\nstderr = \"error: pathspec 'unknown' did not match any file(s) known to git.\"\nscript = 'git commit unknown', target = 'unknown'\n\n    @pytest.mark.parametrize('script, target', [\n        ('git submodule update unknown', 'unknown'),\n        ('git commit unknown', 'unknown')])\n    def test_match(stderr, script, target):\n>       assert match(Command(script=script, stderr=stderr))\nE       assert False\nE        +  where False = match(Command(script=git commit unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.))\nE        +    where Command(script=git commit unknown, stdout=, stderr=error: pathspec 'unknown' did not match any file(s) known to git.) = Command(script='git commit unknown', stderr=\"error: pathspec 'unknown' did not match any file(s) known to git.\")\n\ntests/rules/test_git_add.py:16: AssertionError\n=========================== 2 failed in 0.04 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-dphtbquq/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-p4ber883/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_add.py::test_match",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/rules/test_git_add.py ..                                           [100%]\n\n=========================== 2 passed in 0.02 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 74,
+  "ran": "2026-11-21T00:07:55+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

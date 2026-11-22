@@ -1,0 +1,76 @@
+{
+  "project": "thefuck",
+  "bug_id": "13",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-osx1pgps/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-o1aycn4c/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-w6h406z1/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-iowzoz21/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_branch_exists.py::test_match",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert False",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ test_match[git checkout bar-bar] _______________________\n\nstderr = \"fatal: A branch named 'bar' already exists.\"\nscript = 'git checkout bar', branch_name = 'bar'\n\n    @pytest.mark.parametrize('script, branch_name', [\n        ('git branch foo', 'foo'), ('git checkout bar', 'bar')])\n    def test_match(stderr, script, branch_name):\n>       assert match(Command(script=script, stderr=stderr))\nE       assert False\nE        +  where False = match(Command(script=git checkout bar, stdout=, stderr=fatal: A branch named 'bar' already exists.))\nE        +    where Command(script=git checkout bar, stdout=, stderr=fatal: A branch named 'bar' already exists.) = Command(script='git checkout bar', stderr=\"fatal: A branch named 'bar' already exists.\")\n\ntests/rules/test_git_branch_exists.py:23: AssertionError",
+          "log_tail": "_______________________ test_match[git checkout bar-bar] _______________________\n\nstderr = \"fatal: A branch named 'bar' already exists.\"\nscript = 'git checkout bar', branch_name = 'bar'\n\n    @pytest.mark.parametrize('script, branch_name', [\n        ('git branch foo', 'foo'), ('git checkout bar', 'bar')])\n    def test_match(stderr, script, branch_name):\n>       assert match(Command(script=script, stderr=stderr))\nE       assert False\nE        +  where False = match(Command(script=git checkout bar, stdout=, stderr=fatal: A branch named 'bar' already exists.))\nE        +    where Command(script=git checkout bar, stdout=, stderr=fatal: A branch named 'bar' already exists.) = Command(script='git checkout bar', stderr=\"fatal: A branch named 'bar' already exists.\")\n\ntests/rules/test_git_branch_exists.py:23: AssertionError\n====================== 1 failed, 1 passed in 0.03 seconds ======================"
+        },
+        {
+          "cmd": "pytest tests/rules/test_git_branch_exists.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert ['git branch ...checkout foo'] == ['git branch -...checkout foo']",
+          "traceback": "=================================== FAILURES ===================================\n___________________ test_get_new_command[git branch foo-foo] ___________________\n\nstderr = \"fatal: A branch named 'foo' already exists.\"\nnew_command = ['git branch -d foo && git branch foo', 'git branch -d foo && git checkout -b foo', 'git branch -D foo && git branch foo', 'git branch -D foo && git checkout -b foo', 'git checkout foo']\nscript = 'git branch foo', branch_name = 'foo'\n\n    @pytest.mark.parametrize('script, branch_name, ', [\n        ('git branch foo', 'foo'), ('git checkout bar', 'bar')])\n    def test_get_new_command(stderr, new_command, script, branch_name):\n>       assert get_new_command(Command(script=script, stderr=stderr)) == new_command\nE       AssertionError: assert ['git branch ...checkout foo'] == ['git branch -...checkout foo']\nE         At index 1 diff: 'git branch -D foo && git branch foo' != 'git branch -d foo && git checkout -b foo'\nE         Right contains more items, first extra item: 'git branch -D foo && git checkout -b foo'\nE         Use -v to get the full diff\n\ntests/rules/test_git_branch_exists.py:34: AssertionError\n__________________ test_get_new_command[git checkout bar-bar] __________________\n\nstderr = \"fatal: A branch named 'bar' already exists.\"\nnew_command = ['git branch -d bar && git branch bar', 'git branch -d bar && git checkout -b bar', 'git branch -D bar && git branch bar', 'git branch -D bar && git checkout -b bar', 'git checkout bar']\nscript = 'git checkout bar', branch_name = 'bar'\n\n    @pytest.mark.parametrize('script, branch_name, ', [\n        ('git branch foo', 'foo'), ('git checkout bar', 'bar')])\n    def test_get_new_command(stderr, new_command, script, branch_name):\n>       assert get_new_command(Command(script=script, stderr=stderr)) == new_command\nE       AssertionError: assert ['git branch ...checkout bar'] == ['git branch -...checkout bar']\nE         At index 1 diff: 'git branch -D bar && git branch bar' != 'git branch -d bar && git checkout -b bar'\nE         Right contains more items, first extra item: 'git branch -D bar && git checkout -b bar'\nE         Use -v to get the full diff\n\ntests/rules/test_git_branch_exists.py:34: AssertionError",
+          "log_tail": "stderr = \"fatal: A branch named 'bar' already exists.\"\nnew_command = ['git branch -d bar && git branch bar', 'git branch -d bar && git checkout -b bar', 'git branch -D bar && git branch bar', 'git branch -D bar && git checkout -b bar', 'git checkout bar']\nscript = 'git checkout bar', branch_name = 'bar'\n\n    @pytest.mark.parametrize('script, branch_name, ', [\n        ('git branch foo', 'foo'), ('git checkout bar', 'bar')])\n    def test_get_new_command(stderr, new_command, script, branch_name):\n>       assert get_new_command(Command(script=script, stderr=stderr)) == new_command\nE       AssertionError: assert ['git branch ...checkout bar'] == ['git branch -...checkout bar']\nE         At index 1 diff: 'git branch -D bar && git branch bar' != 'git branch -d bar && git checkout -b bar'\nE         Right contains more items, first extra item: 'git branch -D bar && git checkout -b bar'\nE         Use -v to get the full diff\n\ntests/rules/test_git_branch_exists.py:34: AssertionError\n=========================== 2 failed in 0.03 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-zt96ff3j/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-lqpuj665/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_branch_exists.py::test_match",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/rules/test_git_branch_exists.py ..                                 [100%]\n\n=========================== 2 passed in 0.02 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/rules/test_git_branch_exists.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/rules/test_git_branch_exists.py ..                                 [100%]\n\n=========================== 2 passed in 0.01 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 74,
+  "ran": "2026-11-21T00:05:26+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}

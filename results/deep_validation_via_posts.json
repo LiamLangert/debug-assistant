@@ -1,0 +1,2156 @@
+{
+  "split": "validation",
+  "method": "dense-embedding (via_posts)",
+  "coverage": {
+    "bugs": 97,
+    "run": 97,
+    "reproduced": 91,
+    "scored": 91
+  },
+  "summary": {
+    "via_posts": {
+      "n": 91,
+      "line_recall@5": 0.0,
+      "line_hits": 0,
+      "file_recall@5": 0.2967,
+      "file_hits": 27,
+      "mrr": 0.0022
+    }
+  },
+  "commit": "3426c5a3f8101b443e6f5e12decf46764acb18e0",
+  "config": {
+    "model": "all-MiniLM-L6-v2",
+    "k": 5,
+    "similarity": "cosine",
+    "mode": "via_posts",
+    "posts": "5 StaQC posts via BM25",
+    "seeds": "deterministic, spread 0"
+  },
+  "python": "3.12.7",
+  "sentence_transformers": "6.3.0",
+  "bugs": [
+    {
+      "project": "ansible",
+      "bug_id": "1",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 37848,
+        "top_lines": [
+          "lib/ansible/module_utils/urls.py:711",
+          "lib/ansible/plugins/lookup/subelements.py:109",
+          "lib/ansible/plugins/lookup/subelements.py:16",
+          "lib/ansible/plugins/filter/core.py:545",
+          "hacking/shippable/download.py:134"
+        ],
+        "top_files": [
+          "lib/ansible/module_utils/urls.py",
+          "lib/ansible/plugins/lookup/subelements.py",
+          "lib/ansible/plugins/filter/core.py",
+          "hacking/shippable/download.py",
+          "hacking/shippable/run.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "2",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3970,
+        "top_lines": [
+          "lib/ansible/module_utils/six/__init__.py:691",
+          "lib/ansible/module_utils/six/__init__.py:683",
+          "lib/ansible/module_utils/six/__init__.py:687",
+          "lib/ansible/module_utils/yumdnf.py:22",
+          "lib/ansible/modules/commands/command.py:257"
+        ],
+        "top_files": [
+          "lib/ansible/module_utils/six/__init__.py",
+          "lib/ansible/module_utils/yumdnf.py",
+          "lib/ansible/modules/commands/command.py",
+          "lib/ansible/modules/commands/expect.py",
+          "lib/ansible/modules/files/assemble.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "3",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 66168,
+        "top_lines": [
+          "lib/ansible/template/__init__.py:501",
+          "lib/ansible/plugins/callback/junit.py:156",
+          "lib/ansible/template/__init__.py:509",
+          "lib/ansible/template/__init__.py:427",
+          "lib/ansible/plugins/action/reboot.py:237"
+        ],
+        "top_files": [
+          "lib/ansible/template/__init__.py",
+          "lib/ansible/plugins/callback/junit.py",
+          "lib/ansible/plugins/action/reboot.py",
+          "lib/ansible/playbook/base.py",
+          "lib/ansible/module_utils/connection.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "4",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 31563,
+        "top_lines": [
+          "lib/ansible/modules/source_control/git.py:526",
+          "lib/ansible/modules/system/service.py:1516",
+          "lib/ansible/modules/system/service.py:1543",
+          "lib/ansible/modules/files/unarchive.py:370",
+          "lib/ansible/module_utils/facts/network/linux.py:297"
+        ],
+        "top_files": [
+          "lib/ansible/modules/source_control/git.py",
+          "lib/ansible/modules/system/service.py",
+          "lib/ansible/modules/files/unarchive.py",
+          "lib/ansible/module_utils/facts/network/linux.py",
+          "lib/ansible/modules/system/known_hosts.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "5",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 58328,
+        "top_lines": [
+          "lib/ansible/plugins/filter/core.py:550",
+          "lib/ansible/plugins/callback/__init__.py:130",
+          "lib/ansible/module_utils/common/dict_transformations.py:111",
+          "lib/ansible/module_utils/common/dict_transformations.py:112",
+          "lib/ansible/module_utils/common/collections.py:44"
+        ],
+        "top_files": [
+          "lib/ansible/plugins/filter/core.py",
+          "lib/ansible/plugins/callback/__init__.py",
+          "lib/ansible/module_utils/common/dict_transformations.py",
+          "lib/ansible/module_utils/common/collections.py",
+          "lib/ansible/plugins/filter/mathstuff.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "6",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "ansible",
+      "bug_id": "7",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 50708,
+        "top_lines": [
+          "lib/ansible/modules/network/cnos/cnos_interface.py:389",
+          "lib/ansible/modules/network/eos/_eos_interface.py:302",
+          "lib/ansible/modules/network/icx/icx_interface.py:487",
+          "lib/ansible/modules/network/ios/_ios_interface.py:299",
+          "lib/ansible/modules/network/slxos/slxos_interface.py:292"
+        ],
+        "top_files": [
+          "lib/ansible/modules/network/cnos/cnos_interface.py",
+          "lib/ansible/modules/network/eos/_eos_interface.py",
+          "lib/ansible/modules/network/icx/icx_interface.py",
+          "lib/ansible/modules/network/ios/_ios_interface.py",
+          "lib/ansible/modules/network/slxos/slxos_interface.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "8",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "ansible",
+      "bug_id": "9",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 218294,
+        "top_lines": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:201",
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:215",
+          "lib/ansible/module_utils/univention_umc.py:277",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py:335",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py:789"
+        ],
+        "top_files": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py",
+          "lib/ansible/module_utils/univention_umc.py",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest_snapshot.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "10",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 38323,
+        "top_lines": [
+          "lib/ansible/cli/console.py:364",
+          "lib/ansible/utils/collection_loader.py:112",
+          "lib/ansible/modules/network/cumulus/nclu.py:161",
+          "lib/ansible/module_utils/network/junos/facts/legacy/base.py:143",
+          "lib/ansible/cli/console.py:127"
+        ],
+        "top_files": [
+          "lib/ansible/cli/console.py",
+          "lib/ansible/utils/collection_loader.py",
+          "lib/ansible/modules/network/cumulus/nclu.py",
+          "lib/ansible/module_utils/network/junos/facts/legacy/base.py",
+          "lib/ansible/modules/network/f5/bigiq_device_discovery.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "11",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 40556,
+        "top_lines": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:201",
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:215",
+          "lib/ansible/module_utils/univention_umc.py:277",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py:335",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py:789"
+        ],
+        "top_files": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py",
+          "lib/ansible/module_utils/univention_umc.py",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest_snapshot.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "12",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "ansible",
+      "bug_id": "13",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 82810,
+        "top_lines": [
+          "lib/ansible/modules/network/f5/bigip_gtm_global.py:323",
+          "lib/ansible/modules/network/radware/vdirect_commit.py:191",
+          "lib/ansible/modules/network/ios/ios_bgp.py:398",
+          "lib/ansible/module_utils/common/dict_transformations.py:41",
+          "lib/ansible/modules/network/f5/bigip_device_group.py:582"
+        ],
+        "top_files": [
+          "lib/ansible/modules/network/f5/bigip_gtm_global.py",
+          "lib/ansible/modules/network/radware/vdirect_commit.py",
+          "lib/ansible/modules/network/ios/ios_bgp.py",
+          "lib/ansible/module_utils/common/dict_transformations.py",
+          "lib/ansible/modules/network/f5/bigip_device_group.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "14",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 14588,
+        "top_lines": [
+          "lib/ansible/modules/net_tools/basics/uri.py:557",
+          "lib/ansible/plugins/httpapi/fortios.py:69",
+          "lib/ansible/module_utils/urls.py:1417",
+          "lib/ansible/modules/network/aci/aci_firmware_source.py:225",
+          "lib/ansible/modules/monitoring/spectrum_device.py:314"
+        ],
+        "top_files": [
+          "lib/ansible/modules/net_tools/basics/uri.py",
+          "lib/ansible/plugins/httpapi/fortios.py",
+          "lib/ansible/module_utils/urls.py",
+          "lib/ansible/modules/network/aci/aci_firmware_source.py",
+          "lib/ansible/modules/monitoring/spectrum_device.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "15",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 591389,
+        "top_lines": [
+          "lib/ansible/modules/network/netscaler/netscaler_service.py:455",
+          "lib/ansible/modules/network/netscaler/netscaler_service.py:442",
+          "lib/ansible/modules/network/netscaler/netscaler_service.py:453",
+          "lib/ansible/modules/packaging/os/pulp_repo.py:545",
+          "lib/ansible/modules/packaging/os/yum_repository.py:593"
+        ],
+        "top_files": [
+          "lib/ansible/modules/network/netscaler/netscaler_service.py",
+          "lib/ansible/modules/packaging/os/pulp_repo.py",
+          "lib/ansible/modules/packaging/os/yum_repository.py",
+          "lib/ansible/modules/network/netscaler/netscaler_servicegroup.py",
+          "lib/ansible/modules/monitoring/zabbix/zabbix_action.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "16",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 87624,
+        "top_lines": [
+          "lib/ansible/executor/module_common.py:628",
+          "lib/ansible/modules/web_infrastructure/django_manage.py:41",
+          "lib/ansible/modules/web_infrastructure/deploy_helper.py:324",
+          "lib/ansible/modules/web_infrastructure/deploy_helper.py:341",
+          "lib/ansible/modules/web_infrastructure/deploy_helper.py:443"
+        ],
+        "top_files": [
+          "lib/ansible/executor/module_common.py",
+          "lib/ansible/modules/web_infrastructure/django_manage.py",
+          "lib/ansible/modules/web_infrastructure/deploy_helper.py",
+          "hacking/metadata-tool.py",
+          "lib/ansible/plugins/loader.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "17",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 290726,
+        "top_lines": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:150",
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:164",
+          "lib/ansible/module_utils/univention_umc.py:277",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py:285",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py:689"
+        ],
+        "top_files": [
+          "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py",
+          "lib/ansible/module_utils/univention_umc.py",
+          "lib/ansible/modules/cloud/amazon/data_pipeline.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest.py",
+          "lib/ansible/modules/cloud/vmware/vmware_guest_snapshot.py"
+        ]
+      }
+    },
+    {
+      "project": "ansible",
+      "bug_id": "18",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "black",
+      "bug_id": "1",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 3607,
+        "top_lines": [
+          "black.py:5967",
+          "black.py:5976",
+          "black.py:5986",
+          "black.py:6001",
+          "blib2to3/pgen2/literals.py:58"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pgen2/parse.py",
+          "blib2to3/pgen2/driver.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "2",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 1822,
+        "top_lines": [
+          "black.py:3817",
+          "black.py:3826",
+          "black.py:3836",
+          "black.py:3852",
+          "blib2to3/pgen2/literals.py:58"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pgen2/parse.py",
+          "blib2to3/pgen2/driver.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "3",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 3490,
+        "top_lines": [
+          "black.py:3810",
+          "black.py:3819",
+          "black.py:3829",
+          "black.py:3845",
+          "blib2to3/pgen2/literals.py:58"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pgen2/parse.py",
+          "blib2to3/pgen2/driver.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "4",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 1117,
+        "top_lines": [
+          "black.py:3593",
+          "black.py:3602",
+          "black.py:3612",
+          "black.py:3628",
+          "black.py:3543"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "5",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 514,
+        "top_lines": [
+          "black.py:3503",
+          "black.py:3512",
+          "black.py:3522",
+          "black.py:3538",
+          "black.py:3455"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "6",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 138,
+        "top_lines": [
+          "black.py:3444",
+          "black.py:3453",
+          "black.py:3463",
+          "black.py:3479",
+          "black.py:3394"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "7",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 33930,
+        "top_lines": [
+          "black.py:3386",
+          "black.py:3396",
+          "black.py:3406",
+          "black.py:3422",
+          "black.py:3342"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "8",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 29721,
+        "top_lines": [
+          "black.py:3379",
+          "black.py:3389",
+          "black.py:3399",
+          "black.py:3415",
+          "black.py:3335"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "9",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 232,
+        "top_lines": [
+          "black.py:3381",
+          "black.py:3391",
+          "black.py:3401",
+          "black.py:3417",
+          "black.py:3337"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "10",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 1921,
+        "top_lines": [
+          "black.py:3312",
+          "black.py:3322",
+          "black.py:3332",
+          "black.py:3350",
+          "black.py:3277"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "11",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 1585,
+        "top_lines": [
+          "black.py:3658",
+          "black.py:2675",
+          "blib2to3/pgen2/token.py:72",
+          "black.py:1516",
+          "blib2to3/pytree.py:529"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/token.py",
+          "blib2to3/pytree.py",
+          "blackd.py",
+          "blib2to3/pgen2/parse.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "12",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 178,
+        "top_lines": [
+          "black.py:3225",
+          "black.py:3235",
+          "black.py:3245",
+          "black.py:3263",
+          "black.py:3190"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "13",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 506,
+        "top_lines": [
+          "black.py:3215",
+          "black.py:3225",
+          "black.py:3235",
+          "black.py:3253",
+          "black.py:3180"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "14",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 18,
+        "top_lines": [
+          "black.py:3139",
+          "black.py:3149",
+          "black.py:3159",
+          "black.py:3177",
+          "black.py:3104"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "15",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 28,
+        "top_lines": [
+          "black.py:3255",
+          "black.py:3265",
+          "black.py:3275",
+          "black.py:3293",
+          "black.py:3220"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "16",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 2067,
+        "top_lines": [
+          "black.py:3115",
+          "black.py:3125",
+          "black.py:3135",
+          "black.py:3153",
+          "black.py:3080"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "17",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 672,
+        "top_lines": [
+          "black.py:3029",
+          "black.py:3039",
+          "black.py:3049",
+          "black.py:3067",
+          "black.py:2994"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "18",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 111,
+        "top_lines": [
+          "black.py:2995",
+          "black.py:3005",
+          "black.py:3015",
+          "black.py:3033",
+          "black.py:2960"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "19",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": null,
+        "top_lines": [
+          "black.py:2362",
+          "black.py:2372",
+          "black.py:2382",
+          "black.py:2398",
+          "black.py:2390"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "20",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 2577,
+        "top_lines": [
+          "blib2to3/pgen2/tokenize.py:7",
+          "docs/conf.py:50",
+          "docs/conf.py:19",
+          "black.py:1713",
+          "black.py:1173"
+        ],
+        "top_files": [
+          "blib2to3/pgen2/tokenize.py",
+          "docs/conf.py",
+          "black.py",
+          "blib2to3/pgen2/driver.py",
+          "blib2to3/pgen2/conv.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "21",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "black",
+      "bug_id": "22",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 113,
+        "top_lines": [
+          "black.py:1832",
+          "black.py:1842",
+          "black.py:1852",
+          "black.py:1868",
+          "black.py:1860"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "black",
+      "bug_id": "23",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 56,
+        "top_lines": [
+          "black.py:184",
+          "black.py:1565",
+          "black.py:1504",
+          "blib2to3/pgen2/literals.py:50",
+          "black.py:1547"
+        ],
+        "top_files": [
+          "black.py",
+          "blib2to3/pgen2/literals.py",
+          "blib2to3/pytree.py",
+          "blib2to3/pgen2/conv.py",
+          "blib2to3/pgen2/pgen.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "1",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3644,
+        "top_lines": [
+          "scrapy/utils/test.py:117",
+          "scrapy/contracts/__init__.py:5",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:98",
+          "scrapy/utils/test.py:11"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "2",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 739,
+        "top_lines": [
+          "scrapy/utils/test.py:89",
+          "scrapy/contracts/__init__.py:5",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:98",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "3",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 7355,
+        "top_lines": [
+          "scrapy/utils/test.py:89",
+          "scrapy/contracts/__init__.py:5",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:98",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "4",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 4613,
+        "top_lines": [
+          "scrapy/utils/test.py:89",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "5",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 12590,
+        "top_lines": [
+          "scrapy/utils/test.py:88",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "6",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 7876,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "7",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 212,
+        "top_lines": [
+          "scrapy/contracts/__init__.py:133",
+          "scrapy/core/downloader/handlers/http11.py:346",
+          "scrapy/core/downloader/handlers/http11.py:312",
+          "scrapy/contracts/__init__.py:135",
+          "scrapy/http/cookies.py:115"
+        ],
+        "top_files": [
+          "scrapy/contracts/__init__.py",
+          "scrapy/core/downloader/handlers/http11.py",
+          "scrapy/http/cookies.py",
+          "scrapy/utils/request.py",
+          "scrapy/core/downloader/webclient.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "8",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 381,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "9",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 622,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "10",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 4395,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "11",
+      "skipped": "not reproduced"
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "12",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 285,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "13",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 14615,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "14",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 9266,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "15",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 6798,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "16",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 765,
+        "top_lines": [
+          "scrapy/xlib/tx/client.py:743",
+          "scrapy/http/request/__init__.py:51",
+          "scrapy/http/cookies.py:115",
+          "extras/qpsclient.py:44",
+          "scrapy/http/request/__init__.py:57"
+        ],
+        "top_files": [
+          "scrapy/xlib/tx/client.py",
+          "scrapy/http/request/__init__.py",
+          "scrapy/http/cookies.py",
+          "extras/qpsclient.py",
+          "scrapy/extensions/feedexport.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "17",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 11369,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "18",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 13957,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "19",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3219,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "20",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": null,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "21",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 1480,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "22",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 8155,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "23",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 9199,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "24",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 122,
+        "top_lines": [
+          "scrapy/xlib/tx/endpoints.py:1",
+          "scrapy/xlib/tx/_newclient.py:1",
+          "scrapy/xlib/tx/client.py:1",
+          "scrapy/core/downloader/contextfactory.py:5",
+          "scrapy/xlib/tx/interfaces.py:1744"
+        ],
+        "top_files": [
+          "scrapy/xlib/tx/endpoints.py",
+          "scrapy/xlib/tx/_newclient.py",
+          "scrapy/xlib/tx/client.py",
+          "scrapy/core/downloader/contextfactory.py",
+          "scrapy/xlib/tx/interfaces.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "25",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 2701,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "26",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 1460,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "27",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 11486,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "28",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3098,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "29",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 9019,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "30",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 1878,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "31",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 9408,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "32",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 7262,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "33",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 218,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "34",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 5694,
+        "top_lines": [
+          "scrapy/utils/test.py:49",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "35",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 6059,
+        "top_lines": [
+          "scrapy/utils/test.py:62",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/contrib/debug.py:33",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/contrib/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "36",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 2405,
+        "top_lines": [
+          "scrapy/utils/test.py:117",
+          "scrapy/contracts/__init__.py:5",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:98",
+          "scrapy/utils/test.py:11"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "37",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 4509,
+        "top_lines": [
+          "scrapy/utils/test.py:89",
+          "scrapy/contracts/__init__.py:5",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:98",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "38",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": null,
+        "top_lines": [
+          "scrapy/utils/deprecate.py:106",
+          "scrapy/utils/conf.py:87",
+          "scrapy/utils/signal.py:62",
+          "scrapy/utils/defer.py:92",
+          "scrapy/utils/project.py:36"
+        ],
+        "top_files": [
+          "scrapy/utils/deprecate.py",
+          "scrapy/utils/conf.py",
+          "scrapy/utils/signal.py",
+          "scrapy/utils/defer.py",
+          "scrapy/utils/project.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "39",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 4460,
+        "top_lines": [
+          "scrapy/utils/test.py:73",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:9"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "scrapy",
+      "bug_id": "40",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3709,
+        "top_lines": [
+          "scrapy/utils/test.py:48",
+          "scrapy/contracts/__init__.py:4",
+          "scrapy/extensions/debug.py:35",
+          "scrapy/contracts/__init__.py:82",
+          "scrapy/utils/test.py:8"
+        ],
+        "top_files": [
+          "scrapy/utils/test.py",
+          "scrapy/contracts/__init__.py",
+          "scrapy/extensions/debug.py",
+          "scrapy/settings/__init__.py",
+          "scrapy/commands/check.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "1",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 412,
+        "top_lines": [
+          "tornado/testing.py:263",
+          "tornado/websocket.py:1171",
+          "tornado/testing.py:3",
+          "tornado/testing.py:728",
+          "tornado/testing.py:779"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/websocket.py",
+          "tornado/web.py",
+          "tornado/options.py",
+          "tornado/autoreload.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "2",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": null,
+        "top_lines": [
+          "tornado/testing.py:259",
+          "tornado/websocket.py:1167",
+          "tornado/testing.py:3",
+          "tornado/testing.py:724",
+          "tornado/testing.py:775"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/websocket.py",
+          "tornado/web.py",
+          "tornado/options.py",
+          "tornado/autoreload.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "3",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3691,
+        "top_lines": [
+          "tornado/testing.py:228",
+          "tornado/websocket.py:1172",
+          "tornado/testing.py:3",
+          "tornado/testing.py:691",
+          "tornado/testing.py:742"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/websocket.py",
+          "tornado/web.py",
+          "tornado/options.py",
+          "tornado/autoreload.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "4",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 1317,
+        "top_lines": [
+          "tornado/testing.py:228",
+          "tornado/websocket.py:1172",
+          "tornado/testing.py:3",
+          "tornado/testing.py:691",
+          "tornado/testing.py:742"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/websocket.py",
+          "tornado/web.py",
+          "tornado/options.py",
+          "tornado/autoreload.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "5",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 8319,
+        "top_lines": [
+          "tornado/testing.py:3",
+          "tornado/testing.py:652",
+          "tornado/testing.py:697",
+          "tornado/testing.py:647",
+          "tornado/testing.py:142"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "6",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 1079,
+        "top_lines": [
+          "tornado/testing.py:3",
+          "tornado/testing.py:639",
+          "tornado/testing.py:684",
+          "tornado/testing.py:634",
+          "tornado/testing.py:136"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "7",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 4770,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:629",
+          "tornado/testing.py:669",
+          "tornado/testing.py:624",
+          "tornado/testing.py:136"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "8",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 10634,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:629",
+          "tornado/testing.py:669",
+          "tornado/testing.py:624",
+          "tornado/testing.py:136"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "9",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 15811,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:685",
+          "tornado/testing.py:725",
+          "tornado/testing.py:680",
+          "tornado/testing.py:154"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "10",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 2389,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:685",
+          "tornado/testing.py:725",
+          "tornado/testing.py:680",
+          "tornado/testing.py:154"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "11",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 11692,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:683",
+          "tornado/testing.py:723",
+          "tornado/testing.py:678",
+          "tornado/testing.py:154"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "12",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 5589,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:669",
+          "tornado/testing.py:709",
+          "tornado/testing.py:664",
+          "tornado/testing.py:143"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "13",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 3893,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:679",
+          "tornado/testing.py:719",
+          "tornado/testing.py:674",
+          "tornado/testing.py:150"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "14",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": false,
+        "first_fix_line_rank": 831,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:669",
+          "tornado/testing.py:709",
+          "tornado/testing.py:664",
+          "tornado/testing.py:143"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "15",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 8238,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:645",
+          "tornado/testing.py:685",
+          "tornado/testing.py:640",
+          "tornado/testing.py:138"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    },
+    {
+      "project": "tornado",
+      "bug_id": "16",
+      "via_posts": {
+        "line_hit": false,
+        "file_hit": true,
+        "first_fix_line_rank": 855,
+        "top_lines": [
+          "tornado/testing.py:4",
+          "tornado/testing.py:645",
+          "tornado/testing.py:685",
+          "tornado/testing.py:640",
+          "tornado/testing.py:138"
+        ],
+        "top_files": [
+          "tornado/testing.py",
+          "tornado/options.py",
+          "tornado/stack_context.py",
+          "tornado/gen.py",
+          "tornado/web.py"
+        ]
+      }
+    }
+  ]
+}

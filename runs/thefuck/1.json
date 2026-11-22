@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "1",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-vefobsq3/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-6cquc53m/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ulr6e0co/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-4l8qfbt1/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_pip_unknown_command.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "IndexError: list index out of range",
+          "traceback": "=================================== FAILURES ===================================\n_ test_get_new_command[pip un+install thefuck-un+install-uninstall-pip uninstall thefuck] _\n\nscript = 'pip un+install thefuck', new_cmd = 'pip uninstall thefuck'\npip_unknown_cmd = 'ERROR: unknown command \"un+install\" - maybe you meant \"uninstall\"'\n\n    @pytest.mark.parametrize('script, broken, suggested, new_cmd', [\n        ('pip un+install thefuck', 'un+install', 'uninstall', 'pip uninstall thefuck'),\n        ('pip instatl', 'instatl', 'install', 'pip install')])\n    def test_get_new_command(script, new_cmd, pip_unknown_cmd):\n>       assert get_new_command(Command(script,\n                                       pip_unknown_cmd)) == new_cmd\n\ntests/rules/test_pip_unknown_command.py:36: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ncommand = Command(script=pip un+install thefuck, output=ERROR: unknown command \"un+install\" - maybe you meant \"uninstall\")\n\n    def get_new_command(command):\n        broken_cmd = re.findall(r'ERROR: unknown command \\\"([a-z]+)\\\"',\n>                               command.output)[0]\nE       IndexError: list index out of range\n\nthefuck/rules/pip_unknown_command.py:16: IndexError",
+          "log_tail": "\ntests/rules/test_pip_unknown_command.py:36: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ncommand = Command(script=pip un+install thefuck, output=ERROR: unknown command \"un+install\" - maybe you meant \"uninstall\")\n\n    def get_new_command(command):\n        broken_cmd = re.findall(r'ERROR: unknown command \\\"([a-z]+)\\\"',\n>                               command.output)[0]\nE       IndexError: list index out of range\n\nthefuck/rules/pip_unknown_command.py:16: IndexError\n=========================== short test summary info ============================\nFAILED tests/rules/test_pip_unknown_command.py::test_get_new_command[pip un+install thefuck-un+install-uninstall-pip uninstall thefuck]\n========================= 1 failed, 1 passed in 0.04s =========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-2ga05ljf/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-074zetq_/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_pip_unknown_command.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-5.4.2, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck\nplugins: mock-3.1.0, docker-pexpect-0.9, benchmark-3.2.3\ncollected 2 items\n\ntests/rules/test_pip_unknown_command.py ..                               [100%]\n\n============================== 2 passed in 0.03s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 105,
+  "ran": "2026-11-20T23:50:06+00:00",
+  "code_commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674"
+}
