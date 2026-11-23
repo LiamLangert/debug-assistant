@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "4",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_vlines_default",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AssertionError: assert False",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ test_vlines_default ______________________________\n\n    def test_vlines_default():\n        fig, ax = plt.subplots()\n        with mpl.rc_context({'lines.color': 'red'}):\n            lines = ax.vlines(0.5, 0, 1)\n>           assert mpl.colors.same_color(lines.get_color(), 'red')\nE           AssertionError: assert False\nE            +  where False = <function same_color at 0x7acb173a8790>(array([[0., 0., 0., 1.]]), 'red')\nE            +    where <function same_color at 0x7acb173a8790> = <module 'matplotlib.colors' from '/bug/buggy/matplotlib/lib/matplotlib/colors.py'>.same_color\nE            +      where <module 'matplotlib.colors' from '/bug/buggy/matplotlib/lib/matplotlib/colors.py'> = mpl.colors\nE            +    and   array([[0., 0., 0., 1.]]) = <bound method LineCollection.get_color of <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>>()\nE            +      where <bound method LineCollection.get_color of <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>> = <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>.get_color\n\nlib/matplotlib/tests/test_axes.py:3822: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "E           AssertionError: assert False\nE            +  where False = <function same_color at 0x7acb173a8790>(array([[0., 0., 0., 1.]]), 'red')\nE            +    where <function same_color at 0x7acb173a8790> = <module 'matplotlib.colors' from '/bug/buggy/matplotlib/lib/matplotlib/colors.py'>.same_color\nE            +      where <module 'matplotlib.colors' from '/bug/buggy/matplotlib/lib/matplotlib/colors.py'> = mpl.colors\nE            +    and   array([[0., 0., 0., 1.]]) = <bound method LineCollection.get_color of <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>>()\nE            +      where <bound method LineCollection.get_color of <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>> = <matplotlib.collections.LineCollection object at 0x7acb3c1e7130>.get_color\n\nlib/matplotlib/tests/test_axes.py:3822: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_vlines_default - AssertionErro...\n============================== 1 failed in 0.75s ===============================\n/bug/buggy/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_vlines_default",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n============================== 1 passed in 0.46s ===============================\n/bug/fixed/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    }
+  },
+  "seconds": 118,
+  "ran": "2026-11-23T06:17:13+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

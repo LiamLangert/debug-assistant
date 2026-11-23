@@ -1,0 +1,68 @@
+{
+  "project": "keras",
+  "bug_id": "33",
+  "image": "python:3.7.3",
+  "constraints": 38,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_multichar_split",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ValueError: the first two maketrans arguments must have equal length",
+          "traceback": "=================================== FAILURES ===================================\n__________________ test_text_to_word_sequence_multichar_split __________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    def test_text_to_word_sequence_multichar_split():\n        text = 'hello!stop?world!'\n>       assert text_to_word_sequence(text, split='stop') == ['hello', 'world']\n\ntests/keras/preprocessing/text_test.py:78: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = 'hello!stop?world!', filters = '!\"#$%&()*+,-./:;<=>?@[\\\\]^_`{|}~\\t\\n'\nlower = True, split = 'stop'\n\n    def text_to_word_sequence(text,\n                              filters='!\"#$%&()*+,-./:;<=>?@[\\\\]^_`{|}~\\t\\n',\n                              lower=True, split=\" \"):\n        \"\"\"Converts a text to a sequence of words (or tokens).\n    \n        # Arguments\n            text: Input text (string).\n            filters: Sequence of characters to filter out.\n            lower: Whether to convert the input to lowercase.\n            split: Sentence split marker (string).\n    \n        # Returns\n            A list of words (or tokens).\n        \"\"\"\n        if lower:\n            text = text.lower()\n    \n        if sys.version_info < (3,) and isinstance(text, unicode):\n            translate_map = dict((ord(c), unicode(split)) for c in filters)\n        else:\n>           translate_map = maketrans(filters, split * len(filters))\nE           ValueError: the first two maketrans arguments must have equal length\n\nkeras/preprocessing/text.py:44: ValueError",
+          "log_tail": "  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_multichar_split\n======================== 1 failed, 26 warnings in 1.90s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_unicode_multichar_split",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ValueError: the first two maketrans arguments must have equal length",
+          "traceback": "=================================== FAILURES ===================================\n______________ test_text_to_word_sequence_unicode_multichar_split ______________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    def test_text_to_word_sequence_unicode_multichar_split():\n        text = u'ali!stopveli?stopk\u0131rkstopdokuzstopelli'\n>       assert text_to_word_sequence(text, split='stop') == [u'ali', u'veli', u'k\u0131rk', u'dokuz', u'elli']\n\ntests/keras/preprocessing/text_test.py:88: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = 'ali!stopveli?stopk\u0131rkstopdokuzstopelli'\nfilters = '!\"#$%&()*+,-./:;<=>?@[\\\\]^_`{|}~\\t\\n', lower = True, split = 'stop'\n\n    def text_to_word_sequence(text,\n                              filters='!\"#$%&()*+,-./:;<=>?@[\\\\]^_`{|}~\\t\\n',\n                              lower=True, split=\" \"):\n        \"\"\"Converts a text to a sequence of words (or tokens).\n    \n        # Arguments\n            text: Input text (string).\n            filters: Sequence of characters to filter out.\n            lower: Whether to convert the input to lowercase.\n            split: Sentence split marker (string).\n    \n        # Returns\n            A list of words (or tokens).\n        \"\"\"\n        if lower:\n            text = text.lower()\n    \n        if sys.version_info < (3,) and isinstance(text, unicode):\n            translate_map = dict((ord(c), unicode(split)) for c in filters)\n        else:\n>           translate_map = maketrans(filters, split * len(filters))\nE           ValueError: the first two maketrans arguments must have equal length\n\nkeras/preprocessing/text.py:44: ValueError",
+          "log_tail": "  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_unicode_multichar_split\n======================== 1 failed, 26 warnings in 1.83s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_multichar_split",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 26 warnings in 1.77s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/preprocessing/text_test.py::test_text_to_word_sequence_unicode_multichar_split",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 26 warnings in 1.65s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 134,
+  "ran": "2026-11-23T03:20:15+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

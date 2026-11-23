@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "19",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ivo_sqcc/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-rxmtpplj/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ixshpwk0/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-3851gg6t/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_push_force.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'git push --force' == 'git push --force-with-lease'",
+          "traceback": "=================================== FAILURES ===================================\n__________ test_get_new_command[command0-git push --force-with-lease] __________\n\ncommand = Command(script=git push, stdout=, stderr=\nTo /tmp/foo\n ! [rejected]        master -> master (non-fast-forward)\n error:...nt: 'git pull ...') before pushing again.\n hint: See the 'Note about fast-forwards' in 'git push --help' for details.\n)\noutput = 'git push --force-with-lease'\n\n    @pytest.mark.parametrize('command, output', [\n        (Command(script='git push', stderr=git_err), 'git push --force-with-lease'),\n        (Command(script='git push nvbn', stderr=git_err), 'git push --force-with-lease nvbn'),\n        (Command(script='git push nvbn master', stderr=git_err), 'git push --force-with-lease nvbn master')])\n    def test_get_new_command(command, output):\n>       assert get_new_command(command) == output\nE       AssertionError: assert 'git push --force' == 'git push --force-with-lease'\nE         - git push --force\nE         + git push --force-with-lease\n\ntests/rules/test_git_push_force.py:52: AssertionError\n_______ test_get_new_command[command1-git push --force-with-lease nvbn] ________\n\ncommand = Command(script=git push nvbn, stdout=, stderr=\nTo /tmp/foo\n ! [rejected]        master -> master (non-fast-forward)\n e...nt: 'git pull ...') before pushing again.\n hint: See the 'Note about fast-forwards' in 'git push --help' for details.\n)\noutput = 'git push --force-with-lease nvbn'\n\n    @pytest.mark.parametrize('command, output', [\n        (Command(script='git push', stderr=git_err), 'git push --force-with-lease'),\n        (Command(script='git push nvbn', stderr=git_err), 'git push --force-with-lease nvbn'),\n        (Command(script='git push nvbn master', stderr=git_err), 'git push --force-with-lease nvbn master')])\n    def test_get_new_command(command, output):\n>       assert get_new_command(command) == output\nE       AssertionError: assert 'git push --force nvbn' == 'git push --force-with-lease nvbn'\nE         - git push --force nvbn\nE         + git push --force-with-lease nvbn\nE         ?                 +++++++++++\n\ntests/rules/test_git_push_force.py:52: AssertionError\n____ test_get_new_command[command2-git push --force-with-lease nvbn master] ____\n\ncommand = Command(script=git push nvbn master, stdout=, stderr=\nTo /tmp/foo\n ! [rejected]        master -> master (non-fast-forw...nt: 'git pull ...') before pushing again.\n hint: See the 'Note about fast-forwards' in 'git push --help' for details.\n)\noutput = 'git push --force-with-lease nvbn master'\n\n    @pytest.mark.parametrize('command, output', [\n        (Command(script='git push', stderr=git_err), 'git push --force-with-lease'),\n        (Command(script='git push nvbn', stderr=git_err), 'git push --force-with-lease nvbn'),\n        (Command(script='git push nvbn master', stderr=git_err), 'git push --force-with-lease nvbn master')])\n    def test_get_new_command(command, output):\n>       assert get_new_command(command) == output\nE       AssertionError: assert 'git push --force nvbn master' == 'git push --fo...e nvbn master'\nE         - git push --force nvbn master\nE         + git push --force-with-lease nvbn master\nE         ?                 +++++++++++\n\ntests/rules/test_git_push_force.py:52: AssertionError",
+          "log_tail": "output = 'git push --force-with-lease nvbn master'\n\n    @pytest.mark.parametrize('command, output', [\n        (Command(script='git push', stderr=git_err), 'git push --force-with-lease'),\n        (Command(script='git push nvbn', stderr=git_err), 'git push --force-with-lease nvbn'),\n        (Command(script='git push nvbn master', stderr=git_err), 'git push --force-with-lease nvbn master')])\n    def test_get_new_command(command, output):\n>       assert get_new_command(command) == output\nE       AssertionError: assert 'git push --force nvbn master' == 'git push --fo...e nvbn master'\nE         - git push --force nvbn master\nE         + git push --force-with-lease nvbn master\nE         ?                 +++++++++++\n\ntests/rules/test_git_push_force.py:52: AssertionError\n=========================== 3 failed in 0.07 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-nqmt52c2/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-cj9h8g2k/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_git_push_force.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 3 items\n\ntests/rules/test_git_push_force.py ...                                   [100%]\n\n=========================== 3 passed in 0.05 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 116,
+  "ran": "2026-11-23T06:43:53+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

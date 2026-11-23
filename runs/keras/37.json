@@ -1,0 +1,52 @@
+{
+  "project": "keras",
+  "bug_id": "37",
+  "image": "python:3.7.3",
+  "constraints": 39,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_state_reuse",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 2 == 4",
+          "traceback": "=================================== FAILURES ===================================\n________________________ test_Bidirectional_state_reuse ________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_Bidirectional_state_reuse():\n        rnn = layers.LSTM\n        samples = 2\n        dim = 5\n        timesteps = 3\n        units = 3\n    \n        input1 = Input((timesteps, dim))\n        layer = wrappers.Bidirectional(rnn(units, return_state=True, return_sequences=True))\n        state = layer(input1)[1:]\n    \n        # test passing invalid initial_state: passing a tensor\n        input2 = Input((timesteps, dim))\n        with pytest.raises(ValueError):\n            output = wrappers.Bidirectional(rnn(units))(input2, initial_state=state[0])\n    \n        # test valid usage: passing a list\n        output = wrappers.Bidirectional(rnn(units))(input2, initial_state=state)\n        model = Model([input1, input2], output)\n>       assert len(model.layers) == 4\nE       assert 2 == 4\nE         +2\nE         -4\n\ntests/keras/layers/wrappers_test.py:340: AssertionError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.50s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_state_reuse\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/layers/wrappers_test.py::test_Bidirectional_state_reuse - ...\n======================== 1 failed, 26 warnings in 2.49s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_state_reuse",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.59s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_state_reuse\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 2.29s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 129,
+  "ran": "2026-11-23T03:24:44+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

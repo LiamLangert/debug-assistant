@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "8",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "ValueError: A `Concatenate` layer requires inputs with matching shapes except for the concat axis. Got inputs shapes: [(None, 12), (None, 1, 12)]",
+          "traceback": "=================================== FAILURES ===================================\n_______________ test_layer_sharing_at_heterogeneous_depth_order ________________\n[gw1] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    def test_layer_sharing_at_heterogeneous_depth_order():\n        # This tests for the bug in this issue\n        # https://github.com/keras-team/keras/issues/11159\n        # It occurs with layer sharing at heterogeneous depth when\n        # the layers need to be applied in an order that differs from\n        # the order that occurs in the config.\n    \n        input_shape = (1, 12)\n        input_layer = Input(shape=input_shape)\n    \n        A = Dense(12, name='layer_a')\n        r1 = layers.Reshape((12,))(input_layer)\n        Aout1 = A(r1)\n    \n        r2 = layers.Reshape((12,))(A(input_layer))\n        Aout2 = A(r2)\n    \n        # Note: if the order of the layers in the concat is\n        # changed to ([Aout1, Aout2]) the bug doesn't trigger\n        c1 = layers.concatenate([Aout2, Aout1])\n        output = Dense(2, name='layer_b')(c1)\n    \n        M = Model(inputs=input_layer, outputs=output)\n    \n        x_val = np.random.random((10,) + input_shape)\n        output_val = M.predict(x_val)\n    \n        config = M.get_config()\n        weights = M.get_weights()\n    \n>       M2 = Model.from_config(config)\n\ntests/keras/engine/test_topology.py:793: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nkeras/engine/network.py:1029: in from_config\n    process_node(layer, node_data)\nkeras/engine/network.py:988: in process_node\n    layer(unpack_singleton(input_tensors), **kwargs)\nkeras/engine/base_layer.py:431: in __call__\n    self.build(unpack_singleton(input_shapes))\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <keras.layers.merge.Concatenate object at 0x73c5bb5992b0>\ninput_shape = [(None, 12), (None, 1, 12)]\n\n    def build(self, input_shape):\n        # Used purely for shape validation.\n        if not isinstance(input_shape, list) or len(input_shape) < 2:\n            raise ValueError('A `Concatenate` layer should be called '\n                             'on a list of at least 2 inputs')\n        if all([shape is None for shape in input_shape]):\n            return\n        reduced_inputs_shapes = [list(shape) for shape in input_shape]\n        shape_set = set()\n        for i in range(len(reduced_inputs_shapes)):\n            del reduced_inputs_shapes[i][self.axis]\n            shape_set.add(tuple(reduced_inputs_shapes[i]))\n        if len(shape_set) > 1:\n            raise ValueError('A `Concatenate` layer requires '\n                             'inputs with matching shapes '\n                             'except for the concat axis. '\n>                            'Got inputs shapes: %s' % (input_shape))\nE           ValueError: A `Concatenate` layer requires inputs with matching shapes except for the concat axis. Got inputs shapes: [(None, 12), (None, 1, 12)]\n\nkeras/layers/merge.py:362: ValueError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:524: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:4377: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:199: The name tf.is_variable_initialized is deprecated. Please use tf.compat.v1.is_variable_initialized instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:206: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.\n\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:524: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:4377: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:199: The name tf.is_variable_initialized is deprecated. Please use tf.compat.v1.is_variable_initialized instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:206: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.\n--------------------------- Captured stderr teardown ---------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:98: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.\n\n---------------------------- Captured log teardown -----------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:98: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.",
+          "log_tail": "    tensor_proto.tensor_content = nparray.tostring()\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.12s call     tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order\n======================== 1 failed, 14 warnings in 3.86s ========================\nUsing TensorFlow backend."
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order \n[gw0] [100%] PASSED tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order \n\n=============================== warnings summary ===============================\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: 14 tests with warnings\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.20s call     tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 14 warnings in 1.68s ========================\nUsing TensorFlow backend."
+        }
+      ]
+    }
+  },
+  "seconds": 185,
+  "ran": "2026-11-23T02:47:19+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

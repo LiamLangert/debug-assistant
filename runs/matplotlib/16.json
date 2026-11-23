@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "16",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_colorbar.py::test_colorbar_int",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "RuntimeWarning: overflow encountered in short_scalars",
+          "traceback": "=================================== FAILURES ===================================\n___________________________ test_colorbar_int[clim0] ___________________________\n\nclim = (-20000, 20000)\n\n    @pytest.mark.parametrize(\"clim\", [(-20000, 20000), (-32768, 0)])\n    def test_colorbar_int(clim):\n        # Check that we cast to float early enough to not\n        # overflow ``int16(20000) - int16(-20000)`` or\n        # run into ``abs(int16(-32768)) == -32768``.\n        fig, ax = plt.subplots()\n        im = ax.imshow([[*map(np.int16, clim)]])\n>       fig.colorbar(im)\n\nlib/matplotlib/tests/test_colorbar.py:592: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nlib/matplotlib/figure.py:2238: in colorbar\n    cb = cbar.colorbar_factory(cax, mappable, **cb_kw)\nlib/matplotlib/colorbar.py:1681: in colorbar_factory\n    cb = Colorbar(cax, mappable, **kwargs)\nlib/matplotlib/colorbar.py:1226: in __init__\n    ColorbarBase.__init__(self, ax, **kw)\nlib/matplotlib/colorbar.py:505: in __init__\n    self.draw_all()\nlib/matplotlib/colorbar.py:528: in draw_all\n    self._process_values()\nlib/matplotlib/colorbar.py:965: in _process_values\n    self.norm.vmin, self.norm.vmax = mtransforms.nonsingular(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvmin = -20000, vmax = 20000, expander = 0.1, tiny = 1e-15, increasing = True\n\n    def nonsingular(vmin, vmax, expander=0.001, tiny=1e-15, increasing=True):\n        \"\"\"\n        Modify the endpoints of a range as needed to avoid singularities.\n    \n        Parameters\n        ----------\n        vmin, vmax : float\n            The initial endpoints.\n        expander : float, optional, default: 0.001\n            Fractional amount by which *vmin* and *vmax* are expanded if\n            the original interval is too small, based on *tiny*.\n        tiny : float, optional, default: 1e-15\n            Threshold for the ratio of the interval to the maximum absolute\n            value of its endpoints.  If the interval is smaller than\n            this, it will be expanded.  This value should be around\n            1e-15 or larger; otherwise the interval will be approaching\n            the double precision resolution limit.\n        increasing : bool, optional, default: True\n            If True, swap *vmin*, *vmax* if *vmin* > *vmax*.\n    \n        Returns\n        -------\n        vmin, vmax : float\n            Endpoints, expanded and/or swapped if necessary.\n            If either input is inf or NaN, or if both inputs are 0 or very\n            close to zero, it returns -*expander*, *expander*.\n        \"\"\"\n    \n        if (not np.isfinite(vmin)) or (not np.isfinite(vmax)):\n            return -expander, expander\n    \n        swapped = False\n        if vmax < vmin:\n            vmin, vmax = vmax, vmin\n            swapped = True\n    \n        maxabsvalue = max(abs(vmin), abs(vmax))\n        if maxabsvalue < (1e6 / tiny) * np.finfo(float).tiny:\n            vmin = -expander\n            vmax = expander\n    \n>       elif vmax - vmin <= maxabsvalue * tiny:\nE       RuntimeWarning: overflow encountered in short_scalars\n\nlib/matplotlib/transforms.py:2820: RuntimeWarning\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n___________________________ test_colorbar_int[clim1] ___________________________\n\nclim = (-32768, 0)\n\n    @pytest.mark.parametrize(\"clim\", [(-20000, 20000), (-32768, 0)])\n    def test_colorbar_int(clim):\n        # Check that we cast to float early enough to not\n        # overflow ``int16(20000) - int16(-20000)`` or\n        # run into ``abs(int16(-32768)) == -32768``.\n        fig, ax = plt.subplots()\n        im = ax.imshow([[*map(np.int16, clim)]])\n        fig.colorbar(im)\n>       assert (im.norm.vmin, im.norm.vmax) == clim\nE       assert (-0.1, 0.1) == (-32768, 0)\nE         At index 0 diff: -0.1 != -32768\nE         Use -v to get the full diff\n\nlib/matplotlib/tests/test_colorbar.py:593: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        fig, ax = plt.subplots()\n        im = ax.imshow([[*map(np.int16, clim)]])\n        fig.colorbar(im)\n>       assert (im.norm.vmin, im.norm.vmax) == clim\nE       assert (-0.1, 0.1) == (-32768, 0)\nE         At index 0 diff: -0.1 != -32768\nE         Use -v to get the full diff\n\nlib/matplotlib/tests/test_colorbar.py:593: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_colorbar.py::test_colorbar_int[clim0] - Runt...\nFAILED lib/matplotlib/tests/test_colorbar.py::test_colorbar_int[clim1] - asse...\n============================== 2 failed in 0.27s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_colorbar.py::test_colorbar_int",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "Matplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 2 items\n\nlib/matplotlib/tests/test_colorbar.py ..                                 [100%]\n\n============================== 2 passed in 0.16s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 112,
+  "ran": "2026-11-23T06:29:23+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

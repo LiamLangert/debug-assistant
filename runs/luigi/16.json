@@ -1,0 +1,73 @@
+{
+  "project": "luigi",
+  "bug_id": "16",
+  "image": "python:3.8.3",
+  "constraints": 165,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))",
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/central_planner_test.py::CentralPlannerTest::test_re_enable_failed_task_assistant",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: 'PENDING' != 'FAILED'",
+          "traceback": "=================================== FAILURES ===================================\n___________ CentralPlannerTest.test_re_enable_failed_task_assistant ____________\n\nself = <central_planner_test.CentralPlannerTest testMethod=test_re_enable_failed_task_assistant>\n\n    def test_re_enable_failed_task_assistant(self):\n        self.setTime(0)\n        self.sch.add_worker('X', [('assistant', True)])\n        self.sch.add_task(worker='X', task_id='A', status=FAILED, assistant=True)\n    \n        # should be failed now\n        self.assertEqual(FAILED, self.sch.task_list('', '')['A']['status'])\n    \n        # resets to PENDING after 100 seconds\n        self.setTime(101)\n        self.sch.ping(worker='X')  # worker still alive\n>       self.assertEqual('PENDING', self.sch.task_list('', '')['A']['status'])\nE       AssertionError: 'PENDING' != 'FAILED'\nE       - PENDING\nE       + FAILED\n\ntest/central_planner_test.py:299: AssertionError",
+          "log_tail": ">       self.assertEqual('PENDING', self.sch.task_list('', '')['A']['status'])\nE       AssertionError: 'PENDING' != 'FAILED'\nE       - PENDING\nE       + FAILED\n\ntest/central_planner_test.py:299: AssertionError\n=============================== warnings summary ===============================\nenv/lib/python3.8/site-packages/nose/importer.py:12\n  /bug/buggy/luigi/env/lib/python3.8/site-packages/nose/importer.py:12: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses\n    from imp import find_module, load_module, acquire_lock, release_lock\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED test/central_planner_test.py::CentralPlannerTest::test_re_enable_failed_task_assistant\n========================= 1 failed, 1 warning in 0.19s ========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/central_planner_test.py::CentralPlannerTest::test_re_enable_failed_task_assistant",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "platform linux -- Python 3.8.3, pytest-5.4.3, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/luigi\nplugins: sugar-0.9.3, benchmark-3.2.3, cov-2.9.0, sanic-1.6.1, requests-mock-1.8.0\ncollected 1 item\n\ntest/central_planner_test.py .                                           [100%]\n\n=============================== warnings summary ===============================\n/bug/buggy/luigi/env/lib/python3.8/site-packages/nose/importer.py:12\n  /bug/buggy/luigi/env/lib/python3.8/site-packages/nose/importer.py:12: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses\n    from imp import find_module, load_module, acquire_lock, release_lock\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================= 1 passed, 1 warning in 0.13s ========================="
+        }
+      ]
+    }
+  },
+  "seconds": 625,
+  "ran": "2026-11-23T05:32:36+00:00",
+  "code_commit": "975aa4237123c9718c3abaa21ab2502f2d21afc2"
+}

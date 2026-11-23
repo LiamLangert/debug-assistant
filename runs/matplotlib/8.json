@@ -1,0 +1,71 @@
+{
+  "project": "matplotlib",
+  "bug_id": "8",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_unautoscaley",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError:",
+          "traceback": "=================================== FAILURES ===================================\n___________________________ test_unautoscaley[True] ____________________________\n\nauto = True\n\n    @pytest.mark.parametrize('auto', (True, False, None))\n    def test_unautoscaley(auto):\n        fig, ax = plt.subplots()\n        x = np.arange(100)\n        y = np.linspace(-.1, .1, 100)\n        ax.scatter(x, y)\n    \n        post_auto = ax.get_autoscaley_on() if auto is None else auto\n    \n        ax.set_ylim((-.5, .5), auto=auto)\n        assert post_auto == ax.get_autoscaley_on()\n        fig.canvas.draw()\n>       assert_array_equal(ax.get_ylim(), (-.5, .5))\nE       AssertionError: \nE       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6228: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n___________________________ test_unautoscaley[None] ____________________________\n\nauto = None\n\n    @pytest.mark.parametrize('auto', (True, False, None))\n    def test_unautoscaley(auto):\n        fig, ax = plt.subplots()\n        x = np.arange(100)\n        y = np.linspace(-.1, .1, 100)\n        ax.scatter(x, y)\n    \n        post_auto = ax.get_autoscaley_on() if auto is None else auto\n    \n        ax.set_ylim((-.5, .5), auto=auto)\n        assert post_auto == ax.get_autoscaley_on()\n        fig.canvas.draw()\n>       assert_array_equal(ax.get_ylim(), (-.5, .5))\nE       AssertionError: \nE       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6228: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "E       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6228: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_unautoscaley[True] - Assertion...\nFAILED lib/matplotlib/tests/test_axes.py::test_unautoscaley[None] - Assertion...\n========================= 2 failed, 1 passed in 0.98s =========================="
+        },
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_unautoscalex",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError:",
+          "traceback": "=================================== FAILURES ===================================\n___________________________ test_unautoscalex[True] ____________________________\n\nauto = True\n\n    @pytest.mark.parametrize('auto', (True, False, None))\n    def test_unautoscalex(auto):\n        fig, ax = plt.subplots()\n        x = np.arange(100)\n        y = np.linspace(-.1, .1, 100)\n        ax.scatter(y, x)\n    \n        post_auto = ax.get_autoscalex_on() if auto is None else auto\n    \n        ax.set_xlim((-.5, .5), auto=auto)\n        assert post_auto == ax.get_autoscalex_on()\n        fig.canvas.draw()\n>       assert_array_equal(ax.get_xlim(), (-.5, .5))\nE       AssertionError: \nE       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6243: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n___________________________ test_unautoscalex[None] ____________________________\n\nauto = None\n\n    @pytest.mark.parametrize('auto', (True, False, None))\n    def test_unautoscalex(auto):\n        fig, ax = plt.subplots()\n        x = np.arange(100)\n        y = np.linspace(-.1, .1, 100)\n        ax.scatter(y, x)\n    \n        post_auto = ax.get_autoscalex_on() if auto is None else auto\n    \n        ax.set_xlim((-.5, .5), auto=auto)\n        assert post_auto == ax.get_autoscalex_on()\n        fig.canvas.draw()\n>       assert_array_equal(ax.get_xlim(), (-.5, .5))\nE       AssertionError: \nE       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6243: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "E       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 2 (100%)\nE       Max absolute difference: 0.35\nE       Max relative difference: 0.7\nE        x: array([-0.15,  0.15])\nE        y: array([-0.5,  0.5])\n\nlib/matplotlib/tests/test_axes.py:6243: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_unautoscalex[True] - Assertion...\nFAILED lib/matplotlib/tests/test_axes.py::test_unautoscalex[None] - Assertion...\n========================= 2 failed, 1 passed in 0.64s =========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_unautoscaley",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 3 items\n\nlib/matplotlib/tests/test_axes.py ...                                    [100%]\n\n============================== 3 passed in 0.74s ==============================="
+        },
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_unautoscalex",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 3 items\n\nlib/matplotlib/tests/test_axes.py ...                                    [100%]\n\n============================== 3 passed in 0.33s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 141,
+  "ran": "2026-11-23T06:21:24+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

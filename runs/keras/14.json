@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "14",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_top_k_categorical_accuracy[y_pred1-y_true1]",
+          "exit": 4,
+          "outcome": "error",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "Using TensorFlow backend.\nImportError while loading conftest '/bug/buggy/keras/tests/conftest.py'.\ntests/conftest.py:2: in <module>\n    from keras import backend as K\nenv/lib/python3.7/site-packages/keras/__init__.py:5: in <module>\n    from . import applications\nenv/lib/python3.7/site-packages/keras/applications/__init__.py:13: in <module>\n    keras_applications.set_keras_submodules(\nE   AttributeError: module 'keras_applications' has no attribute 'set_keras_submodules'"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "error",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_top_k_categorical_accuracy[y_pred1-y_true1]",
+          "exit": 4,
+          "outcome": "error",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "Using TensorFlow backend.\nImportError while loading conftest '/bug/fixed/keras/tests/conftest.py'.\ntests/conftest.py:2: in <module>\n    from keras import backend as K\n/bug/buggy/keras/env/lib/python3.7/site-packages/keras/__init__.py:5: in <module>\n    from . import applications\n/bug/buggy/keras/env/lib/python3.7/site-packages/keras/applications/__init__.py:13: in <module>\n    keras_applications.set_keras_submodules(\nE   AttributeError: module 'keras_applications' has no attribute 'set_keras_submodules'"
+        }
+      ]
+    }
+  },
+  "seconds": 142,
+  "ran": "2026-11-23T02:55:13+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

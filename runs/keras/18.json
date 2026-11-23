@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "18",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_function_tf_run_options_with_run_metadata",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ValueError: ('Some keys in session_kwargs are not supported at this time: %s', dict_keys(['options', 'run_metadata']))",
+          "traceback": "=================================== FAILURES ===================================\n__________ TestBackend.test_function_tf_run_options_with_run_metadata __________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nself = <backend_test.TestBackend object at 0x7efe8d5b14a8>\n\n    @pytest.mark.skipif(K.backend() != 'tensorflow',\n                        reason='Uses the `options` and `run_metadata` arguments.')\n    def test_function_tf_run_options_with_run_metadata(self):\n        from tensorflow.core.protobuf import config_pb2\n        x_placeholder = K.placeholder(shape=())\n        y_placeholder = K.placeholder(shape=())\n    \n        run_options = config_pb2.RunOptions(output_partition_graphs=True)\n        run_metadata = config_pb2.RunMetadata()\n        # enable run_options.\n        f = K.function(inputs=[x_placeholder, y_placeholder],\n                       outputs=[x_placeholder + y_placeholder],\n                       options=run_options,\n>                      run_metadata=run_metadata)\n\ntests/keras/backend/backend_test.py:544: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nkeras/backend/tensorflow_backend.py:2705: in function\n    return Function(inputs, outputs, updates=updates, **kwargs)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <keras.backend.tensorflow_backend.Function object at 0x7efe8d5b1d68>\ninputs = [<tf.Tensor 'Placeholder:0' shape=() dtype=float32>, <tf.Tensor 'Placeholder_1:0' shape=() dtype=float32>]\noutputs = [<tf.Tensor 'add:0' shape=() dtype=float32>], updates = []\nname = None\nsession_kwargs = {'options': output_partition_graphs: true\n, 'run_metadata': }\nupdates_ops = []\n\n    def __init__(self, inputs, outputs,\n                 updates=None,\n                 name=None,\n                 **session_kwargs):\n        updates = updates or []\n        if not isinstance(inputs, (list, tuple)):\n            raise TypeError('`inputs` to a TensorFlow backend function '\n                            'should be a list or tuple.')\n        if not isinstance(outputs, (list, tuple)):\n            raise TypeError('`outputs` of a TensorFlow backend function '\n                            'should be a list or tuple.')\n        if not isinstance(updates, (list, tuple)):\n            raise TypeError('`updates` in a TensorFlow backend function '\n                            'should be a list or tuple.')\n        self.inputs = list(inputs)\n        self.outputs = list(outputs)\n        with tf.control_dependencies(self.outputs):\n            updates_ops = []\n            for update in updates:\n                if isinstance(update, tuple):\n                    p, new_p = update\n                    updates_ops.append(tf.assign(p, new_p))\n                else:\n                    # assumed already an op\n                    updates_ops.append(update)\n            self.updates_op = tf.group(*updates_ops)\n        self.name = name\n        # additional tensor substitutions\n        self.feed_dict = session_kwargs.pop('feed_dict', {})\n        # additional operations\n        self.fetches = session_kwargs.pop('fetches', [])\n        if not isinstance(self.fetches, list):\n            self.fetches = [self.fetches]\n        # The main use case of `fetches` being passed to a model is the ability\n        # to run custom updates\n        # (since the outputs of fetches are never returned).\n        # This requires us to wrap fetches in `identity` ops.\n        self.fetches = [tf.identity(x) for x in self.fetches]\n        self.session_kwargs = session_kwargs\n        if session_kwargs:\n            raise ValueError('Some keys in session_kwargs are not '\n                             'supported at this '\n>                            'time: %s', session_kwargs.keys())\nE           ValueError: ('Some keys in session_kwargs are not supported at this time: %s', dict_keys(['options', 'run_metadata']))\n\nkeras/backend/tensorflow_backend.py:2552: ValueError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:2702: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.\n\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:2702: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.",
+          "log_tail": "tests/keras/backend/backend_test.py:35\n  /bug/buggy/keras/tests/keras/backend/backend_test.py:35: UserWarning: Could not import the Theano backend\n    warnings.warn('Could not import the Theano backend')\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/backend/backend_test.py::TestBackend::test_function_tf_run_options_with_run_metadata\n======================== 1 failed, 39 warnings in 2.24s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_function_tf_run_options_with_run_metadata",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "    warnings.warn('Could not import the Theano backend')\n\nkeras/backend/tensorflow_backend.py:2688\nkeras/backend/tensorflow_backend.py:2688\nkeras/backend/tensorflow_backend.py:2688\nkeras/backend/tensorflow_backend.py:2688\n  /bug/fixed/keras/keras/backend/tensorflow_backend.py:2688: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n    StrictVersion(tf.__version__.split('-')[0]) < StrictVersion('1.10.0')):\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.02s call     tests/keras/backend/backend_test.py::TestBackend::test_function_tf_run_options_with_run_metadata\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 42 warnings in 2.67s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 150,
+  "ran": "2026-11-23T03:00:20+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

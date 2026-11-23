@@ -1,0 +1,73 @@
+{
+  "project": "luigi",
+  "bug_id": "17",
+  "image": "python:3.8.3",
+  "constraints": 165,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))",
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/scheduler_test.py::SchedulerTest::test_local_scheduler_task_history_status",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ModuleNotFoundError: No module named 'sqlalchemy'",
+          "traceback": "=================================== FAILURES ===================================\n____________ SchedulerTest.test_local_scheduler_task_history_status ____________\n\nself = <scheduler_test.SchedulerTest testMethod=test_local_scheduler_task_history_status>\n\n    @with_config({'scheduler': {'record_task_history': 'True'},\n                  'task_history': {'db_connection': 'sqlite:////none/existing/path/hist.db'}})\n    def test_local_scheduler_task_history_status(self):\n>       ls = luigi.interface._WorkerSchedulerFactory().create_local_scheduler()\n\ntest/scheduler_test.py:81: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nluigi/interface.py:134: in create_local_scheduler\n    return scheduler.CentralPlannerScheduler(prune_on_get_work=True)\nluigi/scheduler.py:533: in __init__\n    from luigi import db_task_history  # Needs sqlalchemy, thus imported here\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    \"\"\"\n    Provides a database backend to the central scheduler. This lets you see historical runs.\n    See :ref:`TaskHistory` for information about how to turn out the task history feature.\n    \"\"\"\n    #\n    # Description: Added codes for visualization of how long each task takes\n    # running-time until it reaches the next status (failed or done)\n    # At \"{base_url}/tasklist\", all completed(failed or done) tasks are shown.\n    # At \"{base_url}/tasklist\", a user can select one specific task to see\n    # how its running-time has changed over time.\n    # At \"{base_url}/tasklist/{task_name}\", it visualizes a multi-bar graph\n    # that represents the changes of the running-time for a selected task\n    # up to the next status (failed or done).\n    # This visualization let us know how the running-time of the specific task\n    # has changed over time.\n    #\n    # Copyright 2015 Naver Corp.\n    # Author Yeseul Park (yeseul.park@navercorp.com)\n    #\n    \n    import datetime\n    import logging\n    from contextlib import contextmanager\n    \n    from luigi import six\n    \n    from luigi import configuration\n    from luigi import task_history\n    from luigi.task_status import DONE, FAILED, PENDING, RUNNING\n    \n>   import sqlalchemy\nE   ModuleNotFoundError: No module named 'sqlalchemy'\n\nluigi/db_task_history.py:48: ModuleNotFoundError\n----------------------------- Captured stdout call -----------------------------\nINFO: Loaded []\n------------------------------ Captured log call -------------------------------\nINFO     luigi-interface:configuration.py:69 Loaded []",
+          "log_tail": "    from luigi import configuration\n    from luigi import task_history\n    from luigi.task_status import DONE, FAILED, PENDING, RUNNING\n    \n>   import sqlalchemy\nE   ModuleNotFoundError: No module named 'sqlalchemy'\n\nluigi/db_task_history.py:48: ModuleNotFoundError\n----------------------------- Captured stdout call -----------------------------\nINFO: Loaded []\n------------------------------ Captured log call -------------------------------\nINFO     luigi-interface:configuration.py:69 Loaded []\n=========================== short test summary info ============================\nFAILED test/scheduler_test.py::SchedulerTest::test_local_scheduler_task_history_status\n============================== 1 failed in 0.17s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.0.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/scheduler_test.py::SchedulerTest::test_local_scheduler_task_history_status",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.3, pytest-5.4.3, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/luigi\nplugins: sugar-0.9.3, benchmark-3.2.3, cov-2.9.0, sanic-1.6.1, requests-mock-1.8.0\ncollected 1 item\n\ntest/scheduler_test.py .                                                 [100%]\n\n============================== 1 passed in 0.09s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 583,
+  "ran": "2026-11-23T05:41:50+00:00",
+  "code_commit": "975aa4237123c9718c3abaa21ab2502f2d21afc2"
+}

@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "41",
+  "image": "python:3.7.3",
+  "constraints": 62,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/utils/data_utils_test.py::test_generator_enqueuer_fail_threads",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "StopIteration",
+          "traceback": "=================================== FAILURES ===================================\n_____________________ test_generator_enqueuer_fail_threads _____________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    def test_generator_enqueuer_fail_threads():\n        enqueuer = GeneratorEnqueuer(create_generator_from_sequence_threads(\n            FaultSequence()), use_multiprocessing=False)\n        enqueuer.start(3, 10)\n        gen_output = enqueuer.get()\n        with pytest.raises(IndexError):\n>           next(gen_output)\nE           StopIteration\n\ntests/keras/utils/data_utils_test.py:186: StopIteration",
+          "log_tail": "keras/callbacks.py:15\n  /bug/buggy/keras/keras/callbacks.py:15: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/utils/data_utils_test.py::test_generator_enqueuer_fail_threads\n======================== 1 failed, 35 warnings in 3.23s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/utils/data_utils_test.py::test_generator_enqueuer_fail_threads",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n  /bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n    if LooseVersion(_np_version) >= LooseVersion(\"1.17.0\"):\n\nkeras/callbacks.py:15\nkeras/callbacks.py:15\n  /bug/fixed/keras/keras/callbacks.py:15: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 34 warnings in 2.72s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 205,
+  "ran": "2026-11-23T03:31:53+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

@@ -1,0 +1,70 @@
+{
+  "project": "keras",
+  "bug_id": "12",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "[gw0] [100%] PASSED tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1] \n\n=============================== warnings summary ===============================\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.07s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 2 warnings in 2.89s =========================\nUsing TensorFlow backend."
+        },
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "[gw0] [100%] PASSED tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2] \n\n=============================== warnings summary ===============================\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.06s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 2 warnings in 2.71s =========================\nUsing TensorFlow backend."
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "[gw0] [100%] PASSED tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1] \n\n=============================== warnings summary ===============================\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.10s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape1]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 2 warnings in 2.70s =========================\nUsing TensorFlow backend."
+        },
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "[gw0] [100%] PASSED tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2] \n\n=============================== warnings summary ===============================\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.05s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness[shape2]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 2 warnings in 2.41s =========================\nUsing TensorFlow backend."
+        }
+      ]
+    }
+  },
+  "seconds": 195,
+  "ran": "2026-11-23T02:52:55+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

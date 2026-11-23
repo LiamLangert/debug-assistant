@@ -1,0 +1,76 @@
+{
+  "project": "thefuck",
+  "bug_id": "16",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-luxrj20k/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-112pp9b0/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-90utqux3/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-0o_gzums/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_app_alias_variables_correctly_set",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"TF_ALIAS=fuck alias fuck='PYTHONIOENCODING=utf-8 TF_CMD=$(TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) &&  eval $TF_CMD && history -s $TF_CMD'\"",
+          "traceback": "=================================== FAILURES ===================================\n_______________ TestBash.test_app_alias_variables_correctly_set ________________\n\nself = <tests.shells.test_bash.TestBash object at 0x7db9d1d11470>\nshell = <thefuck.shells.bash.Bash object at 0x7db9d0dad630>\n\n    def test_app_alias_variables_correctly_set(self, shell):\n        alias = shell.app_alias('fuck')\n>       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in alias\nE       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"TF_ALIAS=fuck alias fuck='PYTHONIOENCODING=utf-8 TF_CMD=$(TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) &&  eval $TF_CMD && history -s $TF_CMD'\"\n\ntests/shells/test_bash.py:51: AssertionError",
+          "log_tail": "tests/shells/test_bash.py F                                              [100%]\n\n=================================== FAILURES ===================================\n_______________ TestBash.test_app_alias_variables_correctly_set ________________\n\nself = <tests.shells.test_bash.TestBash object at 0x7db9d1d11470>\nshell = <thefuck.shells.bash.Bash object at 0x7db9d0dad630>\n\n    def test_app_alias_variables_correctly_set(self, shell):\n        alias = shell.app_alias('fuck')\n>       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in alias\nE       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"TF_ALIAS=fuck alias fuck='PYTHONIOENCODING=utf-8 TF_CMD=$(TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) &&  eval $TF_CMD && history -s $TF_CMD'\"\n\ntests/shells/test_bash.py:51: AssertionError\n=========================== 1 failed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/shells/test_zsh.py::TestZsh::test_app_alias_variables_correctly_set",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) && eval $TF_CMD && print -s $TF_CMD'\"",
+          "traceback": "=================================== FAILURES ===================================\n________________ TestZsh.test_app_alias_variables_correctly_set ________________\n\nself = <tests.shells.test_zsh.TestZsh object at 0x7c783e191f60>\nshell = <thefuck.shells.zsh.Zsh object at 0x7c783f0c60f0>\n\n    def test_app_alias_variables_correctly_set(self, shell):\n        alias = shell.app_alias('fuck')\n>       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in alias\nE       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) && eval $TF_CMD && print -s $TF_CMD'\"\n\ntests/shells/test_zsh.py:50: AssertionError",
+          "log_tail": "tests/shells/test_zsh.py F                                               [100%]\n\n=================================== FAILURES ===================================\n________________ TestZsh.test_app_alias_variables_correctly_set ________________\n\nself = <tests.shells.test_zsh.TestZsh object at 0x7c783e191f60>\nshell = <thefuck.shells.zsh.Zsh object at 0x7c783f0c60f0>\n\n    def test_app_alias_variables_correctly_set(self, shell):\n        alias = shell.app_alias('fuck')\n>       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in alias\nE       assert \"alias fuck='TF_CMD=$(TF_ALIAS\" in \"alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(alias) TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) && eval $TF_CMD && print -s $TF_CMD'\"\n\ntests/shells/test_zsh.py:50: AssertionError\n=========================== 1 failed in 0.04 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-boqs7pea/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-dmyj0aep/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_app_alias_variables_correctly_set",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/shells/test_bash.py .                                              [100%]\n\n=========================== 1 passed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/shells/test_zsh.py::TestZsh::test_app_alias_variables_correctly_set",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/shells/test_zsh.py .                                               [100%]\n\n=========================== 1 passed in 0.04 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 109,
+  "ran": "2026-11-23T08:35:31+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

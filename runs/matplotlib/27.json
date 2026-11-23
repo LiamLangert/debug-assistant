@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "27",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_colorbar.py::test_colorbar_label",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'None' == ''",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ test_colorbar_label ______________________________\n\n    def test_colorbar_label():\n        \"\"\"\n        Test the label parameter. It should just be mapped to the xlabel/ylabel of\n        the axes, depending on the orientation.\n        \"\"\"\n        fig, ax = plt.subplots()\n        im = ax.imshow([[1, 2], [3, 4]])\n        cbar = fig.colorbar(im, label='cbar')\n        assert cbar.ax.get_ylabel() == 'cbar'\n        cbar.set_label(None)\n>       assert cbar.ax.get_ylabel() == ''\nE       AssertionError: assert 'None' == ''\nE         + None\n\nlib/matplotlib/tests/test_colorbar.py:574: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        fig, ax = plt.subplots()\n        im = ax.imshow([[1, 2], [3, 4]])\n        cbar = fig.colorbar(im, label='cbar')\n        assert cbar.ax.get_ylabel() == 'cbar'\n        cbar.set_label(None)\n>       assert cbar.ax.get_ylabel() == ''\nE       AssertionError: assert 'None' == ''\nE         + None\n\nlib/matplotlib/tests/test_colorbar.py:574: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_colorbar.py::test_colorbar_label - Assertion...\n============================== 1 failed in 0.19s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_colorbar.py::test_colorbar_label",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n  from PIL import PILLOW_VERSION\nMatplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_colorbar.py .                                  [100%]\n\n============================== 1 passed in 0.14s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 101,
+  "ran": "2026-11-23T06:40:17+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

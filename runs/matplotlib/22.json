@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "22",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_hist_datetime_datasets_bins",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "TypeError: '<' not supported between instances of 'float' and 'datetime.datetime'",
+          "traceback": "=================================== FAILURES ===================================\n_____________ test_hist_datetime_datasets_bins[datetime.datetime] ______________\n\nbins_preprocess = <function <lambda> at 0x7c51ab419ca0>\n\n    @pytest.mark.parametrize(\"bins_preprocess\",\n                             [mpl.dates.date2num,\n                              lambda bins: bins,\n                              lambda bins: np.asarray(bins).astype('datetime64')],\n                             ids=['date2num', 'datetime.datetime',\n                                  'np.datetime64'])\n    def test_hist_datetime_datasets_bins(bins_preprocess):\n        data = [[datetime.datetime(2019, 1, 5), datetime.datetime(2019, 1, 11),\n                 datetime.datetime(2019, 2, 1), datetime.datetime(2019, 3, 1)],\n                [datetime.datetime(2019, 1, 11), datetime.datetime(2019, 2, 5),\n                 datetime.datetime(2019, 2, 18), datetime.datetime(2019, 3, 1)]]\n    \n        date_edges = [datetime.datetime(2019, 1, 1), datetime.datetime(2019, 2, 1),\n                      datetime.datetime(2019, 3, 1)]\n    \n        fig, ax = plt.subplots()\n>       _, bins, _ = ax.hist(data, bins=bins_preprocess(date_edges), stacked=True)\n\nlib/matplotlib/tests/test_axes.py:1773: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nlib/matplotlib/__init__.py:1538: in inner\n    return func(ax, *map(sanitize_sequence, args), **kwargs)\nlib/matplotlib/axes/_axes.py:6643: in hist\n    m, bins = np.histogram(x[i], bins, weights=w[i], **hist_kwargs)\n<__array_function__ internals>:5: in histogram\n    ???\nenv/lib/python3.8/site-packages/numpy/lib/histograms.py:881: in histogram\n    cum_n += _search_sorted_inclusive(sa, bin_edges)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = array([737064., 737070., 737091., 737119.])\nv = array([datetime.datetime(2019, 1, 1, 0, 0),\n       datetime.datetime(2019, 2, 1, 0, 0),\n       datetime.datetime(2019, 3, 1, 0, 0)], dtype=object)\n\n    def _search_sorted_inclusive(a, v):\n        \"\"\"\n        Like `searchsorted`, but where the last item in `v` is placed on the right.\n    \n        In the context of a histogram, this makes the last bin edge inclusive\n        \"\"\"\n        return np.concatenate((\n>           a.searchsorted(v[:-1], 'left'),\n            a.searchsorted(v[-1:], 'right')\n        ))\nE       TypeError: '<' not supported between instances of 'float' and 'datetime.datetime'\n\nenv/lib/python3.8/site-packages/numpy/lib/histograms.py:464: TypeError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n_______________ test_hist_datetime_datasets_bins[np.datetime64] ________________\n\nbins_preprocess = <function <lambda> at 0x7c51ab419d30>\n\n    @pytest.mark.parametrize(\"bins_preprocess\",\n                             [mpl.dates.date2num,\n                              lambda bins: bins,\n                              lambda bins: np.asarray(bins).astype('datetime64')],\n                             ids=['date2num', 'datetime.datetime',\n                                  'np.datetime64'])\n    def test_hist_datetime_datasets_bins(bins_preprocess):\n        data = [[datetime.datetime(2019, 1, 5), datetime.datetime(2019, 1, 11),\n                 datetime.datetime(2019, 2, 1), datetime.datetime(2019, 3, 1)],\n                [datetime.datetime(2019, 1, 11), datetime.datetime(2019, 2, 5),\n                 datetime.datetime(2019, 2, 18), datetime.datetime(2019, 3, 1)]]\n    \n        date_edges = [datetime.datetime(2019, 1, 1), datetime.datetime(2019, 2, 1),\n                      datetime.datetime(2019, 3, 1)]\n    \n        fig, ax = plt.subplots()\n>       _, bins, _ = ax.hist(data, bins=bins_preprocess(date_edges), stacked=True)\n\nlib/matplotlib/tests/test_axes.py:1773: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nlib/matplotlib/__init__.py:1538: in inner\n    return func(ax, *map(sanitize_sequence, args), **kwargs)\nlib/matplotlib/axes/_axes.py:6643: in hist\n    m, bins = np.histogram(x[i], bins, weights=w[i], **hist_kwargs)\n<__array_function__ internals>:5: in histogram\n    ???\nenv/lib/python3.8/site-packages/numpy/lib/histograms.py:881: in histogram\n    cum_n += _search_sorted_inclusive(sa, bin_edges)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = array([737064., 737070., 737091., 737119.])\nv = array(['2019-01-01T00:00:00.000000', '2019-02-01T00:00:00.000000',\n       '2019-03-01T00:00:00.000000'], dtype='datetime64[us]')\n\n    def _search_sorted_inclusive(a, v):\n        \"\"\"\n        Like `searchsorted`, but where the last item in `v` is placed on the right.\n    \n        In the context of a histogram, this makes the last bin edge inclusive\n        \"\"\"\n        return np.concatenate((\n>           a.searchsorted(v[:-1], 'left'),\n            a.searchsorted(v[-1:], 'right')\n        ))\nE       TypeError: invalid type promotion\n\nenv/lib/python3.8/site-packages/numpy/lib/histograms.py:464: TypeError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        In the context of a histogram, this makes the last bin edge inclusive\n        \"\"\"\n        return np.concatenate((\n>           a.searchsorted(v[:-1], 'left'),\n            a.searchsorted(v[-1:], 'right')\n        ))\nE       TypeError: invalid type promotion\n\nenv/lib/python3.8/site-packages/numpy/lib/histograms.py:464: TypeError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_hist_datetime_datasets_bins[datetime.datetime]\nFAILED lib/matplotlib/tests/test_axes.py::test_hist_datetime_datasets_bins[np.datetime64]\n========================= 2 failed, 1 passed in 0.94s =========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_hist_datetime_datasets_bins",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n  from PIL import PILLOW_VERSION\nMatplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 3 items\n\nlib/matplotlib/tests/test_axes.py ...                                    [100%]\n\n============================== 3 passed in 0.51s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 103,
+  "ran": "2026-11-23T06:35:16+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

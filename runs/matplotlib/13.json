@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "13",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_path.py::test_make_compound_path_stops",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 3 == 1",
+          "traceback": "=================================== FAILURES ===================================\n________________________ test_make_compound_path_stops _________________________\n\n    def test_make_compound_path_stops():\n        zero = [0, 0]\n        paths = 3*[Path([zero, zero], [Path.MOVETO, Path.STOP])]\n        compound_path = Path.make_compound_path(*paths)\n>       assert np.sum(compound_path.codes == Path.STOP) == 1\nE       assert 3 == 1\nE        +  where 3 = <function sum at 0x7bc931cd1af0>(array([1, 0, 1, 0, 1, 0], dtype=uint8) == 0)\nE        +    where <function sum at 0x7bc931cd1af0> = np.sum\nE        +    and   array([1, 0, 1, 0, 1, 0], dtype=uint8) = Path(array([[0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.]]), array([1, 0, 1, 0, 1, 0], dtype=uint8)).codes\nE        +    and   0 = Path.STOP\n\nlib/matplotlib/tests/test_path.py:154: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        paths = 3*[Path([zero, zero], [Path.MOVETO, Path.STOP])]\n        compound_path = Path.make_compound_path(*paths)\n>       assert np.sum(compound_path.codes == Path.STOP) == 1\nE       assert 3 == 1\nE        +  where 3 = <function sum at 0x7bc931cd1af0>(array([1, 0, 1, 0, 1, 0], dtype=uint8) == 0)\nE        +    where <function sum at 0x7bc931cd1af0> = np.sum\nE        +    and   array([1, 0, 1, 0, 1, 0], dtype=uint8) = Path(array([[0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.],\\n       [0., 0.]]), array([1, 0, 1, 0, 1, 0], dtype=uint8)).codes\nE        +    and   0 = Path.STOP\n\nlib/matplotlib/tests/test_path.py:154: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_path.py::test_make_compound_path_stops - ass...\n============================== 1 failed in 0.15s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_path.py::test_make_compound_path_stops",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_path.py .                                      [100%]\n\n============================== 1 passed in 0.16s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 129,
+  "ran": "2026-11-23T06:27:32+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

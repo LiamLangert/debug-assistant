@@ -1,0 +1,52 @@
+{
+  "project": "keras",
+  "bug_id": "29",
+  "image": "python:3.7.3",
+  "constraints": 35,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_stateful_metrics[dict]",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError:",
+          "traceback": "=================================== FAILURES ===================================\n_________________________ test_stateful_metrics[dict] __________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nmetrics_mode = 'dict'\n\n    @keras_test\n    @pytest.mark.parametrize('metrics_mode', ['list', 'dict'])\n    def test_stateful_metrics(metrics_mode):\n        np.random.seed(1334)\n    \n        class BinaryTruePositives(keras.layers.Layer):\n            \"\"\"Stateful Metric to count the total true positives over all batches.\n    \n            Assumes predictions and targets of shape `(samples, 1)`.\n    \n            # Arguments\n                name: String, name for the metric.\n            \"\"\"\n    \n            def __init__(self, name='true_positives', **kwargs):\n                super(BinaryTruePositives, self).__init__(name=name, **kwargs)\n                self.stateful = True\n                self.true_positives = K.variable(value=0, dtype='int32')\n    \n            def reset_states(self):\n                K.set_value(self.true_positives, 0)\n    \n            def __call__(self, y_true, y_pred):\n                \"\"\"Computes the number of true positives in a batch.\n    \n                # Arguments\n                    y_true: Tensor, batch_wise labels\n                    y_pred: Tensor, batch_wise predictions\n    \n                # Returns\n                    The total number of true positives seen this epoch at the\n                        completion of the batch.\n                \"\"\"\n                y_true = K.cast(y_true, 'int32')\n                y_pred = K.cast(K.round(y_pred), 'int32')\n                correct_preds = K.cast(K.equal(y_pred, y_true), 'int32')\n                true_pos = K.cast(K.sum(correct_preds * y_true), 'int32')\n                current_true_pos = self.true_positives * 1\n                self.add_update(K.update_add(self.true_positives,\n                                             true_pos),\n                                inputs=[y_true, y_pred])\n                return current_true_pos + true_pos\n    \n        metric_fn = BinaryTruePositives()\n        config = metrics.serialize(metric_fn)\n        metric_fn = metrics.deserialize(\n            config, custom_objects={'BinaryTruePositives': BinaryTruePositives})\n    \n        # Test on simple model\n        inputs = keras.Input(shape=(2,))\n        outputs = keras.layers.Dense(1, activation='sigmoid', name='out')(inputs)\n        model = keras.Model(inputs, outputs)\n    \n        if metrics_mode == 'list':\n            model.compile(optimizer='sgd',\n                          loss='binary_crossentropy',\n                          metrics=['acc', metric_fn])\n        elif metrics_mode == 'dict':\n            model.compile(optimizer='sgd',\n                          loss='binary_crossentropy',\n                          metrics={'out': ['acc', metric_fn]})\n    \n        samples = 1000\n        x = np.random.random((samples, 2))\n        y = np.random.randint(2, size=(samples, 1))\n    \n        val_samples = 10\n        val_x = np.random.random((val_samples, 2))\n        val_y = np.random.randint(2, size=(val_samples, 1))\n    \n        # Test fit and evaluate\n        history = model.fit(x, y, validation_data=(val_x, val_y), epochs=1, batch_size=10)\n        outs = model.evaluate(x, y, batch_size=10)\n        preds = model.predict(x)\n    \n        def ref_true_pos(y_true, y_pred):\n            return np.sum(np.logical_and(y_pred > 0.5, y_true == 1))\n    \n        # Test correctness (e.g. updates should have been run)\n>       np.testing.assert_allclose(outs[2], ref_true_pos(y, preds), atol=1e-5)\nE       AssertionError: \nE       Not equal to tolerance rtol=1e-07, atol=1e-05\nE       \nE       Mismatched elements: 1 / 1 (100%)\nE       Max absolute difference: 491\nE       Max relative difference: 1.0293501\nE        x: array(968, dtype=int32)\nE        y: array(477)\n\ntests/keras/metrics_test.py:188: AssertionError\n----------------------------- Captured stdout call -----------------------------\nTrain on 1000 samples, validate on 10 samples\nEpoch 1/1\n\n  10/1000 [..............................] - ETA: 8s - loss: 1.0951 - acc: 0.3000 - true_positives: 3.0000\n 460/1000 [============>.................] - ETA: 0s - loss: 0.8327 - acc: 0.4804 - true_positives: 220.0000\n 920/1000 [==========================>...] - ETA: 0s - loss: 0.8089 - acc: 0.4848 - true_positives: 441.0000\n1000/1000 [==============================] - 0s 208us/step - loss: 0.8034 - acc: 0.4900 - true_positives: 484.0000 - val_loss: 0.6407 - val_acc: 0.7000 - val_true_positives: 491.0000\n\n  10/1000 [..............................] - ETA: 0s\n1000/1000 [==============================] - 0s 51us/step\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.\n2026-11-23 03:15:05.687125: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2026-11-23 03:15:05.693754: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2995195000 Hz\n2026-11-23 03:15:05.695581: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5c2139fd80c0 executing computations on platform Host. Devices:\n2026-11-23 03:15:05.695610: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.44s call     tests/keras/metrics_test.py::test_stateful_metrics[dict]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/metrics_test.py::test_stateful_metrics[dict] - AssertionEr...\n======================== 1 failed, 26 warnings in 2.19s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_stateful_metrics[dict]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n3.58s call     tests/keras/metrics_test.py::test_stateful_metrics[dict]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 5.51s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 120,
+  "ran": "2026-11-23T03:15:39+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

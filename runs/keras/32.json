@@ -1,0 +1,68 @@
+{
+  "project": "keras",
+  "bug_id": "32",
+  "image": "python:3.7.3",
+  "constraints": 38,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_ReduceLROnPlateau_patience",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert (True and 1.0 < 1.0)",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ test_ReduceLROnPlateau_patience ________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_ReduceLROnPlateau_patience():\n        class DummyOptimizer(object):\n            def __init__(self):\n                self.lr = K.variable(1.0)\n    \n        class DummyModel(object):\n            def __init__(self):\n                self.optimizer = DummyOptimizer()\n    \n        reduce_on_plateau = callbacks.ReduceLROnPlateau(monitor='val_loss',\n                                                        patience=2)\n        reduce_on_plateau.model = DummyModel()\n    \n        losses = [0.0860, 0.1096, 0.1040]\n        lrs = []\n    \n        for epoch in range(len(losses)):\n            reduce_on_plateau.on_epoch_end(epoch, logs={'val_loss': losses[epoch]})\n            lrs.append(K.get_value(reduce_on_plateau.model.optimizer.lr))\n    \n        # The learning rates should be 1.0 except the last one\n>       assert all([lr == 1.0 for lr in lrs[:-1]]) and lrs[-1] < 1.0\nE       assert (True and 1.0 < 1.0)\nE        +  where True = all([True, True])\n\ntests/keras/test_callbacks.py:371: AssertionError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\n2026-11-23 03:19:30.558431: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2026-11-23 03:19:30.566206: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2995195000 Hz\n2026-11-23 03:19:30.571137: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x57d8083cbf40 executing computations on platform Host. Devices:\n2026-11-23 03:19:30.571237: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.04s call     tests/keras/test_callbacks.py::test_ReduceLROnPlateau_patience\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/test_callbacks.py::test_ReduceLROnPlateau_patience - asser...\n======================== 1 failed, 26 warnings in 2.25s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_ReduceLROnPlateau_backwards_compatibility",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "IndexError: list index out of range",
+          "traceback": "=================================== FAILURES ===================================\n________________ test_ReduceLROnPlateau_backwards_compatibility ________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_ReduceLROnPlateau_backwards_compatibility():\n        import warnings\n        with warnings.catch_warnings(record=True) as ws:\n            reduce_on_plateau = callbacks.ReduceLROnPlateau(epsilon=1e-13)\n            # Check if warnings are disabled\n            if os.environ.get(\"PYTHONWARNINGS\") != \"ignore\":\n>               assert \"`epsilon` argument is deprecated\" in str(ws[0].message)\nE               IndexError: list index out of range\n\ntests/keras/test_callbacks.py:381: IndexError",
+          "log_tail": "  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/test_callbacks.py::test_ReduceLROnPlateau_backwards_compatibility\n======================== 1 failed, 26 warnings in 2.32s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_ReduceLROnPlateau_patience",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.03s call     tests/keras/test_callbacks.py::test_ReduceLROnPlateau_patience\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 1.86s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_ReduceLROnPlateau_backwards_compatibility",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.01s call     tests/keras/test_callbacks.py::test_ReduceLROnPlateau_backwards_compatibility\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 1.74s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 135,
+  "ran": "2026-11-23T03:20:05+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

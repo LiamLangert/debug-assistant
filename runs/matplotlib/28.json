@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "28",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_log_scales_invalid",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "UnboundLocalError: local variable 'old_left' referenced before assignment",
+          "traceback": "=================================== FAILURES ===================================\n___________________________ test_log_scales_invalid ____________________________\n\n    def test_log_scales_invalid():\n        fig = plt.figure()\n        ax = fig.add_subplot(1, 1, 1)\n        ax.set_xscale('log')\n        with pytest.warns(UserWarning, match='Attempted to set non-positive'):\n>           ax.set_xlim(-1, 10)\n\nlib/matplotlib/tests/test_axes.py:2149: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <matplotlib.axes._subplots.AxesSubplot object at 0x799b2f79db20>\nleft = -1, right = 10, emit = True, auto = False\n\n    def set_xlim(self, left=None, right=None, emit=True, auto=False,\n                 *, xmin=None, xmax=None):\n        \"\"\"\n        Set the x-axis view limits.\n    \n        .. ACCEPTS: (left: float, right: float)\n    \n        Parameters\n        ----------\n        left : scalar, optional\n            The left xlim in data coordinates. Passing *None* leaves the\n            limit unchanged.\n    \n            The left and right xlims may be passed as the tuple\n            (*left*, *right*) as the first positional argument (or as\n            the *left* keyword argument).\n    \n        right : scalar, optional\n            The right xlim in data coordinates. Passing *None* leaves the\n            limit unchanged.\n    \n        emit : bool, optional\n            Whether to notify observers of limit change (default: True).\n    \n        auto : bool or None, optional\n            Whether to turn on autoscaling of the x-axis. True turns on,\n            False turns off (default action), None leaves unchanged.\n    \n        xmin, xmax : scalar, optional\n            They are equivalent to left and right respectively,\n            and it is an error to pass both *xmin* and *left* or\n            *xmax* and *right*.\n    \n        Returns\n        -------\n        left, right : (float, float)\n            The new x-axis limits in data coordinates.\n    \n        See Also\n        --------\n        get_xlim\n        set_xbound, get_xbound\n        invert_xaxis, xaxis_inverted\n    \n        Notes\n        -----\n        The *left* value may be greater than the *right* value, in which\n        case the x-axis values will decrease from left to right.\n    \n        Examples\n        --------\n        >>> set_xlim(left, right)\n        >>> set_xlim((left, right))\n        >>> left, right = set_xlim(left, right)\n    \n        One limit may be left unchanged.\n    \n        >>> set_xlim(right=right_lim)\n    \n        Limits may be passed in reverse order to flip the direction of\n        the x-axis. For example, suppose *x* represents the number of\n        years before present. The x-axis limits might be set like the\n        following so 5000 years ago is on the left of the plot and the\n        present is on the right.\n    \n        >>> set_xlim(5000, 0)\n    \n        \"\"\"\n        if right is None and np.iterable(left):\n            left, right = left\n        if xmin is not None:\n            if left is not None:\n                raise TypeError('Cannot pass both `xmin` and `left`')\n            left = xmin\n        if xmax is not None:\n            if right is not None:\n                raise TypeError('Cannot pass both `xmax` and `right`')\n            right = xmax\n    \n        self._process_unit_info(xdata=(left, right))\n        left = self._validate_converted_limits(left, self.convert_xunits)\n        right = self._validate_converted_limits(right, self.convert_xunits)\n    \n        if left is None or right is None:\n            # Axes init calls set_xlim(0, 1) before get_xlim() can be called,\n            # so only grab the limits if we really need them.\n            old_left, old_right = self.get_xlim()\n            if left is None:\n                left = old_left\n            if right is None:\n                right = old_right\n    \n        if self.get_xscale() == 'log':\n            if left <= 0:\n                cbook._warn_external(\n                    'Attempted to set non-positive left xlim on a '\n                    'log-scaled axis.\\n'\n                    'Invalid limit will be ignored.')\n>               left = old_left\nE               UnboundLocalError: local variable 'old_left' referenced before assignment\n\nlib/matplotlib/axes/_base.py:3258: UnboundLocalError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        if self.get_xscale() == 'log':\n            if left <= 0:\n                cbook._warn_external(\n                    'Attempted to set non-positive left xlim on a '\n                    'log-scaled axis.\\n'\n                    'Invalid limit will be ignored.')\n>               left = old_left\nE               UnboundLocalError: local variable 'old_left' referenced before assignment\n\nlib/matplotlib/axes/_base.py:3258: UnboundLocalError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_log_scales_invalid - UnboundLo...\n============================== 1 failed in 0.60s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_log_scales_invalid",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n  from PIL import PILLOW_VERSION\nMatplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n============================== 1 passed in 0.48s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 102,
+  "ran": "2026-11-23T06:40:21+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

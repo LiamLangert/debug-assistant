@@ -1,0 +1,76 @@
+{
+  "project": "thefuck",
+  "bug_id": "17",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ikk5pc7q/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-t7r1gv2g/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-om882e2g/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-xdt1fc_l/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_get_aliases",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert {} == {'fuck': 'eval $(thefuck $(f...': 'ls -A', 'll': 'ls -alF'}",
+          "traceback": "=================================== FAILURES ===================================\n__________________________ TestBash.test_get_aliases ___________________________\n\nself = <tests.shells.test_bash.TestBash object at 0x7d765b55bc18>\nshell = <thefuck.shells.bash.Bash object at 0x7d765a66b8d0>\n\n    def test_get_aliases(self, shell):\n>       assert shell.get_aliases() == {'fuck': 'eval $(thefuck $(fc -ln -1))',\n                                       'l': 'ls -CF',\n                                       'la': 'ls -A',\n                                       'll': 'ls -alF'}\nE       AssertionError: assert {} == {'fuck': 'eval $(thefuck $(f...': 'ls -A', 'll': 'ls -alF'}\nE         Right contains more items:\nE         {'fuck': 'eval $(thefuck $(fc -ln -1))',\nE          'l': 'ls -CF',\nE          'la': 'ls -A',\nE          'll': 'ls -alF'}\nE         Use -v to get the full diff\n\ntests/shells/test_bash.py:37: AssertionError",
+          "log_tail": "    def test_get_aliases(self, shell):\n>       assert shell.get_aliases() == {'fuck': 'eval $(thefuck $(fc -ln -1))',\n                                       'l': 'ls -CF',\n                                       'la': 'ls -A',\n                                       'll': 'ls -alF'}\nE       AssertionError: assert {} == {'fuck': 'eval $(thefuck $(f...': 'ls -A', 'll': 'ls -alF'}\nE         Right contains more items:\nE         {'fuck': 'eval $(thefuck $(fc -ln -1))',\nE          'l': 'ls -CF',\nE          'la': 'ls -A',\nE          'll': 'ls -alF'}\nE         Use -v to get the full diff\n\ntests/shells/test_bash.py:37: AssertionError\n=========================== 1 failed in 0.05 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_from_shell",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'fuck' == 'eval $(thefuck $(fc -ln -1))'",
+          "traceback": "=================================== FAILURES ===================================\n_________ TestBash.test_from_shell[fuck-eval $(thefuck $(fc -ln -1))] __________\n\nself = <tests.shells.test_bash.TestBash object at 0x74288fad4780>\nbefore = 'fuck', after = 'eval $(thefuck $(fc -ln -1))'\nshell = <thefuck.shells.bash.Bash object at 0x74288ef4cef0>\n\n    @pytest.mark.parametrize('before, after', [\n        ('pwd', 'pwd'),\n        ('fuck', 'eval $(thefuck $(fc -ln -1))'),\n        ('awk', 'awk'),\n        ('ll', 'ls -alF')])\n    def test_from_shell(self, before, after, shell):\n>       assert shell.from_shell(before) == after\nE       AssertionError: assert 'fuck' == 'eval $(thefuck $(fc -ln -1))'\nE         - fuck\nE         + eval $(thefuck $(fc -ln -1))\n\ntests/shells/test_bash.py:28: AssertionError\n_____________________ TestBash.test_from_shell[ll-ls -alF] _____________________\n\nself = <tests.shells.test_bash.TestBash object at 0x74288ef3fb00>, before = 'll'\nafter = 'ls -alF', shell = <thefuck.shells.bash.Bash object at 0x74288ef64518>\n\n    @pytest.mark.parametrize('before, after', [\n        ('pwd', 'pwd'),\n        ('fuck', 'eval $(thefuck $(fc -ln -1))'),\n        ('awk', 'awk'),\n        ('ll', 'ls -alF')])\n    def test_from_shell(self, before, after, shell):\n>       assert shell.from_shell(before) == after\nE       AssertionError: assert 'll' == 'ls -alF'\nE         - ll\nE         + ls -alF\n\ntests/shells/test_bash.py:28: AssertionError",
+          "log_tail": "after = 'ls -alF', shell = <thefuck.shells.bash.Bash object at 0x74288ef64518>\n\n    @pytest.mark.parametrize('before, after', [\n        ('pwd', 'pwd'),\n        ('fuck', 'eval $(thefuck $(fc -ln -1))'),\n        ('awk', 'awk'),\n        ('ll', 'ls -alF')])\n    def test_from_shell(self, before, after, shell):\n>       assert shell.from_shell(before) == after\nE       AssertionError: assert 'll' == 'ls -alF'\nE         - ll\nE         + ls -alF\n\ntests/shells/test_bash.py:28: AssertionError\n====================== 2 failed, 2 passed in 0.06 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-od95g8u1/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-2oqa5gb4/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_get_aliases",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/shells/test_bash.py .                                              [100%]\n\n=========================== 1 passed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/shells/test_bash.py::TestBash::test_from_shell",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 4 items\n\ntests/shells/test_bash.py ....                                           [100%]\n\n=========================== 4 passed in 0.04 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 106,
+  "ran": "2026-11-23T08:37:11+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

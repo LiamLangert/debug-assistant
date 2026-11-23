@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "14",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_text.py::test_fontproperties_kwarg_precedence",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 12.0 == 40.0",
+          "traceback": "=================================== FAILURES ===================================\n_____________________ test_fontproperties_kwarg_precedence _____________________\n\n    def test_fontproperties_kwarg_precedence():\n        \"\"\"Test that kwargs take precedence over fontproperties defaults.\"\"\"\n        plt.figure()\n        text1 = plt.xlabel(\"value\", fontproperties='Times New Roman', size=40.0)\n        text2 = plt.ylabel(\"counts\", size=40.0, fontproperties='Times New Roman')\n        assert text1.get_size() == 40.0\n>       assert text2.get_size() == 40.0\nE       AssertionError: assert 12.0 == 40.0\nE        +  where 12.0 = <bound method Text.get_fontsize of Text(0, 0.5, 'counts')>()\nE        +    where <bound method Text.get_fontsize of Text(0, 0.5, 'counts')> = Text(0, 0.5, 'counts').get_size\n\nlib/matplotlib/tests/test_text.py:664: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        plt.figure()\n        text1 = plt.xlabel(\"value\", fontproperties='Times New Roman', size=40.0)\n        text2 = plt.ylabel(\"counts\", size=40.0, fontproperties='Times New Roman')\n        assert text1.get_size() == 40.0\n>       assert text2.get_size() == 40.0\nE       AssertionError: assert 12.0 == 40.0\nE        +  where 12.0 = <bound method Text.get_fontsize of Text(0, 0.5, 'counts')>()\nE        +    where <bound method Text.get_fontsize of Text(0, 0.5, 'counts')> = Text(0, 0.5, 'counts').get_size\n\nlib/matplotlib/tests/test_text.py:664: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_text.py::test_fontproperties_kwarg_precedence\n============================== 1 failed in 0.17s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_text.py::test_fontproperties_kwarg_precedence",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_text.py .                                      [100%]\n\n============================== 1 passed in 0.13s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 119,
+  "ran": "2026-11-23T06:27:33+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

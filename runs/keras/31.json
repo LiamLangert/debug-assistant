@@ -1,0 +1,52 @@
+{
+  "project": "keras",
+  "bug_id": "31",
+  "image": "python:3.7.3",
+  "constraints": 38,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_ctc",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "IndexError: list index out of range",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ TestBackend.test_ctc _____________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nself = <backend_test.TestBackend object at 0x76954edbd588>\n\n    @pytest.mark.skipif(K.backend() == 'cntk', reason='Not supported.')\n    def test_ctc(self):\n        if K.backend() == 'theano':\n            ref = [1.73308, 3.81351]\n        else:\n            ref = [3.34211, 5.42262]\n        # simplified version of TensorFlow's test\n    \n        label_lens = np.expand_dims(np.asarray([5, 4]), 1)\n        input_lens = np.expand_dims(np.asarray([5, 5]), 1)  # number of timesteps\n    \n        # dimensions are batch x time x categories\n        labels = np.asarray([[0, 1, 2, 1, 0], [0, 1, 1, 0, -1]])\n        inputs = np.asarray(\n            [[[0.633766, 0.221185, 0.0917319, 0.0129757, 0.0142857, 0.0260553],\n              [0.111121, 0.588392, 0.278779, 0.0055756, 0.00569609, 0.010436],\n              [0.0357786, 0.633813, 0.321418, 0.00249248, 0.00272882, 0.0037688],\n              [0.0663296, 0.643849, 0.280111, 0.00283995, 0.0035545, 0.00331533],\n              [0.458235, 0.396634, 0.123377, 0.00648837, 0.00903441, 0.00623107]],\n             [[0.30176, 0.28562, 0.0831517, 0.0862751, 0.0816851, 0.161508],\n              [0.24082, 0.397533, 0.0557226, 0.0546814, 0.0557528, 0.19549],\n              [0.230246, 0.450868, 0.0389607, 0.038309, 0.0391602, 0.202456],\n              [0.280884, 0.429522, 0.0326593, 0.0339046, 0.0326856, 0.190345],\n              [0.423286, 0.315517, 0.0338439, 0.0393744, 0.0339315, 0.154046]]],\n            dtype=np.float32)\n    \n        k_labels = K.variable(labels, dtype=\"int32\")\n        k_inputs = K.variable(inputs, dtype=\"float32\")\n        k_input_lens = K.variable(input_lens, dtype=\"int32\")\n        k_label_lens = K.variable(label_lens, dtype=\"int32\")\n        res = K.eval(K.ctc_batch_cost(k_labels, k_inputs, k_input_lens, k_label_lens))\n        assert_allclose(res[0, :] if K.backend() == 'theano' else res[:, 0], ref, atol=1e-05)\n    \n        # test when batch_size = 1, that is, one sample only\n        # get only first sample from above test case\n        if K.backend() == 'theano':\n            ref = [1.73308]\n        else:\n            ref = [3.34211]\n    \n        input_lens = np.expand_dims(np.asarray([5]), 1)\n        label_lens = np.expand_dims(np.asarray([5]), 1)\n    \n        labels = np.asarray([[0, 1, 2, 1, 0]])\n        inputs = np.asarray(\n            [[[0.633766, 0.221185, 0.0917319, 0.0129757, 0.0142857, 0.0260553],\n              [0.111121, 0.588392, 0.278779, 0.0055756, 0.00569609, 0.010436],\n              [0.0357786, 0.633813, 0.321418, 0.00249248, 0.00272882, 0.0037688],\n              [0.0663296, 0.643849, 0.280111, 0.00283995, 0.0035545, 0.00331533],\n              [0.458235, 0.396634, 0.123377, 0.00648837, 0.00903441, 0.00623107]]],\n            dtype=np.float32)\n    \n        k_labels = K.variable(labels, dtype=\"int32\")\n        k_inputs = K.variable(inputs, dtype=\"float32\")\n        k_input_lens = K.variable(input_lens, dtype=\"int32\")\n        k_label_lens = K.variable(label_lens, dtype=\"int32\")\n>       res = K.eval(K.ctc_batch_cost(k_labels, k_inputs, k_input_lens, k_label_lens))\n\ntests/keras/backend/backend_test.py:1501: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nkeras/backend/tensorflow_backend.py:3947: in ctc_batch_cost\n    sparse_labels = tf.to_int32(ctc_label_dense_to_sparse(y_true, label_length))\nkeras/backend/tensorflow_backend.py:3911: in ctc_label_dense_to_sparse\n    initializer=init, parallel_iterations=1)\nenv/lib/python3.7/site-packages/tensorflow/python/ops/functional_ops.py:651: in scan\n    n = (tensor_shape.dimension_value(elems_flat[0].shape[0])\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = TensorShape([]), key = 0\n\n    def __getitem__(self, key):\n      \"\"\"Returns the value of a dimension or a shape, depending on the key.\n    \n      Args:\n        key: If `key` is an integer, returns the dimension at that index;\n          otherwise if `key` is a slice, returns a TensorShape whose\n          dimensions are those selected by the slice from `self`.\n    \n      Returns:\n        An integer if `key` is an integer, or a `TensorShape` if `key` is a\n        slice.\n    \n      Raises:\n        ValueError: If `key` is a slice and `self` is completely unknown and\n          the step is set.\n      \"\"\"\n      if self._dims is not None:\n        if isinstance(key, slice):\n          return TensorShape(self._dims[key])\n        else:\n          if self._v2_behavior:\n            return self._dims[key].value\n          else:\n>           return self._dims[key]\nE           IndexError: list index out of range\n\nenv/lib/python3.7/site-packages/tensorflow/python/framework/tensor_shape.py:788: IndexError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3945: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3925: to_int64 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.\n2026-11-23 03:17:31.759450: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2026-11-23 03:17:31.766120: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2995195000 Hz\n2026-11-23 03:17:31.768757: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5ba7968b4900 executing computations on platform Host. Devices:\n2026-11-23 03:17:31.768811: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3945: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3925: to_int64 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nUse tf.cast instead.",
+          "log_tail": "    warnings.warn('Could not import the CNTK backend')\n\ntests/keras/backend/backend_test.py:34\ntests/keras/backend/backend_test.py:34\n  /bug/buggy/keras/tests/keras/backend/backend_test.py:34: UserWarning: Could not import the Theano backend\n    warnings.warn('Could not import the Theano backend')\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.21s call     tests/keras/backend/backend_test.py::TestBackend::test_ctc\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/backend/backend_test.py::TestBackend::test_ctc - IndexErro...\n======================== 1 failed, 30 warnings in 3.33s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_ctc",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "tests/keras/backend/backend_test.py:20\n  /bug/fixed/keras/tests/keras/backend/backend_test.py:20: UserWarning: Could not import the CNTK backend\n    warnings.warn('Could not import the CNTK backend')\n\ntests/keras/backend/backend_test.py:34\ntests/keras/backend/backend_test.py:34\n  /bug/fixed/keras/tests/keras/backend/backend_test.py:34: UserWarning: Could not import the Theano backend\n    warnings.warn('Could not import the Theano backend')\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.26s call     tests/keras/backend/backend_test.py::TestBackend::test_ctc\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 30 warnings in 2.33s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 153,
+  "ran": "2026-11-23T03:18:07+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

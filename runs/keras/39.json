@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "39",
+  "image": "python:3.7.3",
+  "constraints": 62,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/utils/generic_utils_test.py::test_progbar",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "TypeError: '<' not supported between instances of 'int' and 'NoneType'",
+          "traceback": "=================================== FAILURES ===================================\n_________________________________ test_progbar _________________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_progbar():\n        n = 2\n        input_arr = np.random.random((n, n, n))\n    \n        bar = Progbar(n)\n        for i, arr in enumerate(input_arr):\n            bar.update(i, list(arr))\n    \n        bar = Progbar(None)\n        for i, arr in enumerate(input_arr):\n>           bar.update(i, list(arr))\n\ntests/keras/utils/generic_utils_test.py:26: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <keras.utils.generic_utils.Progbar object at 0x7fccfd5d3e10>, current = 1\nvalues = [array([0.56350596, 0.92630227]), array([0.01275054, 0.68773458])]\nforce = False\n\n    def update(self, current, values=None, force=False):\n        \"\"\"Updates the progress bar.\n    \n        # Arguments\n            current: Index of current step.\n            values: List of tuples (name, value_for_last_step).\n                The progress bar will display averages for these values.\n            force: Whether to force visual progress update.\n        \"\"\"\n        values = values or []\n        for k, v in values:\n            if k not in self.sum_values:\n                self.sum_values[k] = [v * (current - self.seen_so_far),\n                                      current - self.seen_so_far]\n                self.unique_values.append(k)\n            else:\n                self.sum_values[k][0] += v * (current - self.seen_so_far)\n                self.sum_values[k][1] += (current - self.seen_so_far)\n        self.seen_so_far = current\n    \n        now = time.time()\n        info = ' - %.0fs' % (now - self.start)\n        if self.verbose == 1:\n            if (not force and (now - self.last_update) < self.interval and\n>                   current < self.target):\nE                   TypeError: '<' not supported between instances of 'int' and 'NoneType'\n\nkeras/utils/generic_utils.py:330: TypeError\n----------------------------- Captured stdout call -----------------------------\n\n0/2 [..............................] - ETA: 0s - 0.9132041489840892: 0.0000e+00 - 0.9880536741836835: 0.0000e+00\n      0/Unknown - 0s 0us/step - 0.9132041489840892: 0.0000e+00 - 0.9880536741836835: 0.0000e+00",
+          "log_tail": "keras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/utils/generic_utils_test.py::test_progbar - TypeError: '<'...\n======================== 1 failed, 35 warnings in 3.06s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/utils/generic_utils_test.py::test_progbar",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n  /bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n    if LooseVersion(_np_version) >= LooseVersion(\"1.17.0\"):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 34 warnings in 1.35s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 229,
+  "ran": "2026-11-23T03:28:35+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

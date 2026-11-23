@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "21",
+  "image": "python:3.7.3",
+  "constraints": 61,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_EarlyStopping_final_weights_when_restoring_model_weights",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "TypeError: __init__() got an unexpected keyword argument 'restore_best_weights'",
+          "traceback": "=================================== FAILURES ===================================\n________ test_EarlyStopping_final_weights_when_restoring_model_weights _________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_EarlyStopping_final_weights_when_restoring_model_weights():\n        class DummyModel(object):\n            def __init__(self):\n                self.stop_training = False\n                self.weights = -1\n    \n            def get_weights(self):\n                return self.weights\n    \n            def set_weights(self, weights):\n                self.weights = weights\n    \n            def set_weight_to_epoch(self, epoch):\n                self.weights = epoch\n    \n        early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=2,\n>                                            restore_best_weights=True)\nE       TypeError: __init__() got an unexpected keyword argument 'restore_best_weights'\n\ntests/keras/test_callbacks.py:384: TypeError",
+          "log_tail": "keras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/test_callbacks.py::test_EarlyStopping_final_weights_when_restoring_model_weights\n======================== 1 failed, 35 warnings in 3.89s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/test_callbacks.py::test_EarlyStopping_final_weights_when_restoring_model_weights",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n  /bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n    if LooseVersion(_np_version) >= LooseVersion(\"1.17.0\"):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 34 warnings in 2.57s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 233,
+  "ran": "2026-11-23T03:04:20+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

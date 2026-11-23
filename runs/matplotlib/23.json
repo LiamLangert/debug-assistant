@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "23",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_aspect_nonlinear_adjustable_datalim",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert (1.0, 100.0) == approx([3.1622776601683795 \u00b1 3.2e-06, 31.622776601683793 \u00b1 3.2e-05])",
+          "traceback": "=================================== FAILURES ===================================\n___________________ test_aspect_nonlinear_adjustable_datalim ___________________\n\n    def test_aspect_nonlinear_adjustable_datalim():\n        fig = plt.figure(figsize=(10, 10))  # Square.\n    \n        ax = fig.add_axes([.1, .1, .8, .8])  # Square.\n        ax.plot([.4, .6], [.4, .6])  # Set minpos to keep logit happy.\n        ax.set(xscale=\"log\", xlim=(1, 100),\n               yscale=\"logit\", ylim=(1 / 101, 1 / 11),\n               aspect=1, adjustable=\"datalim\")\n        ax.margins(0)\n        ax.apply_aspect()\n        # Currently the autoscaler chooses to reduce the x-limits by half a decade\n        # on each end, but this may change later.\n>       assert ax.get_xlim() == pytest.approx([1*10**(1/2), 100/10**(1/2)])\nE       assert (1.0, 100.0) == approx([3.1622776601683795 \u00b1 3.2e-06, 31.622776601683793 \u00b1 3.2e-05])\nE        +  where (1.0, 100.0) = <bound method _AxesBase.get_xlim of <matplotlib.axes._axes.Axes object at 0x7a977b13e040>>()\nE        +    where <bound method _AxesBase.get_xlim of <matplotlib.axes._axes.Axes object at 0x7a977b13e040>> = <matplotlib.axes._axes.Axes object at 0x7a977b13e040>.get_xlim\nE        +  and   approx([3.1622776601683795 \u00b1 3.2e-06, 31.622776601683793 \u00b1 3.2e-05]) = <function approx at 0x7a97845f75e0>([3.1622776601683795, 31.622776601683793])\nE        +    where <function approx at 0x7a97845f75e0> = pytest.approx\n\nlib/matplotlib/tests/test_axes.py:6564: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        # Currently the autoscaler chooses to reduce the x-limits by half a decade\n        # on each end, but this may change later.\n>       assert ax.get_xlim() == pytest.approx([1*10**(1/2), 100/10**(1/2)])\nE       assert (1.0, 100.0) == approx([3.1622776601683795 \u00b1 3.2e-06, 31.622776601683793 \u00b1 3.2e-05])\nE        +  where (1.0, 100.0) = <bound method _AxesBase.get_xlim of <matplotlib.axes._axes.Axes object at 0x7a977b13e040>>()\nE        +    where <bound method _AxesBase.get_xlim of <matplotlib.axes._axes.Axes object at 0x7a977b13e040>> = <matplotlib.axes._axes.Axes object at 0x7a977b13e040>.get_xlim\nE        +  and   approx([3.1622776601683795 \u00b1 3.2e-06, 31.622776601683793 \u00b1 3.2e-05]) = <function approx at 0x7a97845f75e0>([3.1622776601683795, 31.622776601683793])\nE        +    where <function approx at 0x7a97845f75e0> = pytest.approx\n\nlib/matplotlib/tests/test_axes.py:6564: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_aspect_nonlinear_adjustable_datalim\n============================== 1 failed in 0.59s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_aspect_nonlinear_adjustable_datalim",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n  from PIL import PILLOW_VERSION\nMatplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n============================== 1 passed in 0.41s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 106,
+  "ran": "2026-11-23T06:36:58+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

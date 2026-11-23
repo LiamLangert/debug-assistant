@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "29",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_inverted_cla",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert False",
+          "traceback": "=================================== FAILURES ===================================\n______________________________ test_inverted_cla _______________________________\n\n    def test_inverted_cla():\n        # Github PR #5450. Setting autoscale should reset\n        # axes to be non-inverted.\n        # plotting an image, then 1d graph, axis is now down\n        fig = plt.figure(0)\n        ax = fig.gca()\n        # 1. test that a new axis is not inverted per default\n        assert not ax.xaxis_inverted()\n        assert not ax.yaxis_inverted()\n        img = np.random.random((100, 100))\n        ax.imshow(img)\n        # 2. test that a image axis is inverted\n        assert not ax.xaxis_inverted()\n        assert ax.yaxis_inverted()\n        # 3. test that clearing and plotting a line, axes are\n        # not inverted\n        ax.cla()\n        x = np.linspace(0, 2*np.pi, 100)\n        ax.plot(x, np.cos(x))\n        assert not ax.xaxis_inverted()\n        assert not ax.yaxis_inverted()\n    \n        # 4. autoscaling should not bring back axes to normal\n        ax.cla()\n        ax.imshow(img)\n        plt.autoscale()\n        assert not ax.xaxis_inverted()\n        assert ax.yaxis_inverted()\n    \n        # 5. two shared axes. Inverting the master axis should invert the shared\n        # axes; clearing the master axis should bring axes in shared\n        # axes back to normal.\n        ax0 = plt.subplot(211)\n        ax1 = plt.subplot(212, sharey=ax0)\n        ax0.yaxis.set_inverted(True)\n>       assert ax1.yaxis_inverted()\nE       assert False\nE        +  where False = <bound method _AxesBase.yaxis_inverted of <matplotlib.axes._subplots.AxesSubplot object at 0x72cb81cd9d90>>()\nE        +    where <bound method _AxesBase.yaxis_inverted of <matplotlib.axes._subplots.AxesSubplot object at 0x72cb81cd9d90>> = <matplotlib.axes._subplots.AxesSubplot object at 0x72cb81cd9d90>.yaxis_inverted\n\nlib/matplotlib/tests/test_axes.py:256: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:39 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "E        +    where <bound method _AxesBase.yaxis_inverted of <matplotlib.axes._subplots.AxesSubplot object at 0x72cb81cd9d90>> = <matplotlib.axes._subplots.AxesSubplot object at 0x72cb81cd9d90>.yaxis_inverted\n\nlib/matplotlib/tests/test_axes.py:256: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:39 Could not set locale to English/United States. Some date-related tests may fail.\n=============================== warnings summary ===============================\nlib/matplotlib/backend_bases.py:57\nlib/matplotlib/backend_bases.py:57\n  /bug/buggy/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n    from PIL import PILLOW_VERSION\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_inverted_cla - assert False\n======================== 1 failed, 2 warnings in 1.06s ========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_inverted_cla",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n=============================== warnings summary ===============================\nlib/matplotlib/backend_bases.py:57\nlib/matplotlib/backend_bases.py:57\n  /bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n    from PIL import PILLOW_VERSION\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n======================== 1 passed, 2 warnings in 0.79s ========================="
+        }
+      ]
+    }
+  },
+  "seconds": 107,
+  "ran": "2026-11-23T06:41:59+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

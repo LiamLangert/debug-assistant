@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "25",
+  "image": "python:3.7.3",
+  "constraints": 61,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/applications/imagenet_utils_test.py::test_preprocess_input",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "numpy.core._exceptions.UFuncTypeError: Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int32') with casting rule 'same_kind'",
+          "traceback": "=================================== FAILURES ===================================\n____________________________ test_preprocess_input _____________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    def test_preprocess_input():\n        # Test image batch with float and int image input\n        x = np.random.uniform(0, 255, (2, 10, 10, 3))\n        xint = x.astype('int32')\n        assert utils.preprocess_input(x).shape == x.shape\n>       assert utils.preprocess_input(xint).shape == xint.shape\n\ntests/keras/applications/imagenet_utils_test.py:15: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nkeras/applications/imagenet_utils.py:178: in preprocess_input\n    return _preprocess_numpy_input(x, data_format=data_format, mode=mode)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nx = array([[[[122, 128,  91],\n         [ 37,  82,  92],\n         [103, 119, 138],\n         [ 64, 166, 215],\n         [ 11,...         [156,  40,  58],\n         [239,  45, 242],\n         [103, 112, 112],\n         [243,  89,  18]]]], dtype=int32)\ndata_format = 'channels_last', mode = 'caffe'\n\n    def _preprocess_numpy_input(x, data_format, mode):\n        \"\"\"Preprocesses a Numpy array encoding a batch of images.\n    \n        # Arguments\n            x: Input array, 3D or 4D.\n            data_format: Data format of the image array.\n            mode: One of \"caffe\", \"tf\" or \"torch\".\n                - caffe: will convert the images from RGB to BGR,\n                    then will zero-center each color channel with\n                    respect to the ImageNet dataset,\n                    without scaling.\n                - tf: will scale pixels between -1 and 1,\n                    sample-wise.\n                - torch: will scale pixels between 0 and 1 and then\n                    will normalize each channel with respect to the\n                    ImageNet dataset.\n    \n        # Returns\n            Preprocessed Numpy array.\n        \"\"\"\n        if mode == 'tf':\n            x /= 127.5\n            x -= 1.\n            return x\n    \n        if mode == 'torch':\n            x /= 255.\n            mean = [0.485, 0.456, 0.406]\n            std = [0.229, 0.224, 0.225]\n        else:\n            if data_format == 'channels_first':\n                # 'RGB'->'BGR'\n                if x.ndim == 3:\n                    x = x[::-1, ...]\n                else:\n                    x = x[:, ::-1, ...]\n            else:\n                # 'RGB'->'BGR'\n                x = x[..., ::-1]\n            mean = [103.939, 116.779, 123.68]\n            std = None\n    \n        # Zero-center by mean pixel\n        if data_format == 'channels_first':\n            if x.ndim == 3:\n                x[0, :, :] -= mean[0]\n                x[1, :, :] -= mean[1]\n                x[2, :, :] -= mean[2]\n                if std is not None:\n                    x[0, :, :] /= std[0]\n                    x[1, :, :] /= std[1]\n                    x[2, :, :] /= std[2]\n            else:\n                x[:, 0, :, :] -= mean[0]\n                x[:, 1, :, :] -= mean[1]\n                x[:, 2, :, :] -= mean[2]\n                if std is not None:\n                    x[:, 0, :, :] /= std[0]\n                    x[:, 1, :, :] /= std[1]\n                    x[:, 2, :, :] /= std[2]\n        else:\n>           x[..., 0] -= mean[0]\nE           numpy.core._exceptions.UFuncTypeError: Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int32') with casting rule 'same_kind'\n\nkeras/applications/imagenet_utils.py:82: UFuncTypeError",
+          "log_tail": "  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.\n    np_resource = np.dtype([(\"resource\", np.ubyte, 1)])\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/applications/imagenet_utils_test.py::test_preprocess_input\n======================== 1 failed, 68 warnings in 3.16s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/applications/imagenet_utils_test.py::test_preprocess_input",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.\n    np_resource = np.dtype([(\"resource\", np.ubyte, 1)])\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 68 warnings in 2.64s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 227,
+  "ran": "2026-11-23T03:11:31+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "2",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::TestScatter::test_scatter_unfilled",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "assert (3, 4) == (0, 4)",
+          "traceback": "=================================== FAILURES ===================================\n______________________ TestScatter.test_scatter_unfilled _______________________\n\nself = <matplotlib.tests.test_axes.TestScatter object at 0x75e2b556a760>\n\n    def test_scatter_unfilled(self):\n        coll = plt.scatter([0, 1, 2], [1, 3, 2], c=['0.1', '0.3', '0.5'],\n                           marker=mmarkers.MarkerStyle('o', fillstyle='none'),\n                           linewidths=[1.1, 1.2, 1.3])\n>       assert coll.get_facecolors().shape == (0, 4)  # no facecolors\nE       assert (3, 4) == (0, 4)\nE         At index 0 diff: 3 != 0\nE         Use -v to get the full diff\n\nlib/matplotlib/tests/test_axes.py:1844: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "                           marker=mmarkers.MarkerStyle('o', fillstyle='none'),\n                           linewidths=[1.1, 1.2, 1.3])\n>       assert coll.get_facecolors().shape == (0, 4)  # no facecolors\nE       assert (3, 4) == (0, 4)\nE         At index 0 diff: 3 != 0\nE         Use -v to get the full diff\n\nlib/matplotlib/tests/test_axes.py:1844: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::TestScatter::test_scatter_unfilled\n============================== 1 failed in 0.64s ===============================\n/bug/buggy/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::TestScatter::test_scatter_unfilled",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n============================== 1 passed in 0.43s ===============================\n/bug/fixed/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    }
+  },
+  "seconds": 110,
+  "ran": "2026-11-23T08:33:48+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

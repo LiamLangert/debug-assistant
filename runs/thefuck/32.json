@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "32",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-z6iu5czn/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-19z5alrp/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-2gpg0ltt/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-z43dch65/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_ls_lah.py::test_match",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert not True",
+          "traceback": "=================================== FAILURES ===================================\n__________________________________ test_match __________________________________\n\n    def test_match():\n        assert match(Mock(script='ls'), None)\n        assert match(Mock(script='ls file.py'), None)\n        assert match(Mock(script='ls /opt'), None)\n        assert not match(Mock(script='ls -lah /opt'), None)\n>       assert not match(Mock(script='pacman -S binutils'), None)\nE       AssertionError: assert not True\nE        +  where True = match(<Mock id='138816124173224'>, None)\nE        +    where <Mock id='138816124173224'> = Mock(script='pacman -S binutils')\n\ntests/rules/test_ls_lah.py:10: AssertionError",
+          "log_tail": "=================================== FAILURES ===================================\n__________________________________ test_match __________________________________\n\n    def test_match():\n        assert match(Mock(script='ls'), None)\n        assert match(Mock(script='ls file.py'), None)\n        assert match(Mock(script='ls /opt'), None)\n        assert not match(Mock(script='ls -lah /opt'), None)\n>       assert not match(Mock(script='pacman -S binutils'), None)\nE       AssertionError: assert not True\nE        +  where True = match(<Mock id='138816124173224'>, None)\nE        +    where <Mock id='138816124173224'> = Mock(script='pacman -S binutils')\n\ntests/rules/test_ls_lah.py:10: AssertionError\n=========================== 1 failed in 0.05 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-9v9b2oxa/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ahdjhk3w/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_ls_lah.py::test_match",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/rules/test_ls_lah.py .                                             [100%]\n\n=========================== 1 passed in 0.04 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 104,
+  "ran": "2026-11-23T06:56:40+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

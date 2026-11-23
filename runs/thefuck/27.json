@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "27",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-zs8wx1oc/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-4cf3w5zd/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-7x49_vot/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-w98fldzi/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_open.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'open http://pen foo.io' == 'xdg-open http://foo.io'",
+          "traceback": "=================================== FAILURES ===================================\n____________ test_get_new_command[command6-xdg-open http://foo.io] _____________\n\ncommand = Command(script='xdg-open foo.io', stdout='', stderr='')\nnew_command = 'xdg-open http://foo.io'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('open foo.com'), 'open http://foo.com'),\n        (Command('open foo.ly'), 'open http://foo.ly'),\n        (Command('open foo.org'), 'open http://foo.org'),\n        (Command('open foo.net'), 'open http://foo.net'),\n        (Command('open foo.se'), 'open http://foo.se'),\n        (Command('open foo.io'), 'open http://foo.io'),\n        (Command('xdg-open foo.io'), 'xdg-open http://foo.io'),\n        (Command('gnome-open foo.io'), 'gnome-open http://foo.io'),\n        (Command('kde-open foo.io'), 'kde-open http://foo.io')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert 'open http://pen foo.io' == 'xdg-open http://foo.io'\nE         - open http://pen foo.io\nE         ?             ----\nE         + xdg-open http://foo.io\nE         ? ++++\n\ntests/rules/test_open.py:31: AssertionError\n___________ test_get_new_command[command7-gnome-open http://foo.io] ____________\n\ncommand = Command(script='gnome-open foo.io', stdout='', stderr='')\nnew_command = 'gnome-open http://foo.io'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('open foo.com'), 'open http://foo.com'),\n        (Command('open foo.ly'), 'open http://foo.ly'),\n        (Command('open foo.org'), 'open http://foo.org'),\n        (Command('open foo.net'), 'open http://foo.net'),\n        (Command('open foo.se'), 'open http://foo.se'),\n        (Command('open foo.io'), 'open http://foo.io'),\n        (Command('xdg-open foo.io'), 'xdg-open http://foo.io'),\n        (Command('gnome-open foo.io'), 'gnome-open http://foo.io'),\n        (Command('kde-open foo.io'), 'kde-open http://foo.io')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert 'open http://-open foo.io' == 'gnome-open http://foo.io'\nE         - open http://-open foo.io\nE         ?             ------\nE         + gnome-open http://foo.io\nE         ? ++++++\n\ntests/rules/test_open.py:31: AssertionError\n____________ test_get_new_command[command8-kde-open http://foo.io] _____________\n\ncommand = Command(script='kde-open foo.io', stdout='', stderr='')\nnew_command = 'kde-open http://foo.io'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('open foo.com'), 'open http://foo.com'),\n        (Command('open foo.ly'), 'open http://foo.ly'),\n        (Command('open foo.org'), 'open http://foo.org'),\n        (Command('open foo.net'), 'open http://foo.net'),\n        (Command('open foo.se'), 'open http://foo.se'),\n        (Command('open foo.io'), 'open http://foo.io'),\n        (Command('xdg-open foo.io'), 'xdg-open http://foo.io'),\n        (Command('gnome-open foo.io'), 'gnome-open http://foo.io'),\n        (Command('kde-open foo.io'), 'kde-open http://foo.io')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert 'open http://pen foo.io' == 'kde-open http://foo.io'\nE         - open http://pen foo.io\nE         ?             ----\nE         + kde-open http://foo.io\nE         ? ++++\n\ntests/rules/test_open.py:31: AssertionError",
+          "log_tail": "        (Command('open foo.se'), 'open http://foo.se'),\n        (Command('open foo.io'), 'open http://foo.io'),\n        (Command('xdg-open foo.io'), 'xdg-open http://foo.io'),\n        (Command('gnome-open foo.io'), 'gnome-open http://foo.io'),\n        (Command('kde-open foo.io'), 'kde-open http://foo.io')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert 'open http://pen foo.io' == 'kde-open http://foo.io'\nE         - open http://pen foo.io\nE         ?             ----\nE         + kde-open http://foo.io\nE         ? ++++\n\ntests/rules/test_open.py:31: AssertionError\n====================== 3 failed, 6 passed in 0.08 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-qrz66f3t/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-88_a6r83/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_open.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 9 items\n\ntests/rules/test_open.py .........                                       [100%]\n\n=========================== 9 passed in 0.05 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 123,
+  "ran": "2026-11-23T06:51:27+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

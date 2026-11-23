@@ -1,0 +1,76 @@
+{
+  "project": "thefuck",
+  "bug_id": "29",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-lhhbddiq/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-cttrsjnh/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-dmz56c9w/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-k_kenv16/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_types.py::test_update_settings",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'new-val' == 'val'",
+          "traceback": "=================================== FAILURES ===================================\n_____________________________ test_update_settings _____________________________\n\n    def test_update_settings():\n        settings = Settings({'key': 'val'})\n        new_settings = settings.update(key='new-val', unset='unset-value')\n>       assert new_settings.key == 'val'\nE       AssertionError: assert 'new-val' == 'val'\nE         - new-val\nE         + val\n\ntests/test_types.py:15: AssertionError",
+          "log_tail": "tests/test_types.py F                                                    [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_update_settings _____________________________\n\n    def test_update_settings():\n        settings = Settings({'key': 'val'})\n        new_settings = settings.update(key='new-val', unset='unset-value')\n>       assert new_settings.key == 'val'\nE       AssertionError: assert 'new-val' == 'val'\nE         - new-val\nE         + val\n\ntests/test_types.py:15: AssertionError\n=========================== 1 failed in 0.04 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::test_wrap_settings",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert {'key': 'new-val'} == {'key': 'val'}",
+          "traceback": "=================================== FAILURES ===================================\n___________________ test_wrap_settings[override1-old1-new1] ____________________\n\noverride = {'key': 'new-val'}, old = {'key': 'val'}, new = {'key': 'val'}\n\n    @pytest.mark.parametrize('override, old, new', [\n        ({'key': 'val'}, {}, {'key': 'val'}),\n        ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),\n        ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])\n    def test_wrap_settings(override, old, new):\n        fn = lambda _, settings: settings\n>       assert wrap_settings(override)(fn)(None, Settings(old)) == new\nE       AssertionError: assert {'key': 'new-val'} == {'key': 'val'}\nE         Differing items:\nE         {'key': 'new-val'} != {'key': 'val'}\nE         Use -v to get the full diff\n\ntests/test_utils.py:16: AssertionError\n___________________ test_wrap_settings[override2-old2-new2] ____________________\n\noverride = {'key': 'new-val', 'unset': 'unset'}, old = {'key': 'val'}\nnew = {'key': 'val', 'unset': 'unset'}\n\n    @pytest.mark.parametrize('override, old, new', [\n        ({'key': 'val'}, {}, {'key': 'val'}),\n        ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),\n        ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])\n    def test_wrap_settings(override, old, new):\n        fn = lambda _, settings: settings\n>       assert wrap_settings(override)(fn)(None, Settings(old)) == new\nE       AssertionError: assert {'key': 'new-...set': 'unset'} == {'key': 'val',...set': 'unset'}\nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'key': 'new-val'} != {'key': 'val'}\nE         Use -v to get the full diff\n\ntests/test_utils.py:16: AssertionError",
+          "log_tail": "    @pytest.mark.parametrize('override, old, new', [\n        ({'key': 'val'}, {}, {'key': 'val'}),\n        ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),\n        ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])\n    def test_wrap_settings(override, old, new):\n        fn = lambda _, settings: settings\n>       assert wrap_settings(override)(fn)(None, Settings(old)) == new\nE       AssertionError: assert {'key': 'new-...set': 'unset'} == {'key': 'val',...set': 'unset'}\nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'key': 'new-val'} != {'key': 'val'}\nE         Use -v to get the full diff\n\ntests/test_utils.py:16: AssertionError\n====================== 2 failed, 1 passed in 0.06 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-i45xeik2/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-2vrb5hgn/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_types.py::test_update_settings",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/test_types.py .                                                    [100%]\n\n=========================== 1 passed in 0.03 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::test_wrap_settings",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 3 items\n\ntests/test_utils.py ...                                                  [100%]\n\n=========================== 3 passed in 0.12 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 114,
+  "ran": "2026-11-23T06:53:15+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

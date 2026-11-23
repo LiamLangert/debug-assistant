@@ -1,0 +1,68 @@
+{
+  "project": "keras",
+  "bug_id": "27",
+  "image": "python:3.7.3",
+  "constraints": 35,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_updates",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 1 == 2",
+          "traceback": "=================================== FAILURES ===================================\n__________________________ test_Bidirectional_updates __________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_Bidirectional_updates():\n        x = Input(shape=(3, 2))\n        layer = wrappers.Bidirectional(layers.SimpleRNN(3))\n        assert len(layer.updates) == 0\n        assert len(layer.get_updates_for(None)) == 0\n        assert len(layer.get_updates_for(x)) == 0\n        layer.forward_layer.add_update(0, inputs=x)\n        layer.forward_layer.add_update(1, inputs=None)\n        layer.backward_layer.add_update(0, inputs=x)\n        layer.backward_layer.add_update(1, inputs=None)\n        assert len(layer.updates) == 4\n>       assert len(layer.get_updates_for(None)) == 2\nE       assert 1 == 2\nE         +1\nE         -2\n\ntests/keras/layers/wrappers_test.py:571: AssertionError",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.01s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_updates\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/layers/wrappers_test.py::test_Bidirectional_updates - asse...\n======================== 1 failed, 26 warnings in 1.92s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_losses",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 2 == 4",
+          "traceback": "=================================== FAILURES ===================================\n__________________________ test_Bidirectional_losses ___________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_Bidirectional_losses():\n        x = Input(shape=(3, 2))\n        layer = wrappers.Bidirectional(\n            layers.SimpleRNN(3, kernel_regularizer='l1', bias_regularizer='l1'))\n        _ = layer(x)\n        assert len(layer.losses) == 4\n>       assert len(layer.get_losses_for(None)) == 4\nE       assert 2 == 4\nE         +2\nE         -4\n\ntests/keras/layers/wrappers_test.py:582: AssertionError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:deprecation.py:323 From /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.\nInstructions for updating:\nColocations handled automatically by placer.",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.10s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_losses\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/layers/wrappers_test.py::test_Bidirectional_losses - asser...\n======================== 1 failed, 26 warnings in 1.91s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_updates",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.01s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_updates\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 1.60s ========================"
+        },
+        {
+          "cmd": "pytest tests/keras/layers/wrappers_test.py::test_Bidirectional_losses",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/framework/tensor_util.py:573: DeprecationWarning: np.asscalar(a) is deprecated since NumPy v1.16, use a.item() instead\n    append_fn(tensor_proto, proto_values)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.11s call     tests/keras/layers/wrappers_test.py::test_Bidirectional_losses\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 27 warnings in 1.58s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 126,
+  "ran": "2026-11-23T03:13:34+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

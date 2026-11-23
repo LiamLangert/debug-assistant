@@ -1,0 +1,73 @@
+{
+  "project": "luigi",
+  "bug_id": "2",
+  "image": "python:3.8.3",
+  "constraints": 159,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.8.4 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 111)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 111))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 116)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 116))",
+        "ERROR: luigi 2.8.4 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 111)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 111))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 116)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 116))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/contrib/beam_dataflow_test.py::BeamDataflowTest::test_get_target_path",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: 'BigQueryTarget' object has no attribute 'project_id'",
+          "traceback": "=================================== FAILURES ===================================\n____________________ BeamDataflowTest.test_get_target_path _____________________\n\nself = <contrib.beam_dataflow_test.BeamDataflowTest testMethod=test_get_target_path>\n\n    def test_get_target_path(self):\n        bq_target = bigquery.BigQueryTarget(\"p\", \"d\", \"t\", client=\"fake_client\")\n        self.assertEqual(\n>           SimpleTestTask.get_target_path(bq_target),\n            \"p:d.t\")\n\ntest/contrib/beam_dataflow_test.py:288: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntarget = <luigi.contrib.bigquery.BigQueryTarget object at 0x7b44295ddb50>\n\n    @staticmethod\n    def get_target_path(target):\n        if isinstance(target, luigi.LocalTarget) or isinstance(target, gcs.GCSTarget):\n            return target.path\n        elif isinstance(target, bigquery.BigQueryTarget):\n>           \"{}:{}.{}\".format(target.project_id, target.dataset_id, target.table_id)\nE           AttributeError: 'BigQueryTarget' object has no attribute 'project_id'\n\nluigi/contrib/beam_dataflow.py:477: AttributeError",
+          "log_tail": "  /bug/buggy/luigi/luigi/__init__.py:75: DeprecationWarning: \n          Autoloading range tasks by default has been deprecated and will be removed in a future version.\n          To get the behavior now add an option to luigi.cfg:\n  \n            [core]\n              autoload-range: false\n  \n          Alternately set the option to true to continue with existing behaviour and suppress this warning.\n      \n    warnings.warn(warning_message, DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED test/contrib/beam_dataflow_test.py::BeamDataflowTest::test_get_target_path\n========================= 1 failed, 1 warning in 0.21s ========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.8.4 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 111)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 111))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 116)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 116))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/contrib/beam_dataflow_test.py::BeamDataflowTest::test_get_target_path",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "=============================== warnings summary ===============================\nluigi/__init__.py:75\n  /bug/fixed/luigi/luigi/__init__.py:75: DeprecationWarning: \n          Autoloading range tasks by default has been deprecated and will be removed in a future version.\n          To get the behavior now add an option to luigi.cfg:\n  \n            [core]\n              autoload-range: false\n  \n          Alternately set the option to true to continue with existing behaviour and suppress this warning.\n      \n    warnings.warn(warning_message, DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================= 1 passed, 1 warning in 0.14s ========================="
+        }
+      ]
+    }
+  },
+  "seconds": 544,
+  "ran": "2026-11-23T04:36:14+00:00",
+  "code_commit": "975aa4237123c9718c3abaa21ab2502f2d21afc2"
+}

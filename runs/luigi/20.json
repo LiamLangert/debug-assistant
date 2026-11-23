@@ -1,0 +1,38 @@
+{
+  "project": "luigi",
+  "bug_id": "20",
+  "image": "python:3.8.3",
+  "constraints": 191,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "no_env",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": []
+    },
+    "fixed": {
+      "outcome": "no_env",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": []
+    }
+  },
+  "seconds": 2,
+  "ran": "2026-11-23T06:56:43+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

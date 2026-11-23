@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "40",
+  "image": "python:3.7.3",
+  "constraints": 62,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/recurrent_test.py::test_stacked_rnn_compute_output_shape",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert [(None, 5, 6)...6), (None, 6)] == [(None, 5, 6)...3), (None, 3)]",
+          "traceback": "=================================== FAILURES ===================================\n____________________ test_stacked_rnn_compute_output_shape _____________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\n    @keras_test\n    def test_stacked_rnn_compute_output_shape():\n        cells = [recurrent.LSTMCell(3),\n                 recurrent.LSTMCell(6)]\n        layer = recurrent.RNN(cells, return_state=True, return_sequences=True)\n        output_shape = layer.compute_output_shape((None, timesteps, embedding_dim))\n        expected_output_shape = [(None, timesteps, 6),\n                                 (None, 6),\n                                 (None, 6),\n                                 (None, 3),\n                                 (None, 3)]\n>       assert output_shape == expected_output_shape\nE       assert [(None, 5, 6)...6), (None, 6)] == [(None, 5, 6)...3), (None, 3)]\nE         At index 3 diff: (None, 6) != (None, 3)\nE         Full diff:\nE         - [(None, 5, 6), (None, 6), (None, 6), (None, 3), (None, 3)]\nE         ?                                             ^          ^\nE         + [(None, 5, 6), (None, 6), (None, 6), (None, 6), (None, 6)]\nE         ?                                             ^          ^\n\ntests/keras/layers/recurrent_test.py:610: AssertionError",
+          "log_tail": "keras/callbacks.py:15\n  /bug/buggy/keras/keras/callbacks.py:15: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/layers/recurrent_test.py::test_stacked_rnn_compute_output_shape\n======================== 1 failed, 35 warnings in 3.21s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/recurrent_test.py::test_stacked_rnn_compute_output_shape",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n/bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114\n  /bug/buggy/keras/env/lib/python3.7/site-packages/pandas/compat/numpy/function.py:114: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n    if LooseVersion(_np_version) >= LooseVersion(\"1.17.0\"):\n\nkeras/callbacks.py:15\nkeras/callbacks.py:15\n  /bug/fixed/keras/keras/callbacks.py:15: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 34 warnings in 2.52s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 203,
+  "ran": "2026-11-23T03:31:43+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

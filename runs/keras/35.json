@@ -1,0 +1,52 @@
+{
+  "project": "keras",
+  "bug_id": "35",
+  "image": "python:3.7.3",
+  "constraints": 39,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/preprocessing/image_test.py::TestImage::test_directory_iterator",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "ValueError: cannot resize an array that references or is referenced",
+          "traceback": "=================================== FAILURES ===================================\n______________________ TestImage.test_directory_iterator _______________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nself = <image_test.TestImage object at 0x792c479247f0>\ntmpdir = local('/tmp/pytest-of-unknown/pytest-0/popen-gw0/test_directory_iterator0')\n\n    def test_directory_iterator(self, tmpdir):\n        num_classes = 2\n    \n        # create folders and subfolders\n        paths = []\n        for cl in range(num_classes):\n            class_directory = 'class-{}'.format(cl)\n            classpaths = [\n                class_directory,\n                os.path.join(class_directory, 'subfolder-1'),\n                os.path.join(class_directory, 'subfolder-2'),\n                os.path.join(class_directory, 'subfolder-1', 'sub-subfolder')\n            ]\n            for path in classpaths:\n                tmpdir.join(path).mkdir()\n            paths.append(classpaths)\n    \n        # save the images in the paths\n        count = 0\n        filenames = []\n        for test_images in self.all_test_images:\n            for im in test_images:\n                # rotate image class\n                im_class = count % num_classes\n                # rotate subfolders\n                classpaths = paths[im_class]\n                filename = os.path.join(classpaths[count % len(classpaths)], 'image-{}.jpg'.format(count))\n                filenames.append(filename)\n                im.save(str(tmpdir / filename))\n                count += 1\n    \n        # create iterator\n        generator = image.ImageDataGenerator()\n        dir_iterator = generator.flow_from_directory(str(tmpdir))\n    \n        # check number of classes and images\n        assert len(dir_iterator.class_indices) == num_classes\n        assert len(dir_iterator.classes) == count\n        assert set(dir_iterator.filenames) == set(filenames)\n    \n        # Test invalid use cases\n        with pytest.raises(ValueError):\n            generator.flow_from_directory(str(tmpdir), color_mode='cmyk')\n        with pytest.raises(ValueError):\n            generator.flow_from_directory(str(tmpdir), class_mode='output')\n    \n        # Test usage as Sequence\n        generator = image.ImageDataGenerator()\n        dir_seq = generator.flow_from_directory(str(tmpdir),\n                                                target_size=(26, 26),\n                                                color_mode='rgb',\n                                                batch_size=3,\n                                                class_mode='categorical')\n        assert len(dir_seq) == count // 3 + 1\n        x1, y1 = dir_seq[1]\n        assert x1.shape == (3, 26, 26, 3)\n        assert y1.shape == (3, num_classes)\n        x1, y1 = dir_seq[5]\n        with pytest.raises(ValueError):\n            x1, y1 = dir_seq[9]\n    \n        # Test Preprocessing before resize\n        def preprocess_test(img):\n            return img.resize((1, 1))\n    \n        generator = image.ImageDataGenerator(preprocessing_function=preprocess_test)\n        dir_seq = generator.flow_from_directory(str(tmpdir),\n                                                target_size=(26, 26),\n                                                color_mode='rgb',\n                                                batch_size=1,\n                                                class_mode='categorical')\n    \n>       gen_x1, gen_y1 = dir_seq[1]\n\ntests/keras/preprocessing/image_test.py:249: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nkeras/preprocessing/image.py:827: in __getitem__\n    return self._get_batches_of_transformed_samples(index_array)\nkeras/preprocessing/image.py:1234: in _get_batches_of_transformed_samples\n    x = self.image_data_generator.standardize(x)\nkeras/preprocessing/image.py:584: in standardize\n    x = self.preprocessing_function(x)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nimg = array([[[ 86.,  86.,  86.],\n        [ 88.,  88.,  88.],\n        [ 88.,  88.,  88.],\n        ...,\n        [ 67.,  67., ...40.],\n        ...,\n        [ 69.,  69.,  69.],\n        [ 69.,  69.,  69.],\n        [ 73.,  73.,  73.]]], dtype=float32)\n\n    def preprocess_test(img):\n>       return img.resize((1, 1))\nE       ValueError: cannot resize an array that references or is referenced\nE       by another array in this way.\nE       Use the np.resize function or refcheck=False\n\ntests/keras/preprocessing/image_test.py:240: ValueError\n----------------------------- Captured stdout call -----------------------------\nFound 16 images belonging to 2 classes.\nFound 16 images belonging to 2 classes.\nFound 16 images belonging to 2 classes.",
+          "log_tail": "    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.34s call     tests/keras/preprocessing/image_test.py::TestImage::test_directory_iterator\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/preprocessing/image_test.py::TestImage::test_directory_iterator\n======================== 1 failed, 26 warnings in 2.40s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/preprocessing/image_test.py::TestImage::test_directory_iterator",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow/python/training/checkpointable/util.py:448: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    class _ObjectIdentitySet(collections.MutableSet):\n\nkeras/callbacks.py:18\nkeras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.34s call     tests/keras/preprocessing/image_test.py::TestImage::test_directory_iterator\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 26 warnings in 2.31s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 148,
+  "ran": "2026-11-23T03:22:38+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

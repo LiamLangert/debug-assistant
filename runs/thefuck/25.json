@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "25",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-5od13yd8/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-r0p0ot4p/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-ua2zw17q/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-iun80ofk/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_mkdir_p.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError: assert 'hdfs dfs -mkdir foo/bar/baz' == 'hdfs dfs -mkdir -p foo/bar/baz'",
+          "traceback": "=================================== FAILURES ===================================\n________ test_get_new_command[command1-hdfs dfs -mkdir -p foo/bar/baz] _________\n\ncommand = Command(script='hdfs dfs -mkdir foo/bar/baz', stdout='', stderr='')\nnew_command = 'hdfs dfs -mkdir -p foo/bar/baz'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('mkdir foo/bar/baz'), 'mkdir -p foo/bar/baz'),\n        (Command('hdfs dfs -mkdir foo/bar/baz'), 'hdfs dfs -mkdir -p foo/bar/baz'),\n        (Command('./bin/hdfs dfs -mkdir foo/bar/baz'), './bin/hdfs dfs -mkdir -p foo/bar/baz')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert 'hdfs dfs -mkdir foo/bar/baz' == 'hdfs dfs -mkdir -p foo/bar/baz'\nE         - hdfs dfs -mkdir foo/bar/baz\nE         + hdfs dfs -mkdir -p foo/bar/baz\nE         ?                +++\n\ntests/rules/test_mkdir_p.py:30: AssertionError\n_____ test_get_new_command[command2-./bin/hdfs dfs -mkdir -p foo/bar/baz] ______\n\ncommand = Command(script='./bin/hdfs dfs -mkdir foo/bar/baz', stdout='', stderr='')\nnew_command = './bin/hdfs dfs -mkdir -p foo/bar/baz'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('mkdir foo/bar/baz'), 'mkdir -p foo/bar/baz'),\n        (Command('hdfs dfs -mkdir foo/bar/baz'), 'hdfs dfs -mkdir -p foo/bar/baz'),\n        (Command('./bin/hdfs dfs -mkdir foo/bar/baz'), './bin/hdfs dfs -mkdir -p foo/bar/baz')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert './bin/hdfs d...r foo/bar/baz' == './bin/hdfs df...p foo/bar/baz'\nE         - ./bin/hdfs dfs -mkdir foo/bar/baz\nE         + ./bin/hdfs dfs -mkdir -p foo/bar/baz\nE         ?                      +++\n\ntests/rules/test_mkdir_p.py:30: AssertionError",
+          "log_tail": "new_command = './bin/hdfs dfs -mkdir -p foo/bar/baz'\n\n    @pytest.mark.parametrize('command, new_command', [\n        (Command('mkdir foo/bar/baz'), 'mkdir -p foo/bar/baz'),\n        (Command('hdfs dfs -mkdir foo/bar/baz'), 'hdfs dfs -mkdir -p foo/bar/baz'),\n        (Command('./bin/hdfs dfs -mkdir foo/bar/baz'), './bin/hdfs dfs -mkdir -p foo/bar/baz')])\n    def test_get_new_command(command, new_command):\n>       assert get_new_command(command, None) == new_command\nE       AssertionError: assert './bin/hdfs d...r foo/bar/baz' == './bin/hdfs df...p foo/bar/baz'\nE         - ./bin/hdfs dfs -mkdir foo/bar/baz\nE         + ./bin/hdfs dfs -mkdir -p foo/bar/baz\nE         ?                      +++\n\ntests/rules/test_mkdir_p.py:30: AssertionError\n====================== 2 failed, 1 passed in 0.07 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-_t11end3/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-d798rrsf/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_mkdir_p.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 3 items\n\ntests/rules/test_mkdir_p.py ...                                          [100%]\n\n=========================== 3 passed in 0.05 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 114,
+  "ran": "2026-11-23T06:49:31+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

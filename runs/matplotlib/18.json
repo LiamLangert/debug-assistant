@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "18",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_polar_no_data",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert (-0.06 == 0)",
+          "traceback": "=================================== FAILURES ===================================\n______________________________ test_polar_no_data ______________________________\n\n    def test_polar_no_data():\n        plt.subplot(projection=\"polar\")\n        ax = plt.gca()\n        assert ax.get_rmin() == 0 and ax.get_rmax() == 1\n        plt.close(\"all\")\n        # Used to behave differently (by triggering an autoscale with no data).\n        plt.polar()\n        ax = plt.gca()\n>       assert ax.get_rmin() == 0 and ax.get_rmax() == 1\nE       assert (-0.06 == 0)\nE        +  where -0.06 = <bound method PolarAxes.get_rmin of <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>>()\nE        +    where <bound method PolarAxes.get_rmin of <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>> = <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>.get_rmin\n\nlib/matplotlib/tests/test_axes.py:2222: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        plt.close(\"all\")\n        # Used to behave differently (by triggering an autoscale with no data).\n        plt.polar()\n        ax = plt.gca()\n>       assert ax.get_rmin() == 0 and ax.get_rmax() == 1\nE       assert (-0.06 == 0)\nE        +  where -0.06 = <bound method PolarAxes.get_rmin of <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>>()\nE        +    where <bound method PolarAxes.get_rmin of <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>> = <matplotlib.axes._subplots.PolarAxesSubplot object at 0x7621c0552250>.get_rmin\n\nlib/matplotlib/tests/test_axes.py:2222: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:41 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_polar_no_data - assert (-0.06 ...\n============================== 1 failed in 0.62s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_polar_no_data",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "Matplotlib is not built with the correct FreeType version to run tests.  Set local_freetype=True in setup.cfg and rebuild. Expect many image comparison failures below. Expected freetype version 2.6.1. Found freetype version 2.9.1. Freetype build type is not local\n============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_axes.py .                                      [100%]\n\n============================== 1 passed in 0.51s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 106,
+  "ran": "2026-11-23T06:31:24+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

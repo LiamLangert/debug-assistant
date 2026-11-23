@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "44",
+  "image": "python:3.7.3",
+  "constraints": 62,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/recurrent_test.py::test_trainability",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 3 == 0",
+          "traceback": "=================================== FAILURES ===================================\n____________________________ test_trainability[GRU] ____________________________\n[gw1] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nlayer_class = <class 'keras.layers.recurrent.GRU'>\n\n    @rnn_test\n    def test_trainability(layer_class):\n        layer = layer_class(units)\n        layer.build((None, None, embedding_dim))\n        assert len(layer.weights) == 3\n        assert len(layer.trainable_weights) == 3\n        assert len(layer.non_trainable_weights) == 0\n        layer.trainable = False\n        assert len(layer.weights) == 3\n>       assert len(layer.trainable_weights) == 0\nE       assert 3 == 0\nE         +3\nE         -0\n\ntests/keras/layers/recurrent_test.py:224: AssertionError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3623: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3623: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n_________________________ test_trainability[SimpleRNN] _________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nlayer_class = <class 'keras.layers.recurrent.SimpleRNN'>\n\n    @rnn_test\n    def test_trainability(layer_class):\n        layer = layer_class(units)\n        layer.build((None, None, embedding_dim))\n        assert len(layer.weights) == 3\n        assert len(layer.trainable_weights) == 3\n        assert len(layer.non_trainable_weights) == 0\n        layer.trainable = False\n        assert len(layer.weights) == 3\n>       assert len(layer.trainable_weights) == 0\nE       assert 3 == 0\nE         +3\nE         -0\n\ntests/keras/layers/recurrent_test.py:224: AssertionError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3623: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:3623: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.\n___________________________ test_trainability[LSTM] ____________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nlayer_class = <class 'keras.layers.recurrent.LSTM'>\n\n    @rnn_test\n    def test_trainability(layer_class):\n        layer = layer_class(units)\n        layer.build((None, None, embedding_dim))\n        assert len(layer.weights) == 3\n        assert len(layer.trainable_weights) == 3\n        assert len(layer.non_trainable_weights) == 0\n        layer.trainable = False\n        assert len(layer.weights) == 3\n>       assert len(layer.trainable_weights) == 0\nE       assert 3 == 0\nE         +3\nE         -0\n\ntests/keras/layers/recurrent_test.py:224: AssertionError",
+          "log_tail": "  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.03s call     tests/keras/layers/recurrent_test.py::test_trainability[LSTM]\n0.02s call     tests/keras/layers/recurrent_test.py::test_trainability[GRU]\n0.01s call     tests/keras/layers/recurrent_test.py::test_trainability[SimpleRNN]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/layers/recurrent_test.py::test_trainability[GRU] - assert ...\nFAILED tests/keras/layers/recurrent_test.py::test_trainability[SimpleRNN] - a...\nFAILED tests/keras/layers/recurrent_test.py::test_trainability[LSTM] - assert...\n======================== 3 failed, 84 warnings in 3.86s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/layers/recurrent_test.py::test_trainability",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "  /bug/fixed/keras/keras/callbacks.py:15: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: 48 tests with warnings\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 10 test durations ===========================\n0.03s call     tests/keras/layers/recurrent_test.py::test_trainability[LSTM]\n0.03s call     tests/keras/layers/recurrent_test.py::test_trainability[GRU]\n0.01s call     tests/keras/layers/recurrent_test.py::test_trainability[SimpleRNN]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 3 passed, 82 warnings in 2.77s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 202,
+  "ran": "2026-11-23T03:38:19+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

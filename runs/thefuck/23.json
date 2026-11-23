@@ -1,0 +1,92 @@
+{
+  "project": "thefuck",
+  "bug_id": "23",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-antj_hit/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-f_jnwr37/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-l0w1uksv/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-hc66rkt8/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_when_etag_changed",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: __enter__",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ TestCache.test_when_etag_changed _______________________\n\nself = <tests.test_utils.TestCache object at 0x7afb44a6e1d0>\nshelve = {'tests.test_utils.<function TestCache.fn.<locals>.fn ': {'etag': '-1', 'value': 'old-value'}}\nfn = <function TestCache.fn.<locals>.fn at 0x7afb44c179d8>\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn '\n\n    def test_when_etag_changed(self, shelve, fn, key):\n        shelve.update({key: {'etag': '-1', 'value': 'old-value'}})\n>       assert fn() == 'test'\n\ntests/test_utils.py:181: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n<decorator-gen-4>:2: in fn\n    ???\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nfn = <function TestCache.fn.<locals>.fn at 0x7afb44c17950>, args = ()\nkwargs = {}, cache_path = '/tmp/.thefuck-cache'\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn ', etag = '0'\n\n    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError",
+          "log_tail": "    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError\n=========================== 1 failed in 0.08 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_with_filled_cache",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: __enter__",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ TestCache.test_with_filled_cache _______________________\n\nself = <tests.test_utils.TestCache object at 0x728054db9e80>\nshelve = {'tests.test_utils.<function TestCache.fn.<locals>.fn ': {'etag': '0', 'value': 'new-value'}}\nfn = <function TestCache.fn.<locals>.fn at 0x728053eaca60>\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn '\n\n    def test_with_filled_cache(self, shelve, fn, key):\n        cache_value = {key: {'etag': '0', 'value': 'new-value'}}\n        shelve.update(cache_value)\n>       assert fn() == 'new-value'\n\ntests/test_utils.py:176: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n<decorator-gen-4>:2: in fn\n    ???\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nfn = <function TestCache.fn.<locals>.fn at 0x728053eac9d8>, args = ()\nkwargs = {}, cache_path = '/tmp/.thefuck-cache'\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn ', etag = '0'\n\n    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError",
+          "log_tail": "    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError\n=========================== 1 failed in 0.06 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_with_blank_cache",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: __enter__",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ TestCache.test_with_blank_cache ________________________\n\nself = <tests.test_utils.TestCache object at 0x7d7259e0c2e8>, shelve = {}\nfn = <function TestCache.fn.<locals>.fn at 0x7d7258eaba60>\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn '\n\n    def test_with_blank_cache(self, shelve, fn, key):\n        assert shelve == {}\n>       assert fn() == 'test'\n\ntests/test_utils.py:170: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n<decorator-gen-4>:2: in fn\n    ???\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nfn = <function TestCache.fn.<locals>.fn at 0x7d7258eab9d8>, args = ()\nkwargs = {}, cache_path = '/tmp/.thefuck-cache'\nkey = 'tests.test_utils.<function TestCache.fn.<locals>.fn ', etag = '0'\n\n    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError",
+          "log_tail": "    @decorator\n    def _cache(fn, *args, **kwargs):\n        if cache.disabled:\n            return fn(*args, **kwargs)\n    \n        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')\n        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])\n    \n        etag = '.'.join(_get_mtime(name) for name in depends_on)\n    \n>       with shelve.open(cache_path) as db:\nE       AttributeError: __enter__\n\nthefuck/utils.py:183: AttributeError\n=========================== 1 failed in 0.08 seconds ==========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-df3ail60/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-21c55qaf/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_when_etag_changed",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/test_utils.py .                                                    [100%]\n\n=========================== 1 passed in 0.07 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_with_filled_cache",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/test_utils.py .                                                    [100%]\n\n=========================== 1 passed in 0.07 seconds ==========================="
+        },
+        {
+          "cmd": "pytest tests/test_utils.py::TestCache::test_with_blank_cache",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 1 item\n\ntests/test_utils.py .                                                    [100%]\n\n=========================== 1 passed in 0.07 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 119,
+  "ran": "2026-11-23T06:47:44+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

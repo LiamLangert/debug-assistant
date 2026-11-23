@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "17",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": false,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\n  /bug/buggy/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\nenv/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.07s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 36 warnings in 2.88s ========================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "keras/callbacks.py:18\n  /bug/fixed/keras/keras/callbacks.py:18: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Iterable\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.05s call     tests/keras/metrics_test.py::test_sparse_categorical_accuracy_correctness\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 36 warnings in 2.42s ========================"
+        }
+      ]
+    }
+  },
+  "seconds": 166,
+  "ran": "2026-11-23T02:57:55+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

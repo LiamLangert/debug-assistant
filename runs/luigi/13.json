@@ -1,0 +1,73 @@
+{
+  "project": "luigi",
+  "bug_id": "13",
+  "image": "python:3.8.3",
+  "constraints": 165,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.1.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))",
+        "ERROR: luigi 2.1.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/file_test.py::FileSystemTest::test_move_to_new_dir",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AttributeError: 'LocalFileSystem' object has no attribute 'fs'",
+          "traceback": "=================================== FAILURES ===================================\n_____________________ FileSystemTest.test_move_to_new_dir ______________________\n\nself = <file_test.FileSystemTest testMethod=test_move_to_new_dir>\n\n    def test_move_to_new_dir(self):\n        # Regression test for a bug in LocalFileSystem.move\n        src = os.path.join(self.path, 'src.txt')\n        dest = os.path.join(self.path, 'newdir', 'dest.txt')\n    \n        LocalTarget(src).open('w').close()\n>       self.fs.move(src, dest)\n\ntest/file_test.py:308: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <luigi.file.LocalFileSystem object at 0x7fd2e40e8d60>\nold_path = '/tmp/luigi-test-dir/src.txt'\nnew_path = '/tmp/luigi-test-dir/newdir/dest.txt', raise_if_exists = False\n\n    def move(self, old_path, new_path, raise_if_exists=False):\n        if raise_if_exists and os.path.exists(new_path):\n            raise RuntimeError('Destination exists: %s' % new_path)\n        d = os.path.dirname(new_path)\n        if d and not os.path.exists(d):\n>           self.fs.mkdir(d)\nE           AttributeError: 'LocalFileSystem' object has no attribute 'fs'\n\nluigi/file.py:91: AttributeError",
+          "log_tail": "        d = os.path.dirname(new_path)\n        if d and not os.path.exists(d):\n>           self.fs.mkdir(d)\nE           AttributeError: 'LocalFileSystem' object has no attribute 'fs'\n\nluigi/file.py:91: AttributeError\n=============================== warnings summary ===============================\nluigi/parameter.py:28\n  /bug/buggy/luigi/luigi/parameter.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    from collections import OrderedDict, Mapping\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED test/file_test.py::FileSystemTest::test_move_to_new_dir - AttributeErr...\n========================= 1 failed, 1 warning in 0.15s ========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead",
+        "ujson missing from requirements (Windows freeze); pinned ujson==2.0.3",
+        "uvloop missing from requirements (Windows freeze); pinned uvloop==0.14.0"
+      ],
+      "compile_errors": [
+        "ERROR: luigi 2.1.1 has requirement tornado<5,>=4.0, but you'll have tornado 5.0 which is incompatible.",
+        "ERROR: Could not find a version that satisfies the requirement pywin32==227 (from -c /bug/constraints.txt (line 115)) (from versions: none)",
+        "ERROR: No matching distribution found for pywin32==227 (from -c /bug/constraints.txt (line 115))",
+        "ERROR: Could not find a version that satisfies the requirement requests-async==0.5.0 (from -c /bug/constraints.txt (line 120)) (from versions: 0.1.0, 0.2.0, 0.2.1, 0.2.2, 0.2.3, 0.2.4)",
+        "ERROR: No matching distribution found for requests-async==0.5.0 (from -c /bug/constraints.txt (line 120))"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest test/file_test.py::FileSystemTest::test_move_to_new_dir",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "platform linux -- Python 3.8.3, pytest-5.4.3, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/luigi\nplugins: sugar-0.9.3, benchmark-3.2.3, cov-2.9.0, sanic-1.6.1, requests-mock-1.8.0\ncollected 1 item\n\ntest/file_test.py .                                                      [100%]\n\n=============================== warnings summary ===============================\nluigi/parameter.py:28\n  /bug/fixed/luigi/luigi/parameter.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working\n    from collections import OrderedDict, Mapping\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================= 1 passed, 1 warning in 0.09s ========================="
+        }
+      ]
+    }
+  },
+  "seconds": 582,
+  "ran": "2026-11-23T05:22:43+00:00",
+  "code_commit": "975aa4237123c9718c3abaa21ab2502f2d21afc2"
+}

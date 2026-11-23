@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "12",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_lines_with_colors",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 9.440):",
+          "traceback": "=================================== FAILURES ===================================\n______________________ test_lines_with_colors[png-data0] _______________________\n\nargs = (), kwargs = {'data': [1, 2, 3, nan, 5]}, ext = 'png'\nrequest = <FixtureRequest for <Function test_lines_with_colors[png-data0]>>\nfile_name = 'test_lines_with_colors[png-data0]'\nfig_test = <Figure size 640x480 with 2 Axes>\nfig_ref = <Figure size 640x480 with 2 Axes>\ntest_image_path = PosixPath('/bug/buggy/matplotlib/result_images/test_axes/test_lines_with_colors[png-data0].png')\nref_image_path = PosixPath('/bug/buggy/matplotlib/result_images/test_axes/test_lines_with_colors[png-data0]-expected.png')\n\n    @pytest.mark.parametrize(\"ext\", extensions)\n    def wrapper(*args, **kwargs):\n        ext = kwargs['ext']\n        if 'ext' not in old_sig.parameters:\n            kwargs.pop('ext')\n        request = kwargs['request']\n        if 'request' not in old_sig.parameters:\n            kwargs.pop('request')\n    \n        file_name = \"\".join(c for c in request.node.name\n                            if c in ALLOWED_CHARS)\n        try:\n            fig_test = plt.figure(\"test\")\n            fig_ref = plt.figure(\"reference\")\n            func(*args, fig_test=fig_test, fig_ref=fig_ref, **kwargs)\n            test_image_path = result_dir / (file_name + \".\" + ext)\n            ref_image_path = result_dir / (file_name + \"-expected.\" + ext)\n            fig_test.savefig(test_image_path)\n            fig_ref.savefig(ref_image_path)\n>           _raise_on_image_difference(\n                ref_image_path, test_image_path, tol=tol\n            )\nE           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 9.440):\nE           \tresult_images/test_axes/test_lines_with_colors[png-data0].png\nE           \tresult_images/test_axes/test_lines_with_colors[png-data0]-expected.png\n\nlib/matplotlib/testing/decorators.py:413: ImageComparisonFailure\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n______________________ test_lines_with_colors[png-data1] _______________________\n\nargs = ()\nkwargs = {'data': masked_array(data=[1, 2, 3, --, 5],\n             mask=[False, False, False,  True, False],\n       fill_value=4)}\next = 'png'\nrequest = <FixtureRequest for <Function test_lines_with_colors[png-data1]>>\nfile_name = 'test_lines_with_colors[png-data1]'\nfig_test = <Figure size 640x480 with 2 Axes>\nfig_ref = <Figure size 640x480 with 2 Axes>\ntest_image_path = PosixPath('/bug/buggy/matplotlib/result_images/test_axes/test_lines_with_colors[png-data1].png')\nref_image_path = PosixPath('/bug/buggy/matplotlib/result_images/test_axes/test_lines_with_colors[png-data1]-expected.png')\n\n    @pytest.mark.parametrize(\"ext\", extensions)\n    def wrapper(*args, **kwargs):\n        ext = kwargs['ext']\n        if 'ext' not in old_sig.parameters:\n            kwargs.pop('ext')\n        request = kwargs['request']\n        if 'request' not in old_sig.parameters:\n            kwargs.pop('request')\n    \n        file_name = \"\".join(c for c in request.node.name\n                            if c in ALLOWED_CHARS)\n        try:\n            fig_test = plt.figure(\"test\")\n            fig_ref = plt.figure(\"reference\")\n            func(*args, fig_test=fig_test, fig_ref=fig_ref, **kwargs)\n            test_image_path = result_dir / (file_name + \".\" + ext)\n            ref_image_path = result_dir / (file_name + \"-expected.\" + ext)\n            fig_test.savefig(test_image_path)\n            fig_ref.savefig(ref_image_path)\n>           _raise_on_image_difference(\n                ref_image_path, test_image_path, tol=tol\n            )\nE           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 9.440):\nE           \tresult_images/test_axes/test_lines_with_colors[png-data1].png\nE           \tresult_images/test_axes/test_lines_with_colors[png-data1]-expected.png\n\nlib/matplotlib/testing/decorators.py:413: ImageComparisonFailure\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "            fig_ref.savefig(ref_image_path)\n>           _raise_on_image_difference(\n                ref_image_path, test_image_path, tol=tol\n            )\nE           matplotlib.testing.exceptions.ImageComparisonFailure: images not close (RMS 9.440):\nE           \tresult_images/test_axes/test_lines_with_colors[png-data1].png\nE           \tresult_images/test_axes/test_lines_with_colors[png-data1]-expected.png\n\nlib/matplotlib/testing/decorators.py:413: ImageComparisonFailure\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_axes.py::test_lines_with_colors[png-data0]\nFAILED lib/matplotlib/tests/test_axes.py::test_lines_with_colors[png-data1]\n============================== 2 failed in 0.97s ==============================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_axes.py::test_lines_with_colors",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 2 items\n\nlib/matplotlib/tests/test_axes.py ..                                     [100%]\n\n============================== 2 passed in 0.93s ==============================="
+        }
+      ]
+    }
+  },
+  "seconds": 122,
+  "ran": "2026-11-23T06:25:38+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

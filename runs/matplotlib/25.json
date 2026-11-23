@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "25",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_collections.py::test_EventCollection_nosort",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "AssertionError:",
+          "traceback": "=================================== FAILURES ===================================\n_________________________ test_EventCollection_nosort __________________________\n\n    def test_EventCollection_nosort():\n        # Check that EventCollection doesn't modify input in place\n        arr = np.array([3, 2, 1, 10])\n        coll = EventCollection(arr)\n>       np.testing.assert_array_equal(arr, np.array([3, 2, 1, 10]))\nE       AssertionError: \nE       Arrays are not equal\nE       \nE       Mismatched elements: 2 / 4 (50%)\nE       Max absolute difference: 2\nE       Max relative difference: 2.\nE        x: array([ 1,  2,  3, 10])\nE        y: array([ 3,  2,  1, 10])\n\nlib/matplotlib/tests/test_collections.py:730: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:39 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "E        y: array([ 3,  2,  1, 10])\n\nlib/matplotlib/tests/test_collections.py:730: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:39 Could not set locale to English/United States. Some date-related tests may fail.\n=============================== warnings summary ===============================\nlib/matplotlib/backend_bases.py:57\nlib/matplotlib/backend_bases.py:57\n  /bug/buggy/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n    from PIL import PILLOW_VERSION\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_collections.py::test_EventCollection_nosort\n======================== 1 failed, 2 warnings in 0.71s ========================="
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_collections.py::test_EventCollection_nosort",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_collections.py .                               [100%]\n\n=============================== warnings summary ===============================\nlib/matplotlib/backend_bases.py:57\nlib/matplotlib/backend_bases.py:57\n  /bug/fixed/matplotlib/lib/matplotlib/backend_bases.py:57: DeprecationWarning: PILLOW_VERSION is deprecated and will be removed in a future release. Use __version__ instead.\n    from PIL import PILLOW_VERSION\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n======================== 1 passed, 2 warnings in 0.49s ========================="
+        }
+      ]
+    }
+  },
+  "seconds": 105,
+  "ran": "2026-11-23T06:38:39+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

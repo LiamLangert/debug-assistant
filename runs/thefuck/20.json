@@ -1,0 +1,60 @@
+{
+  "project": "thefuck",
+  "bug_id": "20",
+  "image": "python:3.7.0",
+  "constraints": 45,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "failed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-duifd6lr/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-uoq992s2/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-rrthfvsa/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-pxqwb7rd/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_dirty_unzip.py::test_get_new_command",
+          "exit": 1,
+          "outcome": "failed",
+          "exception": "assert 'unzip foo\\\\ bar.zip -d foo\\\\' == \"unzip foo\\\\ b... -d 'foo bar'\"",
+          "traceback": "=================================== FAILURES ===================================\n__ test_get_new_command[unzip foo\\\\ bar.zip-unzip foo\\\\ bar.zip -d 'foo bar'] __\n\nzip_error = None, script = 'unzip foo\\\\ bar.zip'\nfixed = \"unzip foo\\\\ bar.zip -d 'foo bar'\"\n\n    @pytest.mark.parametrize('script,fixed', [\n        ('unzip foo', 'unzip foo -d foo'),\n        (R\"unzip foo\\ bar.zip\", R\"unzip foo\\ bar.zip -d 'foo bar'\"),\n        (R\"unzip 'foo bar.zip'\", R\"unzip 'foo bar.zip' -d 'foo bar'\"),\n        ('unzip foo.zip', 'unzip foo.zip -d foo')])\n    def test_get_new_command(zip_error, script, fixed):\n>       assert get_new_command(Command(script=script)) == fixed\nE       assert 'unzip foo\\\\ bar.zip -d foo\\\\' == \"unzip foo\\\\ b... -d 'foo bar'\"\nE         - unzip foo\\ bar.zip -d foo\\\nE         ?                          ^\nE         + unzip foo\\ bar.zip -d 'foo bar'\nE         ?                       +   ^^^^^\n\n/bug/buggy/thefuck/tests/rules/test_dirty_unzip.py:50: AssertionError\n__ test_get_new_command[unzip 'foo bar.zip'-unzip 'foo bar.zip' -d 'foo bar'] __\n\nzip_error = None, script = \"unzip 'foo bar.zip'\"\nfixed = \"unzip 'foo bar.zip' -d 'foo bar'\"\n\n    @pytest.mark.parametrize('script,fixed', [\n        ('unzip foo', 'unzip foo -d foo'),\n        (R\"unzip foo\\ bar.zip\", R\"unzip foo\\ bar.zip -d 'foo bar'\"),\n        (R\"unzip 'foo bar.zip'\", R\"unzip 'foo bar.zip' -d 'foo bar'\"),\n        ('unzip foo.zip', 'unzip foo.zip -d foo')])\n    def test_get_new_command(zip_error, script, fixed):\n>       assert get_new_command(Command(script=script)) == fixed\nE       assert \"unzip 'foo bar.zip' -d 'foo\" == \"unzip 'foo ba...' -d 'foo bar'\"\nE         - unzip 'foo bar.zip' -d 'foo\nE         + unzip 'foo bar.zip' -d 'foo bar'\nE         ?                            +++++\n\n/bug/buggy/thefuck/tests/rules/test_dirty_unzip.py:50: AssertionError",
+          "log_tail": "\n    @pytest.mark.parametrize('script,fixed', [\n        ('unzip foo', 'unzip foo -d foo'),\n        (R\"unzip foo\\ bar.zip\", R\"unzip foo\\ bar.zip -d 'foo bar'\"),\n        (R\"unzip 'foo bar.zip'\", R\"unzip 'foo bar.zip' -d 'foo bar'\"),\n        ('unzip foo.zip', 'unzip foo.zip -d foo')])\n    def test_get_new_command(zip_error, script, fixed):\n>       assert get_new_command(Command(script=script)) == fixed\nE       assert \"unzip 'foo bar.zip' -d 'foo\" == \"unzip 'foo ba...' -d 'foo bar'\"\nE         - unzip 'foo bar.zip' -d 'foo\nE         + unzip 'foo bar.zip' -d 'foo bar'\nE         ?                            +++++\n\n/bug/buggy/thefuck/tests/rules/test_dirty_unzip.py:50: AssertionError\n====================== 2 failed, 2 passed in 0.08 seconds ======================"
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements installed the project from GitHub; installed this tree (--editable=.) instead"
+      ],
+      "compile_errors": [
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-l36vkffi/cryptography/pyproject.toml(180, 1): msg",
+        "pip._vendor.pytoml.core.TomlError: /tmp/pip-install-_5dncd8i/cryptography/pyproject.toml(180, 1): msg"
+      ],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/rules/test_dirty_unzip.py::test_get_new_command",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.7.0, pytest-3.10.1, py-1.8.1, pluggy-0.13.1\nbenchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /bug/fixed/thefuck, inifile:\nplugins: benchmark-3.2.3, mock-3.1.0, docker-pexpect-0.9\ncollected 4 items\n\ntests/rules/test_dirty_unzip.py ....                                     [100%]\n\n=========================== 4 passed in 0.06 seconds ==========================="
+        }
+      ]
+    }
+  },
+  "seconds": 124,
+  "ran": "2026-11-23T06:45:51+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}

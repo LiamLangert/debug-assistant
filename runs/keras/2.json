@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "2",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_in_top_k",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AttributeError: module 'keras.backend.numpy_backend' has no attribute 'in_top_k'",
+          "traceback": "=================================== FAILURES ===================================\n__________________________ TestBackend.test_in_top_k ___________________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\nself = <backend_test.TestBackend object at 0x76635949b940>\n\n    @pytest.mark.skipif(K.backend() == 'cntk', reason='Bug in CNTK')\n    def test_in_top_k(self):\n        batch_size = 20\n        num_classes = 10\n    \n        # Random prediction test case\n        predictions = np.random.random((batch_size, num_classes)).astype('float32')\n        targets = np.random.randint(num_classes, size=batch_size, dtype='int32')\n    \n        # (k == 0 or k > num_classes) does not raise an error\n        # but just return an unmeaningful tensor.\n        for k in range(1, num_classes + 1):\n            z_list = [b.eval(b.in_top_k(b.variable(predictions, dtype='float32'),\n                                        b.variable(targets, dtype='int32'), k))\n>                     for b in WITH_NP]\n\ntests/keras/backend/backend_test.py:1173: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n.0 = <list_iterator object at 0x76635856bda0>\n\n    z_list = [b.eval(b.in_top_k(b.variable(predictions, dtype='float32'),\n                                b.variable(targets, dtype='int32'), k))\n>             for b in WITH_NP]\nE   AttributeError: module 'keras.backend.numpy_backend' has no attribute 'in_top_k'\n\ntests/keras/backend/backend_test.py:1173: AttributeError\n----------------------------- Captured stderr call -----------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:178: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:185: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:191: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.\n\n2026-11-23 02:32:18.755886: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA\n2026-11-23 02:32:18.762363: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2995195000 Hz\n2026-11-23 02:32:18.763996: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x62d1e98a2590 initialized for platform Host (this does not guarantee that XLA will be used). Devices:\n2026-11-23 02:32:18.764037: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version\n2026-11-23 02:32:18.765483: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory\n2026-11-23 02:32:18.765511: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)\n2026-11-23 02:32:18.765529: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (61f4e91adbde): /proc/driver/nvidia/version does not exist\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:195: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:204: The name tf.is_variable_initialized is deprecated. Please use tf.compat.v1.is_variable_initialized instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:211: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.\n\n------------------------------ Captured log call -------------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:178: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:185: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:191: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:195: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:204: The name tf.is_variable_initialized is deprecated. Please use tf.compat.v1.is_variable_initialized instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:211: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.\n--------------------------- Captured stderr teardown ---------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:99: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:104: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.\n\n---------------------------- Captured log teardown -----------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:99: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:104: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.",
+          "log_tail": "    tensor_proto.tensor_content = nparray.tostring()\n\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.04s call     tests/keras/backend/backend_test.py::TestBackend::test_in_top_k\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/keras/backend/backend_test.py::TestBackend::test_in_top_k - Attr...\n======================== 1 failed, 7 warnings in 2.48s =========================\nUsing TensorFlow backend."
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/keras/backend/backend_test.py::TestBackend::test_in_top_k",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "tests/keras/backend/backend_test.py:29\n  /bug/fixed/keras/tests/keras/backend/backend_test.py:29: UserWarning: Could not import the Theano backend\n    warnings.warn('Could not import the Theano backend')\n\n/bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: 40 tests with warnings\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/python/framework/tensor_util.py:521: DeprecationWarning: tostring() is deprecated. Use tobytes() instead.\n    tensor_proto.tensor_content = nparray.tostring()\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.52s call     tests/keras/backend/backend_test.py::TestBackend::test_in_top_k\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n======================== 1 passed, 44 warnings in 3.78s ========================\nUsing TensorFlow backend."
+        }
+      ]
+    }
+  },
+  "seconds": 160,
+  "ran": "2026-11-23T02:32:57+00:00",
+  "code_commit": "9e6ec484d16f0712c6606ce871ea8cd3a35123e6"
+}

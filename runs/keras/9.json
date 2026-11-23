@@ -1,0 +1,54 @@
+{
+  "project": "keras",
+  "bug_id": "9",
+  "image": "python:3.7.3",
+  "constraints": 41,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1]",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "AssertionError: assert '<p>Base clas...e output.</p>' == '<p>Base clas....</li>\\n</ul>'",
+          "traceback": "=================================== FAILURES ===================================\n_______________________ test_doc_lists[docs_descriptor1] _______________________\n[gw0] linux -- Python 3.7.3 /bug/buggy/keras/env/bin/python3\n\ndocs_descriptor = {'doc': 'Base class for recurrent layers.\\n\\n    # Arguments\\n        return_sequences: Boolean. Whether to return the...r the full sequence.\\n- __return_state__: Boolean. Whether to return the last state\\n    in addition to the output.\\n'}\n\n    @pytest.mark.parametrize('docs_descriptor', [\n        test_doc1,\n        test_doc_with_arguments_as_last_block,\n    ])\n    def test_doc_lists(docs_descriptor):\n        docstring = autogen.process_docstring(docs_descriptor['doc'])\n>       assert markdown(docstring) == markdown(docs_descriptor['result'])\nE       AssertionError: assert '<p>Base clas...e output.</p>' == '<p>Base clas....</li>\\n</ul>'\nE           <p>Base class for recurrent layers.</p>\nE           <p><strong>Arguments</strong></p>\nE         - <ul>\nE         - <li><strong>return_sequences</strong>: Boolean. Whether to return the last output\nE         ?  ^^^^^^^^^^                 ---------\nE         + <p>return_sequences: Boolean. Whether to return the last output\nE         ?  ^...\nE         \nE         ...Full output truncated (12 lines hidden), use '-vv' to show\n\ntests/test_doc_auto_generation.py:355: AssertionError\n--------------------------- Captured stderr teardown ---------------------------\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:98: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.\n\nWARNING:tensorflow:From /bug/buggy/keras/keras/backend/tensorflow_backend.py:102: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.\n\n---------------------------- Captured log teardown -----------------------------\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:95: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:98: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.\n\nWARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:102: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.",
+          "log_tail": "WARNING  tensorflow:module_wrapper.py:139 From /bug/buggy/keras/keras/backend/tensorflow_backend.py:102: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.\n=============================== warnings summary ===============================\nenv/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26\n  /bug/buggy/keras/env/lib/python3.7/site-packages/tensorflow_core/contrib/learn/python/learn/learn_io/generator_io.py:26: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working\n    from collections import Container\n\n-- Docs: https://docs.pytest.org/en/latest/warnings.html\n========================== slowest 20 test durations ===========================\n0.01s call     tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1]\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n=========================== short test summary info ============================\nFAILED tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1] - ...\n========================= 1 failed, 1 warning in 3.50s =========================\nUsing TensorFlow backend."
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "numpy==1.19.0rc2 is no longer on PyPI; pinned numpy==1.19.0 instead",
+        "scipy==1.5.0rc1 is no longer on PyPI; pinned scipy==1.5.0 instead"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1]",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "[gw1] Python 3.7.3 (default, Jun 11 2019, 01:05:09)  -- [GCC 6.3.0 20170516]\n\n[gw0] Python 3.7.3 (default, Jun 11 2019, 01:05:09)  -- [GCC 6.3.0 20170516]\ngw0 [1] / gw1 [1]\n\nscheduling tests via LoadScheduling\n\ntests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1] \n[gw1] [100%] PASSED tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1] \n\n========================== slowest 20 test durations ===========================\n\n(0.00 durations hidden.  Use -vv to show these durations.)\n============================== 1 passed in 2.79s ===============================\nUsing TensorFlow backend."
+        }
+      ]
+    }
+  },
+  "seconds": 184,
+  "ran": "2026-11-23T02:47:20+00:00",
+  "code_commit": "e66033f661335635b81aa6ef712eee51c46976a1"
+}

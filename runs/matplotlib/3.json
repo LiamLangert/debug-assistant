@@ -1,0 +1,55 @@
+{
+  "project": "matplotlib",
+  "bug_id": "3",
+  "image": "python:3.8.1",
+  "constraints": 7,
+  "reproduced": true,
+  "env_diff": {
+    "only_buggy": [],
+    "only_fixed": []
+  },
+  "versions": {
+    "buggy": {
+      "outcome": "error",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e .",
+        "installed pytest==5.4.3: nothing else installs pytest"
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_marker.py::test_marker_fillstyle",
+          "exit": 1,
+          "outcome": "error",
+          "exception": "assert not True",
+          "traceback": "=================================== FAILURES ===================================\n____________________________ test_marker_fillstyle _____________________________\n\n    def test_marker_fillstyle():\n        marker_style = markers.MarkerStyle(marker='o', fillstyle='none')\n        assert marker_style.get_fillstyle() == 'none'\n>       assert not marker_style.is_filled()\nE       assert not True\nE        +  where True = <bound method MarkerStyle.is_filled of <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>>()\nE        +    where <bound method MarkerStyle.is_filled of <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>> = <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>.is_filled\n\nlib/matplotlib/tests/test_marker.py:13: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.",
+          "log_tail": "        marker_style = markers.MarkerStyle(marker='o', fillstyle='none')\n        assert marker_style.get_fillstyle() == 'none'\n>       assert not marker_style.is_filled()\nE       assert not True\nE        +  where True = <bound method MarkerStyle.is_filled of <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>>()\nE        +    where <bound method MarkerStyle.is_filled of <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>> = <matplotlib.markers.MarkerStyle object at 0x7a8259a40fa0>.is_filled\n\nlib/matplotlib/tests/test_marker.py:13: AssertionError\n------------------------------ Captured log setup ------------------------------\nWARNING  matplotlib.testing:__init__.py:40 Could not set locale to English/United States. Some date-related tests may fail.\n=========================== short test summary info ============================\nFAILED lib/matplotlib/tests/test_marker.py::test_marker_fillstyle - assert no...\n============================== 1 failed in 0.26s ===============================\n/bug/buggy/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    },
+    "fixed": {
+      "outcome": "passed",
+      "repairs": [
+        "requirements.txt pins nothing; pinned numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2",
+        "no setup.sh builds matplotlib; ran python -m pip install -e ."
+      ],
+      "compile_errors": [],
+      "pythonpath": "",
+      "commands": [
+        {
+          "cmd": "pytest lib/matplotlib/tests/test_marker.py::test_marker_fillstyle",
+          "exit": 0,
+          "outcome": "passed",
+          "exception": null,
+          "traceback": null,
+          "log_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.8.1, pytest-5.4.3, py-1.11.0, pluggy-0.13.1\nrootdir: /bug/fixed/matplotlib, inifile: pytest.ini\ncollected 1 item\n\nlib/matplotlib/tests/test_marker.py .                                    [100%]\n\n============================== 1 passed in 0.11s ===============================\n/bug/fixed/matplotlib/lib/matplotlib/widgets.py:1911: DeprecationWarning: invalid escape sequence \\s\n  \"\"\""
+        }
+      ]
+    }
+  },
+  "seconds": 117,
+  "ran": "2026-11-23T06:17:10+00:00",
+  "code_commit": "992a9e0d286286726583d4283627a380c049be30"
+}
