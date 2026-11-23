@@ -158,6 +158,23 @@ for line in open(path, encoding="utf-8", errors="replace"):
     if m and norm(m.group(1)) != norm(project):
         print(f"{m.group(1)}=={m.group(3)}")
 PYEOF
+
+# The luigi requirements (all 33 bugs) are a pip freeze made on Windows, with
+# sanic and the pytest-sanic plugin in it. sanic's Linux-only deps, ujson and
+# uvloop, are not in a Windows freeze, so pip picks today's sdists, which do
+# not build here. sanic then does not install, and pytest-sanic, which does,
+# crashes pytest before any test runs. Pin releases from the freeze's time
+# (spring 2020) with wheels this pip can use, when the bug pins none itself.
+FALLBACK_PINS=("ujson==2.0.3" "uvloop==0.14.0")
+if grep -qiE '^(sanic|uvicorn)==' /bug/constraints.txt; then
+    for pin in "${FALLBACK_PINS[@]}"; do
+        grep -qiE "^${pin%%==*}==" /bug/constraints.txt && continue
+        echo "$pin" >> /bug/constraints.txt
+        for dir in /bug/buggy /bug/fixed; do
+            repaired "$dir" "${pin%%==*} missing from requirements (Windows freeze); pinned $pin"
+        done
+    done
+fi
 export PIP_CONSTRAINT=/bug/constraints.txt
 
 # Fill the gaps in BugsInPy's environment, after the project is installed.
