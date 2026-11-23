@@ -111,6 +111,36 @@ use_tree_for_self_install() {
 use_tree_for_self_install "$buggy"
 use_tree_for_self_install "$fixed"
 
+# 34 keras bugs pin numpy==1.19.0rc2 and scipy==1.5.0rc1, which PyPI no longer
+# serves (404). As constraints they block every install that needs numpy, so
+# tensorflow and keras never install and no test runs. Pin the final release.
+GONE_FROM_PYPI=("numpy==1.19.0rc2 numpy==1.19.0" "scipy==1.5.0rc1 scipy==1.5.0")
+replace_missing_pins() {
+    local dir="$1" pair old new pattern
+    for pair in "${GONE_FROM_PYPI[@]}"; do
+        read -r old new <<< "$pair"
+        pattern="^${old//./\\.}\s*$"
+        grep -qiE "$pattern" "$dir/bugsinpy_requirements.txt" || continue
+        sed -i -E "s/$pattern/$new/I" "$dir/bugsinpy_requirements.txt"
+        repaired "$(dirname "$dir")" "$old is no longer on PyPI; pinned $new instead"
+    done
+}
+replace_missing_pins "$buggy"
+replace_missing_pins "$fixed"
+
+# 162 pandas setup.sh files run "python setup.py build_ext --inplace -j 0".
+# -j on the command line overrides ~/.pydistutils.cfg, and 0 means serial, for
+# the C build and for pandas' cythonize (which reads -j as nthreads). The job
+# count only changes how fast the same extensions are built.
+parallel_setup() {
+    local setup="$1/bugsinpy_setup.sh"
+    [ -f "$setup" ] && grep -qE 'build_ext.*\s-j ?0(\s|$)' "$setup" || return 0
+    sed -i -E "/build_ext/ s/(\s)-j ?0(\s|$)/\1-j $BUILD_JOBS\2/" "$setup"
+    repaired "$(dirname "$1")" "setup.sh built with -j 0 (serial); ran it with -j $BUILD_JOBS"
+}
+parallel_setup "$buggy"
+parallel_setup "$fixed"
+
 # Unpinned setup.sh installs (pip install numpy, cython, Twisted, Pillow, ...)
 # would get today's releases, e.g. C extensions built against a 2025 numpy.
 # Every pip call is constrained to the bug's own requirements.txt pins, so
