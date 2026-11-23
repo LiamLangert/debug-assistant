@@ -141,6 +141,31 @@ parallel_setup() {
 parallel_setup "$buggy"
 parallel_setup "$fixed"
 
+# matplotlib: every requirements.txt is empty and 29 of 30 bugs have no
+# setup.sh, so nothing installs numpy or builds the C extensions, and the
+# tests import the raw source tree. Bug 1's setup.sh does "pip install -ve .",
+# but setup.py's setup_requires then has easy_install fetch today's numpy
+# (2.x, no setup.py), which fails. So pin the dependencies at versions from
+# the bugs' time (2019-05 to 2020-06, as the pandas freezes pin them), which
+# requirements.txt installs before setup.sh, and build the tree where no
+# setup.sh does. The images' system freetype and libpng are used.
+MATPLOTLIB_PINS="numpy==1.18.4 cycler==0.10.0 kiwisolver==1.2.0 pyparsing==2.4.7 python-dateutil==2.8.1 six==1.15.0 Pillow==7.1.2"
+fill_matplotlib_env() {
+    local dir="$1" req="$1/bugsinpy_requirements.txt" setup="$1/bugsinpy_setup.sh" pin
+    [ "$project" = matplotlib ] || return 0
+    if ! grep -qiE '^numpy==' "$req"; then
+        [ -s "$req" ] && [ -n "$(tail -c1 "$req")" ] && echo >> "$req"
+        for pin in $MATPLOTLIB_PINS; do echo "$pin" >> "$req"; done
+        repaired "$(dirname "$dir")" "requirements.txt pins nothing; pinned $MATPLOTLIB_PINS"
+    fi
+    if ! { [ -f "$setup" ] && grep -q '[^[:space:]]' "$setup"; }; then
+        echo "python -m pip install -e ." > "$setup"
+        repaired "$(dirname "$dir")" "no setup.sh builds matplotlib; ran python -m pip install -e ."
+    fi
+}
+fill_matplotlib_env "$buggy"
+fill_matplotlib_env "$fixed"
+
 # Unpinned setup.sh installs (pip install numpy, cython, Twisted, Pillow, ...)
 # would get today's releases, e.g. C extensions built against a 2025 numpy.
 # Every pip call is constrained to the bug's own requirements.txt pins, so
