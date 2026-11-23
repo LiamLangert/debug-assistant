@@ -9,8 +9,9 @@ tags are not on a StaQC row, so they are not features. An accepted answer and
 the question's comments are features when the post has them (the API rows do)
 and stay 0 on StaQC.
 
-After the fit, the same reranker scores the validation bugs. The test split
-is not read. Nothing here rewrites the baseline logs.
+After the fit, the model picks the five posts. Lines are ranked from the
+traceback only, so the post text does not get mixed into that query. The
+test split is not read. Nothing here rewrites the baseline logs.
 
 The fit needs a handful of train projects with a reproduced run and a cached
 repo. One bug is not a training set, so the script stops rather than write
@@ -128,7 +129,7 @@ def rows_for(ready: dict) -> list[dict]:
 
 
 def rerank(ready: dict, scaler, model) -> dict:
-    """Line ranking from the model's top 5, traceback kept."""
+    """Pick the top 5 posts. Rank lines from the traceback only."""
     query_tokens = set(base.tokens(ready["query"]))
     scored = []
     for post, bm25_score in ready["chosen"]:
@@ -136,9 +137,7 @@ def rerank(ready: dict, scaler, model) -> dict:
         scored.append((float(model.predict_proba(x)[0, 1]), post))
     scored.sort(key=lambda item: item[0], reverse=True)
     picked = [post for _, post in scored[:KEEP]]
-    post_query = "\n".join(base.post_parts(post)[2] for post in picked)
-    both = f"{ready['query']}\n{post_query}"
-    ranking = base.ranked(ready["line_index"].get_scores(base.tokens(both)))
+    ranking = base.ranked(ready["line_index"].get_scores(base.tokens(ready["query"])))
     judged = base.evaluate(ranking, ready["lines"], ready["truth"])
     judged["posts"] = [post.get("post_id") for post in picked]
     return judged

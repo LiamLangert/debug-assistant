@@ -62,7 +62,8 @@ projects only. A post is a positive when that post's own text puts a fix
 line in the top 5. The features are the BM25 score, how much of the question
 shows up in the traceback, and how much of the snippet does. An accepted
 answer and comment overlap are included when the post has them, and stay 0
-on StaQC rows. The test split is not read. The baseline logs are not rewritten.
+on StaQC rows. Those five posts are the hints. The lines are ranked from
+the traceback alone. The test split is not read. The baseline logs are not rewritten.
 
 ```bash
 uv run scripts/classical/run_logistic.py
