@@ -230,13 +230,17 @@ def prepare(project: str, bug_id: str) -> Path:
     return bug_dir
 
 
+def container_name(project: str, bug_id: str) -> str:
+    return f"bugsinpy-{project}-{bug_id}".lower()
+
+
 def run_container(project: str, bug_id: str, bug_dir: Path, image: str, compile_timeout: int,
                   test_timeout: int, build_jobs: int) -> None:
     """Run in_container.sh in image, printing its progress as it comes."""
     entry = json.loads(EXTRAS_FILE.read_text())["bugs"].get(f"{project}/{bug_id}")
     extras = entry["packages"] if entry else []
     PIP_CACHE.mkdir(parents=True, exist_ok=True)
-    name = f"bugsinpy-{project}-{bug_id}".lower()
+    name = container_name(project, bug_id)
     cmd = [
         "docker", "run", "--rm", "--name", name,
         # Run as you, so nothing in data/work ends up owned by root.
@@ -261,7 +265,8 @@ def run_container(project: str, bug_id: str, bug_dir: Path, image: str, compile_
     try:
         with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as docker:
             for line in docker.stdout:
-                print(line, end="", flush=True)
+                # Tagged, since run_bugs.py can run several bugs at once.
+                print(f"[{project} {bug_id}] {line}", end="", flush=True)
                 tail = (tail + [line])[-20:]
     except KeyboardInterrupt:
         killed = subprocess.run(["docker", "kill", name], capture_output=True).returncode == 0
