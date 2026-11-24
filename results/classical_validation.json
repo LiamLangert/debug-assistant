@@ -8,25 +8,25 @@
     "comment_overlap"
   ],
   "coef": [
-    -0.274,
-    0.344,
-    0.346,
+    0.1841,
+    -0.4218,
+    -0.023,
     0.0,
     0.0
   ],
-  "intercept": -0.1359,
+  "intercept": -0.0831,
   "class_weight": "balanced",
   "scaler_mean": [
-    96.4055,
-    0.1239,
-    0.1519,
+    408.3973,
+    0.2528,
+    0.3339,
     0.0,
     0.0
   ],
   "scaler_scale": [
-    121.5853,
-    0.125,
-    0.1218,
+    699.0841,
+    0.1919,
+    0.1522,
     1.0,
     1.0
   ],
@@ -34,14 +34,2568 @@
   "top_n": 50,
   "keep": 5,
   "train": {
-    "bugs": 15,
-    "posts": 750,
-    "positives": 7
+    "bugs": 136,
+    "posts": 6800,
+    "positives": 110
   },
   "validation": {
-    "n": 0
+    "n": 91,
+    "line_recall@5": 0.0989,
+    "line_hits": 9,
+    "file_recall@5": 0.4835,
+    "file_hits": 44,
+    "mrr": 0.0667
   },
-  "commit": "aeffdbcfe0455f9059464023ac450f3fa1df4674",
-  "corpus_n": 500,
-  "bugs": []
+  "commit": "0c48debe9526fd46e19edb96806ff574fd16ffff",
+  "corpus_n": 85294,
+  "bugs": [
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 3928,
+      "top_lines": [
+        "lib/ansible/galaxy/collection.py:438",
+        "lib/ansible/cli/galaxy.py:511",
+        "lib/ansible/galaxy/collection.py:439",
+        "lib/ansible/cli/galaxy.py:510",
+        "lib/ansible/galaxy/api.py:408"
+      ],
+      "top_files": [
+        "lib/ansible/galaxy/collection.py",
+        "lib/ansible/cli/galaxy.py",
+        "lib/ansible/galaxy/api.py",
+        "hacking/build_library/build_ansible/command_plugins/collection_meta.py",
+        "lib/ansible/executor/powershell/module_manifest.py"
+      ],
+      "posts": [
+        "19843700",
+        "13814923",
+        "3983593",
+        "21673329",
+        "19677009"
+      ],
+      "project": "ansible",
+      "bug_id": "1"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1851,
+      "top_lines": [
+        "lib/ansible/modules/utilities/logic/assert.py:60",
+        "lib/ansible/modules/utilities/logic/assert.py:66",
+        "lib/ansible/modules/utilities/logic/assert.py:74",
+        "lib/ansible/modules/utilities/logic/assert.py:81",
+        "lib/ansible/utils/version.py:42"
+      ],
+      "top_files": [
+        "lib/ansible/modules/utilities/logic/assert.py",
+        "lib/ansible/utils/version.py",
+        "lib/ansible/modules/utilities/helper/meta.py",
+        "lib/ansible/modules/utilities/logic/debug.py",
+        "lib/ansible/modules/utilities/logic/fail.py"
+      ],
+      "posts": [
+        "37283929",
+        "2738641",
+        "13716206",
+        "16506086",
+        "30021616"
+      ],
+      "project": "ansible",
+      "bug_id": "2"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 7,
+      "top_lines": [
+        "lib/ansible/plugins/callback/junit.py:251",
+        "lib/ansible/modules/system/hostname.py:723",
+        "lib/ansible/plugins/callback/junit.py:243",
+        "lib/ansible/plugins/callback/junit.py:253",
+        "lib/ansible/module_utils/facts/system/distribution.py:324"
+      ],
+      "top_files": [
+        "lib/ansible/plugins/callback/junit.py",
+        "lib/ansible/modules/system/hostname.py",
+        "lib/ansible/module_utils/facts/system/distribution.py",
+        "lib/ansible/module_utils/distro/__init__.py",
+        "lib/ansible/modules/packaging/os/package_facts.py"
+      ],
+      "posts": [
+        "32232988",
+        "6413891",
+        "26882434",
+        "22457371",
+        "29458327"
+      ],
+      "project": "ansible",
+      "bug_id": "3"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "lib/ansible/playbook/base.py:406",
+        "lib/ansible/cli/galaxy.py:797",
+        "lib/ansible/utils/collection_loader.py:501",
+        "lib/ansible/galaxy/collection.py:663",
+        "lib/ansible/utils/collection_loader.py:520"
+      ],
+      "top_files": [
+        "lib/ansible/playbook/base.py",
+        "lib/ansible/cli/galaxy.py",
+        "lib/ansible/utils/collection_loader.py",
+        "lib/ansible/galaxy/collection.py",
+        "lib/ansible/modules/utilities/logic/assert.py"
+      ],
+      "posts": [
+        "24610484",
+        "23493980",
+        "28907441",
+        "16531456",
+        "19508028"
+      ],
+      "project": "ansible",
+      "bug_id": "4"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 9,
+      "top_lines": [
+        "lib/ansible/plugins/connection/__init__.py:108",
+        "lib/ansible/module_utils/splitter.py:74",
+        "lib/ansible/module_utils/splitter.py:75",
+        "lib/ansible/parsing/splitter.py:165",
+        "lib/ansible/parsing/splitter.py:166"
+      ],
+      "top_files": [
+        "lib/ansible/plugins/connection/__init__.py",
+        "lib/ansible/module_utils/splitter.py",
+        "lib/ansible/parsing/splitter.py",
+        "lib/ansible/parsing/utils/addresses.py",
+        "lib/ansible/module_utils/urls.py"
+      ],
+      "posts": [
+        "1577293",
+        "2039699",
+        "16907337",
+        "21509596",
+        "19508028"
+      ],
+      "project": "ansible",
+      "bug_id": "5"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 30975,
+      "top_lines": [
+        "lib/ansible/modules/network/eos/_eos_vlan.py:102",
+        "lib/ansible/modules/network/nxos/nxos_vlans.py:224",
+        "lib/ansible/modules/network/eos/_eos_vlan.py:105",
+        "lib/ansible/modules/network/eos/eos_vlans.py:125",
+        "lib/ansible/modules/network/eos/eos_vlans.py:137"
+      ],
+      "top_files": [
+        "lib/ansible/modules/network/eos/_eos_vlan.py",
+        "lib/ansible/modules/network/nxos/nxos_vlans.py",
+        "lib/ansible/modules/network/eos/eos_vlans.py",
+        "lib/ansible/modules/network/ios/ios_vlans.py",
+        "lib/ansible/modules/network/layer2/_net_vlan.py"
+      ],
+      "posts": [
+        "5737728",
+        "36107898",
+        "2804287",
+        "7125745",
+        "35136979"
+      ],
+      "project": "ansible",
+      "bug_id": "7"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 9616,
+      "top_lines": [
+        "lib/ansible/modules/cloud/amazon/cloudwatchlogs_log_group_metric_filter.py:74",
+        "lib/ansible/modules/cloud/amazon/cloudwatchlogs_log_group_metric_filter.py:85",
+        "lib/ansible/modules/network/ovs/openvswitch_bridge.py:267",
+        "lib/ansible/modules/network/ovs/openvswitch_db.py:224",
+        "lib/ansible/modules/network/ovs/openvswitch_port.py:255"
+      ],
+      "top_files": [
+        "lib/ansible/modules/cloud/amazon/cloudwatchlogs_log_group_metric_filter.py",
+        "lib/ansible/modules/network/ovs/openvswitch_bridge.py",
+        "lib/ansible/modules/network/ovs/openvswitch_db.py",
+        "lib/ansible/modules/network/ovs/openvswitch_port.py",
+        "lib/ansible/modules/cloud/azure/azure_rm_subnet.py"
+      ],
+      "posts": [
+        "6413891",
+        "11222798",
+        "364802",
+        "7436410",
+        "31795568"
+      ],
+      "project": "ansible",
+      "bug_id": "9"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 1,
+      "top_lines": [
+        "lib/ansible/modules/system/pamd.py:481",
+        "lib/ansible/modules/system/pamd.py:478",
+        "lib/ansible/modules/system/pamd.py:480",
+        "lib/ansible/modules/system/pamd.py:495",
+        "lib/ansible/modules/system/pamd.py:484"
+      ],
+      "top_files": [
+        "lib/ansible/modules/system/pamd.py",
+        "lib/ansible/cli/console.py",
+        "lib/ansible/modules/network/f5/bigiq_device_discovery.py",
+        "packaging/release/changelogs/changelog.py",
+        "lib/ansible/parsing/vault/__init__.py"
+      ],
+      "posts": [
+        "27573344",
+        "27482050",
+        "23823280",
+        "10236463",
+        "9691205"
+      ],
+      "project": "ansible",
+      "bug_id": "10"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 150,
+      "top_lines": [
+        "lib/ansible/modules/packaging/language/maven_artifact.py:335",
+        "lib/ansible/modules/cloud/azure/azure_rm_servicebus.py:129",
+        "packaging/release/changelogs/changelog.py:396",
+        "lib/ansible/module_utils/network/aci/aci.py:1113",
+        "lib/ansible/modules/cloud/azure/azure_rm_trafficmanagerendpoint.py:313"
+      ],
+      "top_files": [
+        "lib/ansible/modules/packaging/language/maven_artifact.py",
+        "lib/ansible/modules/cloud/azure/azure_rm_servicebus.py",
+        "packaging/release/changelogs/changelog.py",
+        "lib/ansible/module_utils/network/aci/aci.py",
+        "lib/ansible/modules/cloud/azure/azure_rm_trafficmanagerendpoint.py"
+      ],
+      "posts": [
+        "34861230",
+        "20057764",
+        "33754512",
+        "25018343",
+        "33768309"
+      ],
+      "project": "ansible",
+      "bug_id": "11"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 20736,
+      "top_lines": [
+        "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:200",
+        "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py:214",
+        "lib/ansible/modules/cloud/amazon/ec2.py:509",
+        "lib/ansible/modules/cloud/amazon/ec2.py:547",
+        "lib/ansible/modules/cloud/amazon/ec2.py:552"
+      ],
+      "top_files": [
+        "lib/ansible/modules/cloud/amazon/cloudformation_stack_set.py",
+        "lib/ansible/modules/cloud/amazon/ec2.py",
+        "lib/ansible/modules/cloud/amazon/execute_lambda.py",
+        "lib/ansible/modules/cloud/azure/azure_rm_applicationsecuritygroup.py",
+        "lib/ansible/modules/cloud/azure/azure_rm_appserviceplan_info.py"
+      ],
+      "posts": [
+        "24700340",
+        "20223876",
+        "430759",
+        "16362619",
+        "5238252"
+      ],
+      "project": "ansible",
+      "bug_id": "13"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 560,
+      "top_lines": [
+        "lib/ansible/galaxy/api.py:336",
+        "lib/ansible/galaxy/api.py:348",
+        "lib/ansible/cli/galaxy.py:1010",
+        "lib/ansible/galaxy/api.py:288",
+        "lib/ansible/module_utils/facts/hardware/darwin.py:92"
+      ],
+      "top_files": [
+        "lib/ansible/galaxy/api.py",
+        "lib/ansible/cli/galaxy.py",
+        "lib/ansible/module_utils/facts/hardware/darwin.py",
+        "lib/ansible/plugins/httpapi/ftd.py",
+        "lib/ansible/modules/database/vertica/vertica_user.py"
+      ],
+      "posts": [
+        "2488016",
+        "2029826",
+        "19685015",
+        "8392491",
+        "37280038"
+      ],
+      "project": "ansible",
+      "bug_id": "14"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 12338,
+      "top_lines": [
+        "lib/ansible/module_utils/network/eos/config/interfaces/interfaces.py:224",
+        "lib/ansible/module_utils/network/nxos/config/interfaces/interfaces.py:225",
+        "lib/ansible/module_utils/network/nxos/config/interfaces/interfaces.py:257",
+        "lib/ansible/module_utils/network/nxos/config/vlans/vlans.py:214",
+        "lib/ansible/module_utils/network/nxos/config/vlans/vlans.py:239"
+      ],
+      "top_files": [
+        "lib/ansible/module_utils/network/eos/config/interfaces/interfaces.py",
+        "lib/ansible/module_utils/network/nxos/config/interfaces/interfaces.py",
+        "lib/ansible/module_utils/network/nxos/config/vlans/vlans.py",
+        "lib/ansible/modules/network/cnos/cnos_interface.py",
+        "lib/ansible/modules/network/eos/_eos_interface.py"
+      ],
+      "posts": [
+        "17424785",
+        "1294862",
+        "1082361",
+        "14447044",
+        "4358771"
+      ],
+      "project": "ansible",
+      "bug_id": "15"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 983,
+      "top_lines": [
+        "lib/ansible/module_utils/network/avi/avi_api.py:62",
+        "lib/ansible/modules/cloud/google/gcp_storage_bucket.py:207",
+        "lib/ansible/modules/cloud/google/gcp_storage_bucket.py:575",
+        "lib/ansible/modules/packaging/os/pkgin.py:139",
+        "lib/ansible/modules/network/nxos/nxos_aaa_server_host.py:55"
+      ],
+      "top_files": [
+        "lib/ansible/module_utils/network/avi/avi_api.py",
+        "lib/ansible/modules/cloud/google/gcp_storage_bucket.py",
+        "lib/ansible/modules/packaging/os/pkgin.py",
+        "lib/ansible/modules/network/nxos/nxos_aaa_server_host.py",
+        "lib/ansible/module_utils/docker/common.py"
+      ],
+      "posts": [
+        "21353489",
+        "30513741",
+        "19685015",
+        "34308511",
+        "24343640"
+      ],
+      "project": "ansible",
+      "bug_id": "16"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 32868,
+      "top_lines": [
+        "lib/ansible/module_utils/facts/hardware/hurd.py:21",
+        "lib/ansible/module_utils/facts/hardware/aix.py:214",
+        "lib/ansible/module_utils/facts/hardware/aix.py:178",
+        "lib/ansible/module_utils/facts/hardware/freebsd.py:128",
+        "lib/ansible/module_utils/facts/hardware/netbsd.py:118"
+      ],
+      "top_files": [
+        "lib/ansible/module_utils/facts/hardware/hurd.py",
+        "lib/ansible/module_utils/facts/hardware/aix.py",
+        "lib/ansible/module_utils/facts/hardware/freebsd.py",
+        "lib/ansible/module_utils/facts/hardware/netbsd.py",
+        "lib/ansible/module_utils/facts/hardware/openbsd.py"
+      ],
+      "posts": [
+        "15871769",
+        "29458327",
+        "34308511",
+        "23093347",
+        "33511931"
+      ],
+      "project": "ansible",
+      "bug_id": "17"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "setup.py:85",
+        "setup.py:31",
+        "blib2to3/pgen2/conv.py:71",
+        "docs/conf.py:56",
+        "black.py:2580"
+      ],
+      "top_files": [
+        "setup.py",
+        "blib2to3/pgen2/conv.py",
+        "docs/conf.py",
+        "black.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "27515976",
+        "4362338",
+        "13742538",
+        "36362373",
+        "25140422"
+      ],
+      "project": "black",
+      "bug_id": "1"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 912,
+      "top_lines": [
+        "black.py:627",
+        "black.py:2964",
+        "black.py:4169",
+        "blackd.py:41",
+        "blib2to3/pgen2/conv.py:244"
+      ],
+      "top_files": [
+        "black.py",
+        "blackd.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/pgen.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "18136870",
+        "14372287",
+        "35088965",
+        "36352591",
+        "31003273"
+      ],
+      "project": "black",
+      "bug_id": "2"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1496,
+      "top_lines": [
+        "setup.py:81",
+        "black.py:255",
+        "black.py:1632",
+        "black.py:3624",
+        "blib2to3/pygram.py:18"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "blib2to3/pygram.py",
+        "blib2to3/pgen2/driver.py",
+        "docs/conf.py"
+      ],
+      "posts": [
+        "36362373",
+        "9481890",
+        "27515976",
+        "4696642",
+        "3249345"
+      ],
+      "project": "black",
+      "bug_id": "3"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 767,
+      "top_lines": [
+        "setup.py:52",
+        "black.py:2289",
+        "black.py:2401",
+        "docs/conf.py:82",
+        "blib2to3/pgen2/conv.py:69"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "23549860",
+        "27515976",
+        "36362373",
+        "25140422",
+        "36352591"
+      ],
+      "project": "black",
+      "bug_id": "4"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "setup.py:52",
+        "black.py:2250",
+        "black.py:2362",
+        "docs/conf.py:82",
+        "blib2to3/pgen2/conv.py:69"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "4362338",
+        "25140422",
+        "13742538",
+        "36352591",
+        "36362373"
+      ],
+      "project": "black",
+      "bug_id": "5"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 649,
+      "top_lines": [
+        "setup.py:52",
+        "black.py:2197",
+        "black.py:2309",
+        "docs/conf.py:82",
+        "blib2to3/pgen2/conv.py:69"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/conv.py",
+        "blackd.py"
+      ],
+      "posts": [
+        "36352591",
+        "4362338",
+        "25140422",
+        "13742538",
+        "36362373"
+      ],
+      "project": "black",
+      "bug_id": "6"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1205,
+      "top_lines": [
+        "setup.py:46",
+        "black.py:2167",
+        "black.py:2279",
+        "docs/conf.py:82",
+        "blib2to3/pgen2/conv.py:69"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "14139768",
+        "27515976",
+        "35088965",
+        "4362338",
+        "13742538"
+      ],
+      "project": "black",
+      "bug_id": "7"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 618,
+      "top_lines": [
+        "setup.py:46",
+        "black.py:349",
+        "black.py:19",
+        "blib2to3/pgen2/grammar.py:21",
+        "blib2to3/pgen2/parse.py:14"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "blib2to3/pgen2/grammar.py",
+        "blib2to3/pgen2/parse.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "27929583",
+        "27515976",
+        "13742538",
+        "9481890",
+        "3826484"
+      ],
+      "project": "black",
+      "bug_id": "8"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1395,
+      "top_lines": [
+        "docs/conf.py:28",
+        "setup.py:20",
+        "black.py:669",
+        "blackd.py:99",
+        "black.py:2122"
+      ],
+      "top_files": [
+        "docs/conf.py",
+        "setup.py",
+        "black.py",
+        "blackd.py",
+        "blib2to3/pgen2/conv.py"
+      ],
+      "posts": [
+        "27515976",
+        "33162006",
+        "3826484",
+        "36362373",
+        "13742538"
+      ],
+      "project": "black",
+      "bug_id": "9"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "black.py:485",
+        "black.py:2594",
+        "black.py:3657",
+        "blib2to3/pgen2/conv.py:245",
+        "blib2to3/pgen2/pgen.py:8"
+      ],
+      "top_files": [
+        "black.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/pgen.py",
+        "blib2to3/pgen2/tokenize.py",
+        "setup.py"
+      ],
+      "posts": [
+        "17434507",
+        "7110118",
+        "30048492",
+        "12614213",
+        "9187388"
+      ],
+      "project": "black",
+      "bug_id": "10"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1492,
+      "top_lines": [
+        "black.py:182",
+        "blib2to3/pgen2/conv.py:209",
+        "black.py:1377",
+        "blib2to3/pgen2/parse.py:23",
+        "blib2to3/pytree.py:221"
+      ],
+      "top_files": [
+        "black.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/parse.py",
+        "blib2to3/pytree.py",
+        "blackd.py"
+      ],
+      "posts": [
+        "32293340",
+        "37364475",
+        "11733262",
+        "29885637",
+        "35612666"
+      ],
+      "project": "black",
+      "bug_id": "11"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 256,
+      "top_lines": [
+        "black.py:1460",
+        "black.py:1471",
+        "black.py:1502",
+        "black.py:1509",
+        "black.py:1512"
+      ],
+      "top_files": [
+        "black.py",
+        "docs/conf.py",
+        "setup.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pytree.py"
+      ],
+      "posts": [
+        "28820605",
+        "16406343",
+        "12458170",
+        "3924355",
+        "36362373"
+      ],
+      "project": "black",
+      "bug_id": "12"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "blib2to3/pgen2/conv.py:69",
+        "docs/conf.py:64",
+        "blib2to3/pgen2/tokenize.py:251",
+        "setup.py:45",
+        "docs/conf.py:82"
+      ],
+      "top_files": [
+        "blib2to3/pgen2/conv.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/tokenize.py",
+        "setup.py",
+        "black.py"
+      ],
+      "posts": [
+        "3924355",
+        "27515976",
+        "36362373",
+        "13742538",
+        "3826484"
+      ],
+      "project": "black",
+      "bug_id": "13"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 6,
+      "top_lines": [
+        "setup.py:45",
+        "docs/conf.py:242",
+        "docs/conf.py:245",
+        "docs/conf.py:28",
+        "setup.py:20"
+      ],
+      "top_files": [
+        "setup.py",
+        "docs/conf.py",
+        "black.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "36352591",
+        "3826484",
+        "4696642",
+        "1364955",
+        "33358364"
+      ],
+      "project": "black",
+      "bug_id": "14"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 17,
+      "top_lines": [
+        "blib2to3/pgen2/literals.py:60",
+        "blib2to3/pgen2/literals.py:50",
+        "black.py:839",
+        "setup.py:45",
+        "black.py:487"
+      ],
+      "top_files": [
+        "blib2to3/pgen2/literals.py",
+        "black.py",
+        "setup.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/pgen.py"
+      ],
+      "posts": [
+        "35088965",
+        "14372287",
+        "34861230",
+        "4696642",
+        "11457845"
+      ],
+      "project": "black",
+      "bug_id": "15"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 2,
+      "top_lines": [
+        "setup.py:45",
+        "black.py:2948",
+        "docs/conf.py:28",
+        "setup.py:20",
+        "black.py:2957"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "docs/conf.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/tokenize.py"
+      ],
+      "posts": [
+        "33754512",
+        "36362373",
+        "25140422",
+        "13742538",
+        "33162006"
+      ],
+      "project": "black",
+      "bug_id": "16"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 249,
+      "top_lines": [
+        "docs/conf.py:28",
+        "setup.py:20",
+        "setup.py:45",
+        "black.py:577",
+        "blib2to3/pgen2/conv.py:69"
+      ],
+      "top_files": [
+        "docs/conf.py",
+        "setup.py",
+        "black.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/parse.py"
+      ],
+      "posts": [
+        "4362338",
+        "27515976",
+        "13742538",
+        "3826484",
+        "25140422"
+      ],
+      "project": "black",
+      "bug_id": "17"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 6,
+      "top_lines": [
+        "setup.py:45",
+        "black.py:2517",
+        "black.py:110",
+        "black.py:114",
+        "blib2to3/pgen2/driver.py:61"
+      ],
+      "top_files": [
+        "setup.py",
+        "black.py",
+        "blib2to3/pgen2/driver.py",
+        "blib2to3/pgen2/tokenize.py",
+        "blib2to3/pgen2/conv.py"
+      ],
+      "posts": [
+        "21865869",
+        "33358364",
+        "4696642",
+        "28267972",
+        "14758705"
+      ],
+      "project": "black",
+      "bug_id": "18"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "black.py:2504",
+        "blib2to3/pgen2/pgen.py:207",
+        "blib2to3/pgen2/pgen.py:214",
+        "setup.py:44",
+        "black.py:2511"
+      ],
+      "top_files": [
+        "black.py",
+        "blib2to3/pgen2/pgen.py",
+        "setup.py",
+        "blib2to3/pytree.py",
+        "docs/conf.py"
+      ],
+      "posts": [
+        "29483533",
+        "32944298",
+        "36121815",
+        "8607513",
+        "31585538"
+      ],
+      "project": "black",
+      "bug_id": "19"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1798,
+      "top_lines": [
+        "black.py:2132",
+        "blib2to3/pgen2/tokenize.py:53",
+        "blib2to3/pgen2/tokenize.py:459",
+        "blib2to3/pgen2/conv.py:137",
+        "blib2to3/pgen2/conv.py:152"
+      ],
+      "top_files": [
+        "black.py",
+        "blib2to3/pgen2/tokenize.py",
+        "blib2to3/pgen2/conv.py",
+        "blib2to3/pgen2/literals.py",
+        "docs/conf.py"
+      ],
+      "posts": [
+        "34508745",
+        "27266501",
+        "36255027",
+        "15967324",
+        "13641592"
+      ],
+      "project": "black",
+      "bug_id": "20"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 10,
+      "top_lines": [
+        "blib2to3/pytree.py:711",
+        "blib2to3/pytree.py:725",
+        "blib2to3/pgen2/parse.py:117",
+        "setup.py:44",
+        "black.py:1381"
+      ],
+      "top_files": [
+        "blib2to3/pytree.py",
+        "blib2to3/pgen2/parse.py",
+        "setup.py",
+        "black.py",
+        "docs/conf.py"
+      ],
+      "posts": [
+        "33346409",
+        "5533704",
+        "22738065",
+        "3924355",
+        "4696642"
+      ],
+      "project": "black",
+      "bug_id": "22"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 115,
+      "top_lines": [
+        "blib2to3/pytree.py:716",
+        "blib2to3/pytree.py:717",
+        "blib2to3/pytree.py:732",
+        "black.py:11",
+        "blib2to3/pgen2/driver.py:24"
+      ],
+      "top_files": [
+        "blib2to3/pytree.py",
+        "black.py",
+        "blib2to3/pgen2/driver.py",
+        "blib2to3/pgen2/tokenize.py",
+        "setup.py"
+      ],
+      "posts": [
+        "10794894",
+        "4260912",
+        "31503230",
+        "5533671",
+        "2418570"
+      ],
+      "project": "black",
+      "bug_id": "23"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 31,
+      "top_lines": [
+        "scrapy/settings/default_settings.py:266",
+        "scrapy/spidermiddlewares/offsite.py:67",
+        "scrapy/contracts/__init__.py:31",
+        "scrapy/spidermiddlewares/offsite.py:51",
+        "docs/utils/linkfix.py:34"
+      ],
+      "top_files": [
+        "scrapy/settings/default_settings.py",
+        "scrapy/spidermiddlewares/offsite.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/exporters.py"
+      ],
+      "posts": [
+        "25140422",
+        "3826484",
+        "4696642",
+        "36352591",
+        "34861230"
+      ],
+      "project": "scrapy",
+      "bug_id": "1"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 5,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/utils/test.py:91",
+        "scrapy/utils/engine.py:27",
+        "scrapy/utils/datatypes.py:318"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/utils/test.py",
+        "scrapy/utils/datatypes.py",
+        "scrapy/contracts/__init__.py"
+      ],
+      "posts": [
+        "21865869",
+        "36352591",
+        "30513741",
+        "4696642",
+        "3249345"
+      ],
+      "project": "scrapy",
+      "bug_id": "2"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/http/cookies.py:89",
+        "scrapy/core/downloader/handlers/http11.py:179",
+        "scrapy/core/downloader/handlers/http11.py:183",
+        "scrapy/core/downloader/handlers/http11.py:181",
+        "scrapy/http/cookies.py:88"
+      ],
+      "top_files": [
+        "scrapy/http/cookies.py",
+        "scrapy/core/downloader/handlers/http11.py",
+        "scrapy/utils/request.py",
+        "docs/conf.py",
+        "scrapy/utils/url.py"
+      ],
+      "posts": [
+        "1856963",
+        "17763542",
+        "16591249",
+        "4509596",
+        "3329361"
+      ],
+      "project": "scrapy",
+      "bug_id": "3"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 1396,
+      "top_lines": [
+        "scrapy/log.py:48",
+        "scrapy/contracts/__init__.py:30",
+        "docs/utils/linkfix.py:34",
+        "scrapy/utils/sitemap.py:43",
+        "scrapy/core/downloader/tls.py:29"
+      ],
+      "top_files": [
+        "scrapy/log.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/utils/sitemap.py",
+        "scrapy/core/downloader/tls.py"
+      ],
+      "posts": [
+        "34861230",
+        "9481890",
+        "25140422",
+        "27515976",
+        "36352591"
+      ],
+      "project": "scrapy",
+      "bug_id": "4"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/spiders/crawl.py:31",
+        "setup.py:39",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/spiders/crawl.py",
+        "setup.py",
+        "scrapy/commands/bench.py"
+      ],
+      "posts": [
+        "33358364",
+        "4696642",
+        "13091504",
+        "14758705",
+        "28267972"
+      ],
+      "project": "scrapy",
+      "bug_id": "5"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/log.py:48",
+        "scrapy/core/downloader/tls.py:29",
+        "scrapy/contracts/__init__.py:30",
+        "docs/utils/linkfix.py:34",
+        "scrapy/utils/sitemap.py:43"
+      ],
+      "top_files": [
+        "scrapy/log.py",
+        "scrapy/core/downloader/tls.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/utils/sitemap.py"
+      ],
+      "posts": [
+        "34861230",
+        "9481890",
+        "33754512",
+        "25140422",
+        "27515976"
+      ],
+      "project": "scrapy",
+      "bug_id": "6"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/core/downloader/handlers/http11.py:167",
+        "scrapy/core/downloader/handlers/http11.py:171",
+        "scrapy/http/cookies.py:89",
+        "scrapy/core/downloader/handlers/http11.py:169",
+        "scrapy/core/downloader/handlers/http11.py:166"
+      ],
+      "top_files": [
+        "scrapy/core/downloader/handlers/http11.py",
+        "scrapy/http/cookies.py",
+        "scrapy/commands/startproject.py",
+        "scrapy/utils/request.py",
+        "scrapy/utils/url.py"
+      ],
+      "posts": [
+        "6799550",
+        "16591249",
+        "17763542",
+        "13945523",
+        "35483777"
+      ],
+      "project": "scrapy",
+      "bug_id": "7"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "setup.py:19",
+        "scrapy/utils/engine.py:27",
+        "scrapy/commands/check.py:57"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "setup.py",
+        "scrapy/commands/check.py",
+        "scrapy/utils/test.py"
+      ],
+      "posts": [
+        "33139230",
+        "22912259",
+        "33878714",
+        "17434196",
+        "31003273"
+      ],
+      "project": "scrapy",
+      "bug_id": "8"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/extensions/memusage.py:123",
+        "scrapy/mail.py:57",
+        "scrapy/utils/engine.py:27",
+        "scrapy/mail.py:76",
+        "scrapy/utils/engine.py:8"
+      ],
+      "top_files": [
+        "scrapy/extensions/memusage.py",
+        "scrapy/mail.py",
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/xlib/tx/_newclient.py"
+      ],
+      "posts": [
+        "27515976",
+        "36352591",
+        "4696642",
+        "962962",
+        "28267972"
+      ],
+      "project": "scrapy",
+      "bug_id": "9"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 232,
+      "top_lines": [
+        "scrapy/contracts/default.py:11",
+        "setup.py:12",
+        "docs/conf.py:222",
+        "scrapy/pipelines/files.py:123",
+        "scrapy/http/request/form.py:122"
+      ],
+      "top_files": [
+        "scrapy/contracts/default.py",
+        "setup.py",
+        "docs/conf.py",
+        "scrapy/pipelines/files.py",
+        "scrapy/http/request/form.py"
+      ],
+      "posts": [
+        "35402566",
+        "34305327",
+        "36828115",
+        "2562893",
+        "13759907"
+      ],
+      "project": "scrapy",
+      "bug_id": "10"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 3841,
+      "top_lines": [
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/core/downloader/tls.py:24",
+        "scrapy/log.py:48",
+        "scrapy/contracts/__init__.py:30"
+      ],
+      "top_files": [
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/core/downloader/tls.py",
+        "scrapy/log.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py"
+      ],
+      "posts": [
+        "34861230",
+        "33754512",
+        "27515976",
+        "9481890",
+        "25140422"
+      ],
+      "project": "scrapy",
+      "bug_id": "12"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/log.py:48",
+        "scrapy/core/downloader/tls.py:24",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/contracts/__init__.py:30"
+      ],
+      "top_files": [
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/log.py",
+        "scrapy/core/downloader/tls.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py"
+      ],
+      "posts": [
+        "34861230",
+        "9481890",
+        "25140422",
+        "33754512",
+        "36352591"
+      ],
+      "project": "scrapy",
+      "bug_id": "13"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1949,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/utils/url.py:83",
+        "setup.py:19",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/utils/url.py",
+        "setup.py",
+        "scrapy/xlib/tx/_newclient.py"
+      ],
+      "posts": [
+        "21896067",
+        "33358364",
+        "4696642",
+        "14758705",
+        "28267972"
+      ],
+      "project": "scrapy",
+      "bug_id": "14"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 1,
+      "top_lines": [
+        "scrapy/utils/url.py:46",
+        "scrapy/utils/url.py:76",
+        "scrapy/http/response/text.py:99",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/utils/url.py:84"
+      ],
+      "top_files": [
+        "scrapy/utils/url.py",
+        "scrapy/http/response/text.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/pipelines/files.py",
+        "scrapy/contracts/__init__.py"
+      ],
+      "posts": [
+        "27929583",
+        "3924355",
+        "10725057",
+        "36352591",
+        "9481890"
+      ],
+      "project": "scrapy",
+      "bug_id": "15"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 2918,
+      "top_lines": [
+        "scrapy/http/cookies.py:89",
+        "scrapy/http/cookies.py:88",
+        "scrapy/utils/request.py:26",
+        "scrapy/utils/request.py:27",
+        "scrapy/utils/request.py:35"
+      ],
+      "top_files": [
+        "scrapy/http/cookies.py",
+        "scrapy/utils/request.py",
+        "scrapy/utils/url.py",
+        "scrapy/core/downloader/handlers/http11.py",
+        "scrapy/xlib/tx/endpoints.py"
+      ],
+      "posts": [
+        "16591249",
+        "3569622",
+        "6782736",
+        "13945523",
+        "27489208"
+      ],
+      "project": "scrapy",
+      "bug_id": "16"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 13,
+      "top_lines": [
+        "scrapy/utils/python.py:103",
+        "scrapy/utils/python.py:116",
+        "scrapy/utils/reqser.py:7",
+        "scrapy/utils/python.py:84",
+        "scrapy/core/downloader/handlers/http10.py:5"
+      ],
+      "top_files": [
+        "scrapy/utils/python.py",
+        "scrapy/utils/reqser.py",
+        "scrapy/core/downloader/handlers/http10.py",
+        "scrapy/http/headers.py",
+        "scrapy/exporters.py"
+      ],
+      "posts": [
+        "9481890",
+        "36362373",
+        "34861230",
+        "8835679",
+        "11421879"
+      ],
+      "project": "scrapy",
+      "bug_id": "17"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 7,
+      "top_lines": [
+        "scrapy/utils/python.py:107",
+        "scrapy/utils/python.py:88",
+        "scrapy/utils/python.py:129",
+        "scrapy/utils/url.py:55",
+        "scrapy/contracts/__init__.py:29"
+      ],
+      "top_files": [
+        "scrapy/utils/python.py",
+        "scrapy/utils/url.py",
+        "scrapy/contracts/__init__.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/responsetypes.py"
+      ],
+      "posts": [
+        "28820605",
+        "3924355",
+        "36362373",
+        "9481890",
+        "36352591"
+      ],
+      "project": "scrapy",
+      "bug_id": "18"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 666,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/utils/url.py:55",
+        "setup.py:19",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/utils/url.py",
+        "setup.py",
+        "scrapy/utils/reqser.py"
+      ],
+      "posts": [
+        "962962",
+        "29299641",
+        "395982",
+        "27515976",
+        "33358364"
+      ],
+      "project": "scrapy",
+      "bug_id": "19"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 18,
+      "top_lines": [
+        "docs/utils/linkfix.py:34",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/utils/sitemap.py:42",
+        "scrapy/utils/sitemap.py:41"
+      ],
+      "top_files": [
+        "docs/utils/linkfix.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/utils/sitemap.py",
+        "scrapy/utils/url.py",
+        "scrapy/contracts/__init__.py"
+      ],
+      "posts": [
+        "34861230",
+        "18136870",
+        "9481890",
+        "27515976",
+        "33754512"
+      ],
+      "project": "scrapy",
+      "bug_id": "20"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 104,
+      "top_lines": [
+        "scrapy/downloadermiddlewares/robotstxt.py:65",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/utils/url.py:55",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/downloadermiddlewares/robotstxt.py:53"
+      ],
+      "top_files": [
+        "scrapy/downloadermiddlewares/robotstxt.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/utils/url.py",
+        "scrapy/utils/defer.py",
+        "scrapy/commands/runspider.py"
+      ],
+      "posts": [
+        "18136870",
+        "27929583",
+        "3924355",
+        "33754512",
+        "27515976"
+      ],
+      "project": "scrapy",
+      "bug_id": "21"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 4,
+      "top_lines": [
+        "scrapy/utils/url.py:55",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/exporters.py:159",
+        "scrapy/exporters.py:148",
+        "scrapy/contracts/__init__.py:30"
+      ],
+      "top_files": [
+        "scrapy/utils/url.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/exporters.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py"
+      ],
+      "posts": [
+        "9481890",
+        "36362373",
+        "25140422",
+        "13742538",
+        "20057764"
+      ],
+      "project": "scrapy",
+      "bug_id": "22"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 2216,
+      "top_lines": [
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/contracts/__init__.py:30",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/log.py:48",
+        "docs/utils/linkfix.py:34"
+      ],
+      "top_files": [
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/contracts/__init__.py",
+        "scrapy/log.py",
+        "docs/utils/linkfix.py",
+        "scrapy/utils/url.py"
+      ],
+      "posts": [
+        "34861230",
+        "9481890",
+        "25140422",
+        "33754512",
+        "18136870"
+      ],
+      "project": "scrapy",
+      "bug_id": "23"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 2850,
+      "top_lines": [
+        "scrapy/xlib/tx/interfaces.py:637",
+        "scrapy/xlib/tx/interfaces.py:1814",
+        "scrapy/xlib/tx/interfaces.py:1829",
+        "scrapy/core/downloader/handlers/__init__.py:4",
+        "scrapy/core/downloader/middleware.py:8"
+      ],
+      "top_files": [
+        "scrapy/xlib/tx/interfaces.py",
+        "scrapy/core/downloader/handlers/__init__.py",
+        "scrapy/core/downloader/middleware.py",
+        "scrapy/core/downloader/webclient.py",
+        "scrapy/core/scraper.py"
+      ],
+      "posts": [
+        "34861230",
+        "24943059",
+        "19720804",
+        "35753138",
+        "20057764"
+      ],
+      "project": "scrapy",
+      "bug_id": "24"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1409,
+      "top_lines": [
+        "docs/conf.py:223",
+        "scrapy/xlib/tx/interfaces.py:1007",
+        "scrapy/http/cookies.py:89",
+        "scrapy/downloadermiddlewares/httpcompression.py:52",
+        "scrapy/utils/defer.py:60"
+      ],
+      "top_files": [
+        "docs/conf.py",
+        "scrapy/xlib/tx/interfaces.py",
+        "scrapy/http/cookies.py",
+        "scrapy/downloadermiddlewares/httpcompression.py",
+        "scrapy/utils/defer.py"
+      ],
+      "posts": [
+        "30348948",
+        "3329361",
+        "9702492",
+        "33932282",
+        "32312758"
+      ],
+      "project": "scrapy",
+      "bug_id": "25"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 2339,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/utils/url.py:54",
+        "setup.py:19",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/utils/url.py",
+        "setup.py",
+        "scrapy/exporters.py"
+      ],
+      "posts": [
+        "3826484",
+        "8835679",
+        "14758705",
+        "33358364",
+        "21896067"
+      ],
+      "project": "scrapy",
+      "bug_id": "26"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 196,
+      "top_lines": [
+        "scrapy/utils/url.py:54",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/contracts/__init__.py:30",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "docs/utils/linkfix.py:34"
+      ],
+      "top_files": [
+        "scrapy/utils/url.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/commands/shell.py"
+      ],
+      "posts": [
+        "28820605",
+        "33754512",
+        "27515976",
+        "4362338",
+        "25140422"
+      ],
+      "project": "scrapy",
+      "bug_id": "27"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 655,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "scrapy/utils/url.py:54",
+        "setup.py:19",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "scrapy/utils/url.py",
+        "setup.py",
+        "scrapy/utils/test.py"
+      ],
+      "posts": [
+        "36352591",
+        "4696642",
+        "33358364",
+        "14758705",
+        "28267972"
+      ],
+      "project": "scrapy",
+      "bug_id": "28"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 3,
+      "top_lines": [
+        "scrapy/utils/python.py:116",
+        "scrapy/utils/python.py:103",
+        "scrapy/utils/request.py:82",
+        "scrapy/utils/python.py:91",
+        "scrapy/pipelines/images.py:18"
+      ],
+      "top_files": [
+        "scrapy/utils/python.py",
+        "scrapy/utils/request.py",
+        "scrapy/pipelines/images.py",
+        "scrapy/utils/response.py",
+        "scrapy/http/request/__init__.py"
+      ],
+      "posts": [
+        "36362373",
+        "27515976",
+        "34861230",
+        "8835679",
+        "4177734"
+      ],
+      "project": "scrapy",
+      "bug_id": "29"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1039,
+      "top_lines": [
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/log.py:48",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/contracts/__init__.py:30",
+        "docs/utils/linkfix.py:34"
+      ],
+      "top_files": [
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/log.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "setup.py"
+      ],
+      "posts": [
+        "28820605",
+        "27929583",
+        "8835679",
+        "36352591",
+        "3924355"
+      ],
+      "project": "scrapy",
+      "bug_id": "30"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 5,
+      "top_lines": [
+        "docs/utils/linkfix.py:34",
+        "scrapy/utils/sitemap.py:41",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/http/cookies.py:174"
+      ],
+      "top_files": [
+        "docs/utils/linkfix.py",
+        "scrapy/utils/sitemap.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/http/cookies.py",
+        "scrapy/utils/url.py"
+      ],
+      "posts": [
+        "28820605",
+        "27515976",
+        "16406343",
+        "9481890",
+        "36362373"
+      ],
+      "project": "scrapy",
+      "bug_id": "31"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 3,
+      "top_lines": [
+        "scrapy/utils/log.py:108",
+        "scrapy/utils/url.py:53",
+        "scrapy/crawler.py:213",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/cmdline.py:64"
+      ],
+      "top_files": [
+        "scrapy/utils/log.py",
+        "scrapy/utils/url.py",
+        "scrapy/crawler.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/cmdline.py"
+      ],
+      "posts": [
+        "36352591",
+        "33162006",
+        "4696642",
+        "34861230",
+        "25018343"
+      ],
+      "project": "scrapy",
+      "bug_id": "32"
+    },
+    {
+      "line_hit": true,
+      "file_hit": true,
+      "first_fix_line_rank": 1,
+      "top_lines": [
+        "scrapy/core/engine.py:19",
+        "scrapy/core/scraper.py:13",
+        "scrapy/utils/log.py:63",
+        "scrapy/contrib/loader/__init__.py:7",
+        "scrapy/crawler.py:18"
+      ],
+      "top_files": [
+        "scrapy/core/engine.py",
+        "scrapy/core/scraper.py",
+        "scrapy/utils/log.py",
+        "scrapy/contrib/loader/__init__.py",
+        "scrapy/crawler.py"
+      ],
+      "posts": [
+        "33754512",
+        "19677009",
+        "27515976",
+        "34861230",
+        "36352591"
+      ],
+      "project": "scrapy",
+      "bug_id": "33"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 2620,
+      "top_lines": [
+        "scrapy/item.py:61",
+        "scrapy/utils/url.py:53",
+        "scrapy/core/downloader/handlers/ftp.py:64",
+        "scrapy/settings/__init__.py:15",
+        "scrapy/xlib/tx/_newclient.py:274"
+      ],
+      "top_files": [
+        "scrapy/item.py",
+        "scrapy/utils/url.py",
+        "scrapy/core/downloader/handlers/ftp.py",
+        "scrapy/settings/__init__.py",
+        "scrapy/xlib/tx/_newclient.py"
+      ],
+      "posts": [
+        "11379382",
+        "16406343",
+        "13857856",
+        "37466312",
+        "7014404"
+      ],
+      "project": "scrapy",
+      "bug_id": "34"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:63",
+        "setup.py:19",
+        "scrapy/utils/url.py:53",
+        "scrapy/spiderloader.py:12"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "setup.py",
+        "scrapy/utils/url.py",
+        "scrapy/spiderloader.py"
+      ],
+      "posts": [
+        "33162006",
+        "14758705",
+        "33358364",
+        "16388059",
+        "24808983"
+      ],
+      "project": "scrapy",
+      "bug_id": "35"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 760,
+      "top_lines": [
+        "scrapy/utils/engine.py:9",
+        "scrapy/utils/signal.py:78",
+        "setup.py:44",
+        "scrapy/utils/engine.py:28",
+        "scrapy/utils/engine.py:3"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "setup.py",
+        "scrapy/crawler.py",
+        "scrapy/spidermiddlewares/referer.py"
+      ],
+      "posts": [
+        "21865869",
+        "37466312",
+        "4696642",
+        "33358364",
+        "18729329"
+      ],
+      "project": "scrapy",
+      "bug_id": "36"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 108,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "setup.py:39",
+        "scrapy/utils/python.py:31",
+        "scrapy/utils/engine.py:27"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "setup.py",
+        "scrapy/utils/python.py",
+        "scrapy/commands/__init__.py"
+      ],
+      "posts": [
+        "14344323",
+        "33358364",
+        "13091504",
+        "28267972",
+        "4696642"
+      ],
+      "project": "scrapy",
+      "bug_id": "37"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1112,
+      "top_lines": [
+        "scrapy/utils/engine.py:8",
+        "scrapy/utils/signal.py:76",
+        "setup.py:39",
+        "scrapy/utils/engine.py:27",
+        "scrapy/utils/engine.py:4"
+      ],
+      "top_files": [
+        "scrapy/utils/engine.py",
+        "scrapy/utils/signal.py",
+        "setup.py",
+        "scrapy/utils/test.py",
+        "scrapy/commands/check.py"
+      ],
+      "posts": [
+        "34189407",
+        "29425894",
+        "10320751",
+        "22392137",
+        "27431141"
+      ],
+      "project": "scrapy",
+      "bug_id": "38"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 891,
+      "top_lines": [
+        "scrapy/core/downloader/tls.py:29",
+        "scrapy/log.py:48",
+        "scrapy/contracts/__init__.py:30",
+        "docs/utils/linkfix.py:34",
+        "scrapy/utils/sitemap.py:43"
+      ],
+      "top_files": [
+        "scrapy/core/downloader/tls.py",
+        "scrapy/log.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/utils/sitemap.py"
+      ],
+      "posts": [
+        "34861230",
+        "9481890",
+        "33754512",
+        "27515976",
+        "25140422"
+      ],
+      "project": "scrapy",
+      "bug_id": "39"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 9,
+      "top_lines": [
+        "scrapy/utils/python.py:103",
+        "scrapy/xlib/tx/_newclient.py:268",
+        "scrapy/xlib/tx/_newclient.py:274",
+        "scrapy/contracts/__init__.py:30",
+        "docs/utils/linkfix.py:34"
+      ],
+      "top_files": [
+        "scrapy/utils/python.py",
+        "scrapy/xlib/tx/_newclient.py",
+        "scrapy/contracts/__init__.py",
+        "docs/utils/linkfix.py",
+        "scrapy/utils/url.py"
+      ],
+      "posts": [
+        "28820605",
+        "36362373",
+        "9481890",
+        "34861230",
+        "27929583"
+      ],
+      "project": "scrapy",
+      "bug_id": "40"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 2244,
+      "top_lines": [
+        "tornado/testing.py:353",
+        "setup.py:150",
+        "tornado/options.py:447",
+        "tornado/autoreload.py:278",
+        "tornado/template.py:774"
+      ],
+      "top_files": [
+        "tornado/testing.py",
+        "setup.py",
+        "tornado/options.py",
+        "tornado/autoreload.py",
+        "tornado/template.py"
+      ],
+      "posts": [
+        "36362373",
+        "9481890",
+        "34861230",
+        "30546783",
+        "11814106"
+      ],
+      "project": "tornado",
+      "bug_id": "1"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1594,
+      "top_lines": [
+        "tornado/ioloop.py:530",
+        "tornado/testing.py:315",
+        "tornado/queues.py:229",
+        "setup.py:147",
+        "tornado/autoreload.py:278"
+      ],
+      "top_files": [
+        "tornado/ioloop.py",
+        "tornado/testing.py",
+        "tornado/queues.py",
+        "setup.py",
+        "tornado/autoreload.py"
+      ],
+      "posts": [
+        "11814106",
+        "9481890",
+        "34861230",
+        "4696642",
+        "3249345"
+      ],
+      "project": "tornado",
+      "bug_id": "2"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1960,
+      "top_lines": [
+        "tornado/util.py:145",
+        "setup.py:148",
+        "tornado/autoreload.py:278",
+        "tornado/testing.py:686",
+        "setup.py:142"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "setup.py",
+        "tornado/autoreload.py",
+        "tornado/testing.py",
+        "maint/benchmark/benchmark.py"
+      ],
+      "posts": [
+        "14461128",
+        "18136870",
+        "10715724",
+        "12015403",
+        "33358364"
+      ],
+      "project": "tornado",
+      "bug_id": "3"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1967,
+      "top_lines": [
+        "tornado/testing.py:671",
+        "tornado/testing.py:686",
+        "tornado/autoreload.py:278",
+        "setup.py:148",
+        "setup.py:147"
+      ],
+      "top_files": [
+        "tornado/testing.py",
+        "tornado/autoreload.py",
+        "setup.py",
+        "tornado/options.py",
+        "tornado/http1connection.py"
+      ],
+      "posts": [
+        "18136870",
+        "33754512",
+        "9481890",
+        "4696642",
+        "36352591"
+      ],
+      "project": "tornado",
+      "bug_id": "4"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "tornado/util.py:170",
+        "setup.py:158",
+        "tornado/autoreload.py:265",
+        "tornado/testing.py:647",
+        "setup.py:153"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "setup.py",
+        "tornado/autoreload.py",
+        "tornado/testing.py",
+        "maint/vm/windows/bootstrap.py"
+      ],
+      "posts": [
+        "18136870",
+        "36352591",
+        "33358364",
+        "14758705",
+        "21896067"
+      ],
+      "project": "tornado",
+      "bug_id": "5"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 4008,
+      "top_lines": [
+        "tornado/util.py:170",
+        "setup.py:158",
+        "tornado/autoreload.py:265",
+        "tornado/testing.py:634",
+        "setup.py:153"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "setup.py",
+        "tornado/autoreload.py",
+        "tornado/testing.py",
+        "maint/vm/windows/bootstrap.py"
+      ],
+      "posts": [
+        "18136870",
+        "36352591",
+        "14758705",
+        "33358364",
+        "4696642"
+      ],
+      "project": "tornado",
+      "bug_id": "6"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 825,
+      "top_lines": [
+        "tornado/options.py:354",
+        "tornado/template.py:728",
+        "tornado/http1connection.py:391",
+        "tornado/template.py:524",
+        "tornado/template.py:548"
+      ],
+      "top_files": [
+        "tornado/options.py",
+        "tornado/template.py",
+        "tornado/http1connection.py",
+        "tornado/httputil.py",
+        "tornado/curl_httpclient.py"
+      ],
+      "posts": [
+        "28820605",
+        "25140422",
+        "36362373",
+        "13742538",
+        "27515976"
+      ],
+      "project": "tornado",
+      "bug_id": "7"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 3327,
+      "top_lines": [
+        "tornado/util.py:170",
+        "tornado/autoreload.py:266",
+        "setup.py:152",
+        "tornado/testing.py:609",
+        "tornado/testing.py:624"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "tornado/autoreload.py",
+        "setup.py",
+        "tornado/testing.py",
+        "tornado/options.py"
+      ],
+      "posts": [
+        "18136870",
+        "33754512",
+        "36352591",
+        "36362373",
+        "9481890"
+      ],
+      "project": "tornado",
+      "bug_id": "8"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "tornado/util.py:160",
+        "tornado/autoreload.py:260",
+        "tornado/httputil.py:614",
+        "tornado/httputil.py:616",
+        "setup.py:152"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "tornado/autoreload.py",
+        "tornado/httputil.py",
+        "setup.py",
+        "tornado/testing.py"
+      ],
+      "posts": [
+        "7014404",
+        "37466312",
+        "21865869",
+        "36352591",
+        "4696642"
+      ],
+      "project": "tornado",
+      "bug_id": "9"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 3982,
+      "top_lines": [
+        "tornado/options.py:354",
+        "tornado/template.py:728",
+        "tornado/testing.py:351",
+        "tornado/http1connection.py:385",
+        "tornado/autoreload.py:260"
+      ],
+      "top_files": [
+        "tornado/options.py",
+        "tornado/template.py",
+        "tornado/testing.py",
+        "tornado/http1connection.py",
+        "tornado/autoreload.py"
+      ],
+      "posts": [
+        "28820605",
+        "27515976",
+        "4362338",
+        "25140422",
+        "13742538"
+      ],
+      "project": "tornado",
+      "bug_id": "10"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": null,
+      "top_lines": [
+        "tornado/util.py:142",
+        "tornado/autoreload.py:265",
+        "setup.py:152",
+        "tornado/testing.py:663",
+        "tornado/httputil.py:634"
+      ],
+      "top_files": [
+        "tornado/util.py",
+        "tornado/autoreload.py",
+        "setup.py",
+        "tornado/testing.py",
+        "tornado/httputil.py"
+      ],
+      "posts": [
+        "14138580",
+        "9481890",
+        "5171629",
+        "19508028",
+        "4696642"
+      ],
+      "project": "tornado",
+      "bug_id": "11"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 1086,
+      "top_lines": [
+        "tornado/options.py:342",
+        "tornado/template.py:725",
+        "tornado/testing.py:649",
+        "tornado/testing.py:128",
+        "tornado/testing.py:172"
+      ],
+      "top_files": [
+        "tornado/options.py",
+        "tornado/template.py",
+        "tornado/testing.py",
+        "tornado/autoreload.py",
+        "tornado/http1connection.py"
+      ],
+      "posts": [
+        "12458170",
+        "28820605",
+        "25140422",
+        "13742538",
+        "20057764"
+      ],
+      "project": "tornado",
+      "bug_id": "12"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 163,
+      "top_lines": [
+        "tornado/options.py:350",
+        "tornado/template.py:728",
+        "tornado/http1connection.py:377",
+        "tornado/template.py:524",
+        "tornado/template.py:548"
+      ],
+      "top_files": [
+        "tornado/options.py",
+        "tornado/template.py",
+        "tornado/http1connection.py",
+        "tornado/autoreload.py",
+        "tornado/httpclient.py"
+      ],
+      "posts": [
+        "28820605",
+        "25140422",
+        "36362373",
+        "13742538",
+        "27515976"
+      ],
+      "project": "tornado",
+      "bug_id": "13"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 289,
+      "top_lines": [
+        "tornado/platform/epoll.py:26",
+        "tornado/ioloop.py:664",
+        "tornado/ioloop.py:253",
+        "tornado/options.py:342",
+        "tornado/ioloop.py:107"
+      ],
+      "top_files": [
+        "tornado/platform/epoll.py",
+        "tornado/ioloop.py",
+        "tornado/options.py",
+        "tornado/platform/twisted.py",
+        "tornado/autoreload.py"
+      ],
+      "posts": [
+        "25127701",
+        "11814106",
+        "14227480",
+        "18801879",
+        "18947019"
+      ],
+      "project": "tornado",
+      "bug_id": "14"
+    },
+    {
+      "line_hit": false,
+      "file_hit": true,
+      "first_fix_line_rank": 2790,
+      "top_lines": [
+        "tornado/testing.py:613",
+        "tornado/autoreload.py:265",
+        "tornado/testing.py:625",
+        "tornado/options.py:322",
+        "setup.py:142"
+      ],
+      "top_files": [
+        "tornado/testing.py",
+        "tornado/autoreload.py",
+        "tornado/options.py",
+        "setup.py",
+        "tornado/log.py"
+      ],
+      "posts": [
+        "7014404",
+        "13742538",
+        "36362373",
+        "9481890",
+        "34861230"
+      ],
+      "project": "tornado",
+      "bug_id": "15"
+    },
+    {
+      "line_hit": false,
+      "file_hit": false,
+      "first_fix_line_rank": 4302,
+      "top_lines": [
+        "tornado/options.py:322",
+        "tornado/template.py:632",
+        "tornado/http1connection.py:377",
+        "tornado/autoreload.py:265",
+        "docs/conf.py:45"
+      ],
+      "top_files": [
+        "tornado/options.py",
+        "tornado/template.py",
+        "tornado/http1connection.py",
+        "tornado/autoreload.py",
+        "docs/conf.py"
+      ],
+      "posts": [
+        "25140422",
+        "36362373",
+        "30546783",
+        "34861230",
+        "9481890"
+      ],
+      "project": "tornado",
+      "bug_id": "16"
+    }
+  ]
 }
